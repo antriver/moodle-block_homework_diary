@@ -1,5 +1,9 @@
 <?php
 
+// Can't work anymore due to removing course metadata
+header('Location: /blocks/homework');
+die();
+
 /**
  * Display all the grades (years) in the school
  */

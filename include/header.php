@@ -6,6 +6,8 @@ if (!defined('PUBLIC')) {
 	require_login();
 }
 
+$PAGE->set_context(context_system::instance());
+
 // Include the goodies for this block
 $hwblock = new block_homework\Block();
 

@@ -18,7 +18,7 @@ class Block
 		// Load the timetable stuff
 		global $CFG;
         // FIXME: SSIS
-		#require $CFG->libdir . '/ssistimetable.php';
+		require $CFG->libdir . '/ssistimetable.php';
 
         // Classes are now autoloaded
 

@@ -35,7 +35,7 @@ class Display
 			'index' => array('index.php', '<i class="icon-home"></i> Overview'),
 			'classes' => array('classes.php', '<i class="icon-group"></i> Classes'),
 			#'courses' => array('courses.php', '<i class="icon-magic"></i> Courses'),
-			'grades' => array('grades.php', '<i class="icon-sitemap"></i> Grades'),
+			#'grades' => array('grades.php', '<i class="icon-sitemap"></i> Grades'),
 			'students' => array('students.php', '<i class="icon-user"></i> Student Lookup'),
 		),
 	);
