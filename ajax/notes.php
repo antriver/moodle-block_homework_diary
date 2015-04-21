@@ -6,14 +6,14 @@ require_login();
 
 // Include the goodies for this block
 require dirname(__DIR__) . '/HomeworkBlock/Block.php';
-$hwblock = new \SSIS\HomeworkBlock\Block;
+$hwblock = new \block_homework\Block;
 
 $action = required_param('action', PARAM_RAW);
 $homeworkID = required_param('homeworkid', PARAM_RAW);
 $notes = required_param('notes', PARAM_RAW);
 
 // Get the item
-$hw = \SSIS\HomeworkBlock\HomeworkItem::load($homeworkID);
+$hw = \block_homework\HomeworkItem::load($homeworkID);
 
 switch ($action) {
 

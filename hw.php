@@ -12,7 +12,7 @@ $id = required_param('id', PARAM_INT);
 echo $OUTPUT->header();
 echo $hwblock->display->tabs();
 
-$hw = \SSIS\HomeworkBlock\HomeworkItem::load($id);
+$hw = \block_homework\HomeworkItem::load($id);
 
 echo $hwblock->display->homeworkList(array($hw));
 

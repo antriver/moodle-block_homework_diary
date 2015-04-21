@@ -31,7 +31,7 @@ switch ($action) {
 		define('FORMACTION', 'edit');
 		$editid = required_param('editid', PARAM_INT);
 		// Load the existing item
-		$editItem = \SSIS\HomeworkBlock\HomeworkItem::load($editid);
+		$editItem = \block_homework\HomeworkItem::load($editid);
 		if (!$editItem) {
 			die("Unable to find that homework item.");
 		}
@@ -86,7 +86,7 @@ switch ($action) {
 
 		if ($DB->update_record('block_homework', $homeworkItem)) {
 
-			$homeworkItem = \SSIS\HomeworkBlock\HomeworkItem::load($editid);
+			$homeworkItem = \block_homework\HomeworkItem::load($editid);
 
 			// Remove all existing assigned dates
 			$homeworkItem->clearAssignedDates();
@@ -142,7 +142,7 @@ switch ($action) {
 
 		if ($id = $DB->insert_record('block_homework', $homeworkItem)) {
 
-			$homeworkItem = \SSIS\HomeworkBlock\HomeworkItem::load($id);
+			$homeworkItem = \block_homework\HomeworkItem::load($id);
 
 			// Now add the assigned dates
 			$assigneddates = explode(',', $assigneddates);

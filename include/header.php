@@ -8,7 +8,7 @@ if (!defined('PUBLIC')) {
 
 // Include the goodies for this block
 require dirname(__DIR__) . '/HomeworkBlock/Block.php';
-$hwblock = new \SSIS\HomeworkBlock\Block;
+$hwblock = new \block_homework\Block;
 
 $PAGE->requires->css('/blocks/homework/assets/bootstrap/css/bootstrap.css');
 $PAGE->requires->css('/blocks/homework/assets/css/homework.css?v=5');

@@ -88,7 +88,7 @@ switch ($hwblock->mode()) {
 		 * Whole school week overview
 		 */
 
-		$stats = new \SSIS\HomeworkBlock\HomeworkStats($hwblock);
+		$stats = new \block_homework\HomeworkStats($hwblock);
 		echo $hwblock->display->weekStats($stats);
 
 		break;

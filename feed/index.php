@@ -18,7 +18,7 @@ $user = $DB->get_record('user', array('username' => $username), '*', MUST_EXIST)
 
 // Include the homework stuff
 require dirname(__DIR__) . '/HomeworkBlock/Block.php';
-$hwblock = new \SSIS\HomeworkBlock\Block;
+$hwblock = new \block_homework\Block;
 
 $hwblock->userID = $user->id;
 

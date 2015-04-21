@@ -6,7 +6,7 @@ require_login();
 
 // Include the goodies for this block
 require dirname(__DIR__) . '/HomeworkBlock/Block.php';
-$hwblock = new \SSIS\HomeworkBlock\Block;
+$hwblock = new \block_homework\Block;
 
 $q = required_param('q', PARAM_RAW);
 

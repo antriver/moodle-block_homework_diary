@@ -4,7 +4,7 @@
  * Class for calculating stats about a set of courseids
  */
 
-namespace SSIS\HomeworkBlock;
+namespace block_homework;
 
 class HomeworkStats
 {

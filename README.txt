@@ -1,3 +1,5 @@
+A homework diary for Moodle
+===
 
 To Do:
 	Students can enter how long it actually took them

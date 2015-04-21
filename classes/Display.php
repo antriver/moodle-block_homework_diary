@@ -1,6 +1,6 @@
 <?php
 
-namespace SSIS\HomeworkBlock;
+namespace block_homework;
 
 class Display
 {

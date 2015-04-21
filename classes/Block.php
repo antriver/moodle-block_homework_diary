@@ -1,6 +1,8 @@
 <?php
 
-namespace SSIS\HomeworkBlock;
+namespace block_homework;
+
+use context_course;
 
 class Block
 {
@@ -14,13 +16,12 @@ class Block
 
 		// Load the timetable stuff
 		global $CFG;
+        // FIXME: SSIS
 		require $CFG->libdir . '/ssistimetable.php';
 
-		require __DIR__ . '/Display.php';
-		$this->display = new Display($this);
+        // Classes are now autoloaded
 
-		require __DIR__ . '/HomeworkItem.php';
-		require __DIR__ . '/HomeworkStats.php';
+		$this->display = new Display($this);
 	}
 
 	/**
@@ -45,6 +46,7 @@ class Block
 		$mode = $this->mode();
 
 		if ($mode == 'parent') {
+            // FIXME: SSIS
 			$children = $SESSION->usersChildren;
 			$child = reset($children);
 			$SESSION->homeworkBlockUser = $child->userid;
@@ -57,9 +59,7 @@ class Block
 	public function generateFeedKey($user)
 	{
 		global $DB;
-
 		$key = sha1($user->id . $user->username . $user->firstaccess . $user->timecreated);
-
 		return $key;
 	}
 
@@ -86,7 +86,6 @@ class Block
 		return $url;
 	}
 
-
 	/**
 	 * Returns the mode the current user is in
 	 * (The default mode for the users role if the mode hasn't been switched)
@@ -109,6 +108,7 @@ class Block
 	public function possibleModes()
 	{
 		global $CFG, $SESSION;
+        // FIXME: SSIS
 		// The is_student() etc functions come from this file:
 		require_once $CFG->dirroot . '/local/dnet_common/sharedlib.php';
 
@@ -140,8 +140,6 @@ class Block
 		return false;
 	}
 
-
-
 	/**
 	 * Capability checks
 	 */
@@ -163,7 +161,7 @@ class Block
 		$mode = $this->mode();
 		if ($mode == 'teacher' || $mode == 'student') {
 
-			$context =\context_course::instance($courseid);
+			$context = context_course::instance($courseid);
 			return has_capability('block/homework:addhomework', $context);
 
 			return true;
@@ -178,13 +176,11 @@ class Block
 	{
 		$mode = $this->mode();
 		if ($mode == 'teacher') {
-			$context = \context_course::instance($courseid);
+			$context = context_course::instance($courseid);
 			return has_capability('block/homework:approvehomework', $context);
 		}
 		return false;
 	}
-
-
 
 	/**
 	 * Loading user's classes and courses
@@ -195,6 +191,7 @@ class Block
 	 */
 	public function getUsersGroups($userid, $activeOnly = true)
 	{
+        // FIXME: SSIS
 		$timetable = new \SSIS\Timetable($userid);
 
 		if ($this->mode() == 'teacher') {

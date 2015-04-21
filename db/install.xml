@@ -27,7 +27,7 @@
       </KEYS>
       <INDEXES>
         <INDEX NAME="approved" UNIQUE="false" FIELDS="approved"/>
-        <INDEX NAME="private" UNIQUE="false" FIELDS="approved"/>
+        <INDEX NAME="private" UNIQUE="false" FIELDS="private"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="block_homework_assign_dates" COMMENT="Which days students should work on a homework assignment">

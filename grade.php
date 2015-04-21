@@ -23,7 +23,7 @@ switch ($hwblock->mode()) {
 		$groups = $hwblock->getAllGroups($grade);
 		$groupIDs = $hwblock->extractGroupIDsFromTimetable($groups);
 
-		$stats = new \SSIS\HomeworkBlock\HomeworkStats($hwblock);
+		$stats = new \block_homework\HomeworkStats($hwblock);
 		$stats->setGroupIDs($groupIDs);
 
 		echo $hwblock->display->weekStats($stats);
