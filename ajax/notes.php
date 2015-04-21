@@ -5,7 +5,7 @@ require_once dirname(dirname(dirname(__DIR__))) . '/config.php';
 require_login();
 
 // Include the goodies for this block
-require dirname(__DIR__) . '/HomeworkBlock/Block.php';
+require dirname(__DIR__) . '/classes/Block.php';
 $hwblock = new \block_homework\Block;
 
 $action = required_param('action', PARAM_RAW);
