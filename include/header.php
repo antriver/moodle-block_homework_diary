@@ -7,7 +7,6 @@ if (!defined('PUBLIC')) {
 }
 
 // Include the goodies for this block
-require dirname(__DIR__) . '/classes/Block.php';
 $hwblock = new block_homework\Block();
 
 $PAGE->requires->css('/blocks/homework/assets/bootstrap/css/bootstrap.css');

@@ -17,7 +17,6 @@ $key = required_param('k', PARAM_RAW);
 $user = $DB->get_record('user', array('username' => $username), '*', MUST_EXIST);
 
 // Include the homework stuff
-require dirname(__DIR__) . '/classes/Block.php';
 $hwblock = new \block_homework\Block;
 
 $hwblock->userID = $user->id;
