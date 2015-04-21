@@ -5,10 +5,11 @@ require_once dirname(dirname(dirname(__DIR__))) . '/config.php';
 require_login();
 
 // Include the goodies for this block
-$hwblock = new \block_homework\Block;
+$hwblock = new block_homework\Block;
 
 $q = required_param('q', PARAM_RAW);
 
+// FIXME: SSIS
 $sql = "SELECT id, idnumber, firstname, lastname
 FROM {user}
 WHERE
