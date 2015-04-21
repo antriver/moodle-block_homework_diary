@@ -197,7 +197,7 @@ class Display
 			$r .= '<h4>' . date('l M jS', strtotime($date)) . '</h4>';
 			foreach ($hw as $item) {
 				if ($item->courseid) {
-					$icon = course_get_icon($item->courseid);
+					//$icon = course_get_icon($item->courseid);
 					$text = $item->coursename;
 				} else {
 					$icon = 'pushpin';
@@ -233,22 +233,18 @@ class Display
 		$r .= '<div class="row courses">';
 
 		foreach ($courses as $courseID => $enrollment) {
-			$icon = course_get_icon($courseID);
+			//$icon = course_get_icon($courseID);
 
 			foreach ($enrollment['groups'] as $group) {
 				$r .= '<div class="col-sm-3"><a href="' . $url . $group['id'] . '" class="btn">';
-					if ($icon) {
-						$r .= '<i class="icon-' . $icon . '"></i> ';
-					}
+					//if ($icon) {
+					//	$r .= '<i class="icon-' . $icon . '"></i> ';
+					//}
 					$r .= $enrollment['course']->fullname;
 
 					$r .= '<span>' . $group['classname'] . '</span>';
 
-
 					/*if (!empty($group['teacher'])) {
-
-
-
 						if ($this->hwblock->mode() != 'student') {
 							$r .= ' <span style="font-size:9px;">' . $group['name'] . '</span>';
 						}
@@ -285,11 +281,11 @@ class Display
 		$r .= '<div class="row courses">';
 
 		foreach ($courses as $courseID => $course) {
-			$icon = course_get_icon($courseID);
+			//$icon = course_get_icon($courseID);
 			$r .= '<div class="col-sm-3"><a href="' . $url . $courseID . '" class="btn">';
-				if ($icon) {
-					$r .= '<i class="icon-' . $icon . '"></i> ';
-				}
+				//if ($icon) {
+				//	$r .= '<i class="icon-' . $icon . '"></i> ';
+				//}
 				$r .= $course->fullname;
 			$r .= '</a></div>';
 		}
@@ -316,7 +312,7 @@ class Display
 	}
 
 	/**
-	* Returns HTML for a dragonnet-like explanation
+	* Returns HTML for a bootstrap alert
 	*/
 	public function sign($icon, $bigText, $littleText)
 	{
@@ -448,7 +444,7 @@ class Display
 			$r .= '</span>';
 		}
 
-		$icon = course_get_icon($hw->courseid);
+		//$icon = course_get_icon($hw->courseid);
 		$r .= '<h5 class="dates">';
 
 			// List of assigned dates
@@ -647,7 +643,7 @@ class Display
 
 				foreach ($hw as $item) {
 					if ($item->courseid) {
-						$icon = course_get_icon($item->courseid);
+						//$icon = course_get_icon($item->courseid);
 						$text = $item->coursename;
 					} else {
 						$icon = 'pushpin';
