@@ -7,6 +7,9 @@ if (!defined('PUBLIC')) {
 }
 
 $PAGE->set_context(context_system::instance());
+if (!empty($_SERVER['SCRIPT_NAME'])) {
+    $PAGE->set_url($_SERVER['SCRIPT_NAME']);
+}
 
 // Include the goodies for this block
 $hwblock = new block_homework\Block();
