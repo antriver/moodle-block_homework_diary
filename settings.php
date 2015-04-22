@@ -59,7 +59,9 @@ $settings->add(
 require_once $CFG->dirroot . '/cohort/lib.php';
 $systemCtx = context_system::instance();
 $cohorts = cohort_get_cohorts($systemCtx->id, 0, 1000000);
-$cohortList = array();
+$cohortList = array(
+    0 => '[Not Set]'
+);
 foreach ($cohorts['cohorts'] as $cohort) {
     $cohortList[$cohort->id] = $cohort->name;
 }
