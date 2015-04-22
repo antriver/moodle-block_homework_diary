@@ -19,7 +19,7 @@ if ($courseid) {
 echo $OUTPUT->header();
 
 echo $hwblock->display->tabs('add');
-$mode = $hwblock->mode();
+$mode = $hwblock->getMode();
 
 switch ($action) {
 
@@ -124,6 +124,8 @@ switch ($action) {
 		$duedate = optional_param('duedate', null, PARAM_RAW);
 		$duration = required_param('duration', PARAM_RAW);
 		$private = optional_param('private', 0, PARAM_INT);
+
+var_dump($courseid);
 
 		// If adding a new item
 		$homeworkItem = new stdClass();

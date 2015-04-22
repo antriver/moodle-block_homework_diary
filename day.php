@@ -17,7 +17,7 @@ $date->setTimestamp(strtotime($day));
 echo $OUTPUT->header();
 echo $hwblock->display->tabs('overview', $subtabs);
 
-switch ($hwblock->mode()) {
+switch ($hwblock->getMode()) {
 
 	case 'student':
 

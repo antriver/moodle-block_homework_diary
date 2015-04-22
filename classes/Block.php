@@ -2,40 +2,39 @@
 
 namespace block_homework;
 
-use block_homework\Display;
 use context_course;
+use context_coursecat;
 
 class Block
 {
+    public $courses;
+    public $display;
+    public $feeds;
+    public $groups;
+
 	public $today;
-	public $display;
-	public $userID;
+	public $userId;
 
 	public function __construct()
 	{
 		$this->today = date('Y-m-d');
 
-		// Load the timetable stuff
-		global $CFG;
-        // FIXME: SSIS
-		require $CFG->libdir . '/ssistimetable.php';
-
-        // Classes are now autoloaded
-
-		$this->display = new Display($this);
+        $this->courses = new CourseManager($this);
+		$this->display = new DisplayManager($this);
+        $this->feeds = new FeedManager($this);
+        $this->groups = new GroupManager($this);
 	}
 
 	/**
-	 * Viewing modes...
+	 * Returns the userID of the current user,
+     * or the user that we are looking at if in parent mode
+     * or pastoral-student mode
+     * @return int
 	 */
-
-	/**
-	 * Returns the userID of the current user, or the user to view info for if in parent mode
-	 */
-	public function userID()
+	public function getUserId()
 	{
-		if ($this->userID) {
-			return $this->userID;
+		if (!empty($this->userId)) {
+			return $this->userId;
 		}
 
 		global $SESSION, $USER;
@@ -44,61 +43,36 @@ class Block
 			return $SESSION->homeworkBlockUser;
 		}
 
-		$mode = $this->mode();
+		$mode = $this->getMode();
 
 		if ($mode == 'parent') {
-            // FIXME: SSIS
-			$children = $SESSION->usersChildren;
+
+            // In parent mode, but no child is selected
+            // So select the first child
+            $children = $this->getUsersChildren($USER->id);
+
+            // Select the first child
 			$child = reset($children);
 			$SESSION->homeworkBlockUser = $child->userid;
 			return $child->userid;
+
 		} else {
 			return $USER->id;
 		}
-	}
-
-	public function generateFeedKey($user)
-	{
-		global $DB;
-		$key = sha1($user->id . $user->username . $user->firstaccess . $user->timecreated);
-		return $key;
-	}
-
-	public function generateFeedURL($userID = false)
-	{
-		global $DB, $CFG;
-
-		if ($userID === false) {
-			$userID = $this->userID();
-		}
-		$user = $DB->get_record('user', array('id' => $userID));
-
-		$key = $this->generateFeedKey($user);
-
-		$url = $CFG->wwwroot . '/blocks/homework/feed/?';
-
-		$query = array(
-			'u' => $user->username,
-			'k' => $key
-		);
-
-		$url .= http_build_query($query);
-
-		return $url;
 	}
 
 	/**
 	 * Returns the mode the current user is in
 	 * (The default mode for the users role if the mode hasn't been switched)
 	 */
-	public function mode()
+	public function getMode()
 	{
 		global $SESSION, $CFG;
 		if (isset($SESSION->homeworkBlockMode)) {
 			return $SESSION->homeworkBlockMode;
 		}
 
-		$possibleModes = $this->possibleModes();
+		$possibleModes = $this->getPossibleModes();
 		$SESSION->homeworkBlockMode = $possibleModes[0];
 		return $possibleModes[0];
 	}
@@ -106,22 +80,34 @@ class Block
 	/**
 	 * Which modes can the current user switch to?
 	 */
-	public function possibleModes()
+	public function getPossibleModes()
 	{
-		global $CFG, $SESSION;
-        // FIXME: SSIS
-		// The is_student() etc functions come from this file:
-		require_once $CFG->dirroot . '/local/dnet_common/sharedlib.php';
+		global $CFG, $USER;
 
-		if ($SESSION->userIsTeacher) {
+        require_once $CFG->dirroot . '/cohort/lib.php';
+
+        $studentCohortId = (int)get_config('block_homework', 'student_cohort');
+        $teacherCohortId = (int)get_config('block_homework', 'teacher_cohort');
+        $parentCohortId = (int)get_config('block_homework', 'parent_cohort');
+        $secretaryCohortId = (int)get_config('block_homework', 'secretary_cohort');
+
+		if ($teacherCohortId && cohort_is_member($teacherCohortId, $USER->id)) {
 			return array('teacher', 'pastoral');
-		} elseif ($SESSION->userIsStudent) {
+        }
+
+		if ($studentCohortId && cohort_is_member($studentCohortId, $USER->id)) {
 			return array('student');
-		} elseif ($SESSION->userIsParent) {
+        }
+
+		if ($parentCohortId && cohort_is_member($parentCohortId, $USER->id)) {
 			return array('parent');
-		} elseif ($SESSION->userIsSecretary) {
+        }
+
+		if ($secretaryCohortId && cohort_is_member($secretaryCohortId, $USER->id)) {
 			return array('pastoral');
-		} elseif (\is_admin()) {
+        }
+
+		if (\is_siteadmin()) {
 			return array('pastoral');
 		}
 
@@ -129,17 +115,56 @@ class Block
 		return array('pastoral');
 	}
 
-	public function changeMode($newMode)
+	public function setMode($newMode)
 	{
 		global $SESSION;
 
-		$possibleModes = $this->possibleModes();
+		$possibleModes = $this->getPossibleModes();
 		if (in_array($newMode, $possibleModes)) {
 			$SESSION->homeworkBlockMode = $newMode;
 			return true;
 		}
 		return false;
 	}
+
+    public function getUsersChildren($userId)
+    {
+        global $DB;
+        $usercontexts = $DB->get_records_sql("SELECT c.instanceid, c.instanceid, u.id AS userid, u.firstname, u.lastname
+         FROM {role_assignments} ra, {context} c, {user} u
+         WHERE ra.userid = ?
+              AND ra.contextid = c.id
+              AND c.instanceid = u.id
+              AND c.contextlevel = " . \CONTEXT_USER, array($userId));
+        return $usercontexts;
+    }
+
+    /**
+     * Return the category ID that the homework block is set to work from
+     */
+    public function getCategoryId()
+    {
+        return (int)get_config('block_homework', 'course_category');
+    }
+
+    public function getCategoryContext()
+    {
+        // Limit to a certain category?
+        $categoryId = $this->getCategoryId();
+        if (!$categoryId) {
+            return null;
+        }
+        return context_coursecat::instance($categoryId);
+    }
+
+    public function getCategoryContextPath()
+    {
+        if ($categoryContext = $this->getCategoryContext()) {
+            return $categoryContext->path;
+        }
+        return null;
+    }
+
 
 	/**
 	 * Capability checks
@@ -148,7 +173,7 @@ class Block
 	public function canEditHomeworkItem($homeworkItem)
 	{
 		if ($homeworkItem->private) {
-			return $homeworkItem->userid == $this->userID();
+			return $homeworkItem->userid == $this->getUserId();
 		} else {
 			return $this->canApproveHomework($homeworkItem->courseid);
 		}
@@ -159,7 +184,7 @@ class Block
 	 */
 	public function canAddHomework($courseid)
 	{
-		$mode = $this->mode();
+		$mode = $this->getMode();
 		if ($mode == 'teacher' || $mode == 'student') {
 
 			$context = context_course::instance($courseid);
@@ -175,7 +200,7 @@ class Block
 	 */
 	public function canApproveHomework($courseid)
 	{
-		$mode = $this->mode();
+		$mode = $this->getMode();
 		if ($mode == 'teacher') {
 			$context = context_course::instance($courseid);
 			return has_capability('block/homework:approvehomework', $context);
@@ -183,53 +208,6 @@ class Block
 		return false;
 	}
 
-	/**
-	 * Loading user's classes and courses
-	 */
-
-	/**
-	 * Get all classes (groups) a user is in
-	 */
-	public function getUsersGroups($userid, $activeOnly = true)
-	{
-        // FIXME: SSIS
-		$timetable = new \SSIS\Timetable($userid);
-
-		if ($this->mode() == 'teacher') {
-			$classes = $timetable->getTeacherClasses($activeOnly);
-		} else {
-			$classes = $timetable->getStudentClasses($activeOnly);
-		}
-
-		return $classes;
-	}
-
-	/**
-	 * Get only an array of class group IDs a user is in
-	 */
-	public function getUsersGroupIDs($userid, $activeOnly = true)
-	{
-		$classes = $this->getUsersGroups($userid, $activeOnly);
-		return $this->extractGroupIDsFromTimetable($classes);
-	}
-
-	public function extractGroupIDsFromTimetable($classes)
-	{
-		$groups = array();
-		foreach ($classes as $classID => $class) {
-			$groups += $class['groups'];
-		}
-		return array_keys($groups);
-	}
-
-	/**
-	 * Return every group (class) in the school
-	 */
-	public function getAllGroups($grade = null)
-	{
-		$timetable = new \SSIS\Timetable();
-		return $timetable->getAllClasses(true, $grade);
-	}
 
 	/**
 	 * Getting homework
@@ -293,7 +271,7 @@ class Block
 		// Begin selecting portion...
 		$and = false;
 
-		$privateSelector = "(private = 1 AND userID = " . intval($this->userID()) . ')';
+		$privateSelector = "(private = 1 AND userID = " . intval($this->getUserId()) . ')';
 
 		if ($includePrivate) {
 			// Include private homework for the current logged in user
@@ -347,7 +325,7 @@ class Block
 		// Begin filtering portion...
 
 		// Show only stuff that has a start date (visible date) of today or earlier
-		if ($this->mode() != 'teacher' && $this->mode() != 'pastoral') {
+		if ($this->getMode() != 'teacher' && $this->getMode() != 'pastoral') {
 			$sql .= ($where ? ' AND' : ' WHERE');
 			$where = true;
 
@@ -441,91 +419,7 @@ class Block
 	}
 
 
-	/**
-	 * Getting courses a user is in...
-	 */
 
-	/**
-	 * Returns every teaching and learning course
-	 */
-	public function getAllCourses()
-	{
-		global $DB;
-		$sql = 'SELECT
-			crs.id,
-			crs.fullname
-		FROM {course} crs
-		LEFT JOIN {context} ct ON ct.instanceid = crs.id AND ct.contextlevel = 50
-		WHERE
-			ct.path LIKE \'/1/6156/%\'
-			';
-
-		$sql .= 'ORDER BY crs.fullname';
-		$values = array();
-		return $DB->get_records_sql($sql, $values);
-	}
-
-	/**
-	 * Returns all courses in the Teaching & Learning category the user is enrolled in
-	 * Not actually used now. It looks up the classes from the timetable profile field instead
-	 */
-	public function getUsersCourses($userid, $roleid = null)
-	{
-		global $DB;
-
-		$values = array(
-			$userid
-		);
-
-		$sql = 'SELECT
-			crs.id,
-			crs.fullname
-		FROM {role_assignments} ra
-		JOIN {context} ct ON ct.id = ra.contextid
-		JOIN {course} crs ON crs.id = ct.instanceid
-		WHERE
-			ra.userid = ?
-			AND
-			ct.path LIKE \'/1/6156/%\'
-			';
-
-		if (!is_null($roleid)) {
-			$sql .= ' AND ra.roleid = ? ';
-			$values[] = $roleid;
-		}
-
-		$sql .= 'ORDER BY crs.fullname';
-
-		return $DB->get_records_sql($sql, $values);
-	}
-
-	public function coursesToIDs($courses)
-	{
-		$ids = array();
-		foreach ($courses as $course) {
-			$ids[] = intval($course->id);
-		}
-		return $ids;
-	}
-
-	/**
-	 * Returns all course IDs that the user is enrolled in
-	 */
-	public function getUsersCourseIDs($userid, $roleid = null)
-	{
-		$courses = $this->getUsersCourses($userid, $roleid);
-		return $this->coursesToIDs($courses);
-	}
-
-	public function getUsersTaughtCourses($userid)
-	{
-		return $this->getUsersCourses($userid, 3);
-	}
-
-	public function getUsersTaughtCourseIDs($userid)
-	{
-		return $this->getUsersCourseIDs($userid, 3);
-	}
 
 
 /**

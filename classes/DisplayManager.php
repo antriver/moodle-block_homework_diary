@@ -2,7 +2,7 @@
 
 namespace block_homework;
 
-class Display
+class DisplayManager
 {
 	private $hwblock;
 	private $possibleTabs = array( // Array of which tabs are shown in differnet modes
@@ -48,8 +48,8 @@ class Display
 
 	public function modeTabs()
 	{
-		$currentMode = $this->hwblock->mode();
-		$possibleModes = $this->hwblock->possibleModes();
+		$currentMode = $this->hwblock->getMode();
+		$possibleModes = $this->hwblock->getPossibleModes();
 
 		$modeLabels = array(
 			'student' => '<i class="icon-user"></i> Student Mode',
@@ -87,17 +87,19 @@ class Display
 	 */
 	public function parentTabs()
 	{
-		global $SESSION;
+		global $SESSION, $USER;
 
-		$currentUser = $this->hwblock->userID();
+		$currentUser = $this->hwblock->getUserId();
 
-		if (!isset($SESSION->usersChildren) || !is_array($SESSION->usersChildren)) {
+        $children = $this->hwblock->getUsersChildren($USER->id);
+
+		if (!isset($children) || !is_array($children)) {
 			return false;
 		}
 
 		$t = '<div class="tabs noborder">';
 		$t .= '<ul class="additional-tabs">';
-		foreach ($SESSION->usersChildren as $child) {
+		foreach ($children as $child) {
 			$t .= '<li>';
 			$t .= '<a ' . ($child->userid == $currentUser ? 'class="selected"': '') . 'href="changeuser.php?userid=' . $child->userid . '">' . $child->firstname . ' ' . $child->lastname . '</a>';
 			$t .= '</li>';
@@ -118,12 +120,12 @@ class Display
 			return '';
 		}
 
-		$tabs = $this->possibleTabs[$this->hwblock->mode()];
+		$tabs = $this->possibleTabs[$this->hwblock->getMode()];
 
 		$t = '';
 
 		// If in parent mode, show the list of children at the top.
-		if ($this->hwblock->mode() == 'parent') {
+		if ($this->hwblock->getMode() == 'parent') {
 			$t .= $this->parentTabs();
 		}
 
@@ -198,6 +200,7 @@ class Display
 			foreach ($hw as $item) {
 				if ($item->courseid) {
 					//$icon = course_get_icon($item->courseid);
+                    $icon = '';
 					$text = $item->coursename;
 				} else {
 					$icon = 'pushpin';
@@ -221,7 +224,7 @@ class Display
 	/**
 	 * Show an array of classes as buttons, with a filter box
 	 */
-	public function classList($courses, $url = 'class.php?groupid=')
+	public function classList($classes, $url = 'class.php?groupid=')
 	{
 		global $PAGE;
 		$PAGE->requires->js('/blocks/homework/assets/js/bindWithDelay.js');
@@ -232,20 +235,21 @@ class Display
 
 		$r .= '<div class="row courses">';
 
-		foreach ($courses as $courseID => $enrollment) {
+		foreach ($classes as $groupID => $group) {
 			//$icon = course_get_icon($courseID);
 
-			foreach ($enrollment['groups'] as $group) {
+			//foreach ($enrollment['groups'] as $group) {
 				$r .= '<div class="col-sm-3"><a href="' . $url . $group['id'] . '" class="btn">';
 					//if ($icon) {
 					//	$r .= '<i class="icon-' . $icon . '"></i> ';
 					//}
-					$r .= $enrollment['course']->fullname;
+                    $r .= $group['coursefullname'];
+					//$r .= $enrollment['course']->fullname;
 
-					$r .= '<span>' . $group['classname'] . '</span>';
+					$r .= '<span>' . $group['name'] . '</span>';
 
 					/*if (!empty($group['teacher'])) {
-						if ($this->hwblock->mode() != 'student') {
+						if ($this->hwblock->getMode() != 'student') {
 							$r .= ' <span style="font-size:9px;">' . $group['name'] . '</span>';
 						}
 						$r .= '</span>';
@@ -255,7 +259,7 @@ class Display
 					}*/
 
 				$r .= '</a></div>';
-			}
+			//}
 		}
 
 		$r .= '</div>';
@@ -407,7 +411,7 @@ class Display
 			$r .= '<h5><i class="icon-pause"></i> This must be approved by a teacher before it is visible to the whole class.</h5>';
 		}
 
-		if (!$hw->private && $hw->approved && $this->hwblock->mode() == 'teacher') {
+		if (!$hw->private && $hw->approved && $this->hwblock->getMode() == 'teacher') {
 			$r .= '<h5><i class="icon-ok"></i> Approved and visible to the whole class.</h5>';
 		}
 
@@ -445,6 +449,7 @@ class Display
 		}
 
 		//$icon = course_get_icon($hw->courseid);
+        $icon = '';
 		$r .= '<h5 class="dates">';
 
 			// List of assigned dates
@@ -462,8 +467,7 @@ class Display
 		$r .= '<h4><a href="class.php?groupid=' . $hw->groupid . '">' . ($icon ? '<i class="icon-' . $icon . '"></i> ' : '') . $hw->coursename . '</a></h4>';
 
 		// Class (group) name
-		global $SESSION;
-		if ($SESSION->userIsTeacher || $showClassName) {
+		if ($this->hwblock->getMode() || $showClassName) {
 			$r .= '<h4>' . $hw->getGroupName() . '</h4>';
 		}
 
@@ -482,7 +486,7 @@ class Display
 		$r .= '</p>';
 
 		// Notes
-		if ($notes = $hw->getNotes($this->hwblock->userID())) {
+		if ($notes = $hw->getNotes($this->hwblock->getUserId())) {
 			$notes = $this->filterText($notes);
 		} else  {
 			$notes = '';
@@ -491,7 +495,7 @@ class Display
 		$r .= '<p class="notes" ' . ($notes ? '' : 'style="display:none;"') . '>' . $notes . '</p>';
 
 
-		if ($this->hwblock->mode() == 'teacher' || $this->hwblock->mode() == 'student') {
+		if ($this->hwblock->getMode() == 'teacher' || $this->hwblock->getMode() == 'student') {
 			// Edit notes button
 			$r .= '<span class="buttons noteButtons">';
 				$r .= '<a class="btn-mini btn btn-primary editNotes" href="#"><i class="icon-comment"></i> Add Notes</a>';
@@ -644,6 +648,7 @@ class Display
 				foreach ($hw as $item) {
 					if ($item->courseid) {
 						//$icon = course_get_icon($item->courseid);
+                        $icon = '';
 						$text = $item->coursename;
 					} else {
 						$icon = 'pushpin';
@@ -681,7 +686,7 @@ class Display
 		if ($button) {
 			$text .= ' <a class="btn btn-mini btn-primary" href="icalfeed.php">Click here to learn how</a>';
 		}
-		$text .= '<input type="text" readonly="readonly" value="' . $this->hwblock->generateFeedURL() . '"/>';
+		$text .= '<input type="text" readonly="readonly" value="' . $this->hwblock->feeds->generateFeedURL() . '"/>';
 		$r .= $this->sign('calendar', 'iCal Feed', $text);
 		$r .= '</dv>';
 		return $r;

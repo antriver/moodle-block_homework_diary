@@ -1,15 +1,15 @@
 <?php
 
-	$mode = $hwblock->mode();
+	$mode = $hwblock->getMode();
 
 	// Get all the user's classes
-	$groups = $hwblock->getUsersGroups($USER->id, ($mode == 'teacher' ? false : true));
+	$groups = $hwblock->groups->getAllUsersGroups($USER->id);
 
 	$selectedCourseID = '';
 	$selectedGroupID = '';
 	if (isset($editItem)) {
 		$selectedGroupID = $editItem->groupid;
-	} elseif ($_GET['groupid']) {
+	} elseif (!empty($_GET['groupid'])) {
 		$selectedGroupID = $_GET['groupid'];
 	}
 ?>
@@ -54,21 +54,18 @@
 			<select name="groupid" class="form-control" id="groupIDSelelect">
 				<option value="">Please select...</option>
 			<?php
-			foreach ($groups as $courseID => $enrollment) {
-				foreach ($enrollment['groups'] as $groupID => $group) {
+			foreach ($groups as $groupID => $group) {
 					// TODO: Ability to pass courseid in the URL and select the first group in the course
-					//(isset($courseid) && $course->id == $courseid ? 'selected': '')
-					echo '<option value="' . $groupID . '" data-courseid="' . $courseID . '" ' . ($groupID == $selectedGroupID ? 'selected' : '') . '>';
+					echo '<option value="' . $group['id'] . '" data-courseid="' . $group['courseid'] . '" ' . ($group['id'] == $selectedGroupID ? 'selected' : '') . '>';
 
-						echo $enrollment['course']->fullname;
+						echo $group['coursefullname'];
 
-						echo ' - ' . $group['classname'];
+						echo ' - ' . $group['name'];
 
-						if ($groupID == $selectedGroupID) {
-							$selectedCourseID = $courseID;
+						if ($group['id'] == $selectedGroupID) {
+							$selectedCourseID = $group['courseid'];
 						}
 					echo '</option>';
-				}
 			}
 			if ($private) {
 				echo '<option value="-1" ' . ($private && !$selectedGroupID ? 'selected' : '') . '>Other / Not Applicable</option>';

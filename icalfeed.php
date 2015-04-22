@@ -4,7 +4,7 @@ require 'include/header.php';
 echo $OUTPUT->header();
 echo $hwblock->display->tabs('icalfeed');
 
-switch ($hwblock->mode()) {
+switch ($hwblock->getMode()) {
 
 	case 'pastoral-student':
 	case 'student':

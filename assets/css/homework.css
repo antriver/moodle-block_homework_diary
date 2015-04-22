@@ -145,6 +145,7 @@ h3 {
 		display:block;
 		font-size:12px;
 		white-space: normal;
+        text-transform: none;
 	}
 
 .courseList .filter {

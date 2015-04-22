@@ -11,7 +11,7 @@ require 'include/header.php';
 echo $OUTPUT->header();
 echo $hwblock->display->tabs('index');
 
-switch ($hwblock->mode()) {
+switch ($hwblock->getMode()) {
 
 	case 'pastoral-student':
 	case 'student':
@@ -24,7 +24,7 @@ switch ($hwblock->mode()) {
 		echo $hwblock->display->sign('calendar', 'To Do', 'This page presents a two-week overview of your homework.');
 
 		// Get the user's group (class) IDs
-		$groupIDs = $hwblock->getUsersGroupIDs($hwblock->userID(), true);
+		$groupIDs = $hwblock->groups->getAllUsersGroupIDs($hwblock->getUserId(), true);
 
 		// Get the homework for those groups
 		$approved = true;
@@ -63,7 +63,7 @@ switch ($hwblock->mode()) {
 		echo $hwblock->display->sign('check', 'Manage Submissions', 'This section shows homework that a students in your classes have submitted. Other students will NOT see these until approved by you.');
 
 		// Get the user's group (class) IDs
-		$groupIDs = $hwblock->getUsersGroupIDs($hwblock->userID(), true);
+		$groupIDs = $hwblock->groups->getAllUsersGroupIDs($hwblock->getUserId());
 
 		// Get the homework for those groups
 		$approved = false;

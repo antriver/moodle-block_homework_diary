@@ -11,13 +11,13 @@ echo $OUTPUT->header();
 
 echo $hwblock->display->tabs('courses');
 
-switch ($hwblock->mode()) {
+switch ($hwblock->getMode()) {
 
 	case 'student':
 	case 'parent':
 
 		echo '<h2><i class="icon-magic"></i> My Courses</h2>';
-		$courses = $hwblock->getUsersCourses($hwblock->userID());
+		$courses = $hwblock->getUsersCourses($hwblock->getUserId());
 		echo $hwblock->display->courseList($courses);
 
 		break;
@@ -26,7 +26,7 @@ switch ($hwblock->mode()) {
 
 		echo '<h2><i class="icon-magic"></i> Courses I Teach</h2>';
 		$teacherRoleID = 3;
-		$courses = $hwblock->getUsersCourses($hwblock->userID(), $teacherRoleID);
+		$courses = $hwblock->getUsersCourses($hwblock->getUserId(), $teacherRoleID);
 		echo $hwblock->display->courseList($courses);
 
 		break;

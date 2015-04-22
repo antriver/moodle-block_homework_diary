@@ -18,7 +18,7 @@ switch ($action) {
 
 	case 'save':
 		$response = array(
-			'success' => $hw->setNotes($hwblock->userID(), $notes),
+			'success' => $hw->setNotes($hwblock->getUserId(), $notes),
 			'text' => $hwblock->display->filterText($notes)
 		);
 		break;

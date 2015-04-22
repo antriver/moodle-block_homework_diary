@@ -9,7 +9,7 @@ echo $OUTPUT->header();
 
 echo $hwblock->display->tabs('students');
 
-switch ($hwblock->mode()) {
+switch ($hwblock->getMode()) {
 
 	case 'pastoral':
 

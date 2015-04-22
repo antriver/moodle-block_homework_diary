@@ -17,7 +17,7 @@ $courseIcon = course_get_icon($course->id);
 echo $OUTPUT->header();
 echo $hwblock->display->tabs(false, false, false, $group->id);
 
-$mode = $hwblock->mode();
+$mode = $hwblock->getMode();
 
 // echo '<h2 style="float:right; margin:17px 10px 0;"><i class="icon-group"></i> ' . $group->name . '</h2>';
 // echo '<h2>' . ($courseIcon ? '<i class="icon-' . $courseIcon . '"></i> ' : '') . $course->fullname . '</h2>';

@@ -16,7 +16,7 @@ echo $OUTPUT->header();
 
 echo $hwblock->display->tabs('grades');
 
-switch ($hwblock->mode()) {
+switch ($hwblock->getMode()) {
 
 	case 'pastoral':
 

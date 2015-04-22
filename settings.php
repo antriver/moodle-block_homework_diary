@@ -15,20 +15,95 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Newblock block caps.
+ * Homework block admin settings
  *
  * @package    block_homework
- * @copyright  Daniel Neis <danielneis@gmail.com>
+ * @copyright  Anthony Kuske <anthonykuske@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-/*$settings->add(new admin_setting_heading('sampleheader',
-	get_string('headerconfig', 'block_homework'),
-	get_string('descconfig', 'block_homework')));
+/**
+ * Category to show courses from
+ */
 
-$settings->add(new admin_setting_configcheckbox('homework/foo',
-	get_string('labelfoo', 'block_homework'),
-	get_string('descfoo', 'block_homework'),
-	'0')); */
+// Load all categories to show in the list
+require_once $CFG->dirroot . '/course/externallib.php';
+$categories = core_course_external::get_categories(array(), false);
+$categoryList = array(
+    0 => '[All Cateogries]'
+);
+foreach ($categories as $category) {
+    $categoryList[$category['id']] = $category['name'];
+}
+asort($categoryList);
+
+$settings->add(
+    new admin_setting_configselect(
+        'block_homework/course_category',
+        get_string('settings_course_category_name', 'block_homework'),
+        get_string('settings_course_category_desc', 'block_homework'),
+        0,
+        $categoryList
+    )
+);
+
+
+
+/**
+ * User levels
+ */
+
+// Get all system-level cohorts
+require_once $CFG->dirroot . '/cohort/lib.php';
+$systemCtx = context_system::instance();
+$cohorts = cohort_get_cohorts($systemCtx->id, 0, 1000000);
+$cohortList = array();
+foreach ($cohorts['cohorts'] as $cohort) {
+    $cohortList[$cohort->id] = $cohort->name;
+}
+
+// Student
+$settings->add(
+    new admin_setting_configselect(
+        'block_homework/student_cohort',
+        get_string('settings_student_cohort_name', 'block_homework'),
+        get_string('settings_student_cohort_desc', 'block_homework'),
+        0,
+        $cohortList
+    )
+);
+
+// Teacher
+$settings->add(
+    new admin_setting_configselect(
+        'block_homework/teacher_cohort',
+        get_string('settings_teacher_cohort_name', 'block_homework'),
+        get_string('settings_teacher_cohort_desc', 'block_homework'),
+        0,
+        $cohortList
+    )
+);
+
+// Parent
+$settings->add(
+    new admin_setting_configselect(
+        'block_homework/parent_cohort',
+        get_string('settings_parent_cohort_name', 'block_homework'),
+        get_string('settings_parent_cohort_desc', 'block_homework'),
+        0,
+        $cohortList
+    )
+);
+
+// Secretary
+$settings->add(
+    new admin_setting_configselect(
+        'block_homework/secretary_cohort',
+        get_string('settings_secretary_cohort_name', 'block_homework'),
+        get_string('settings_secretary_cohort_desc', 'block_homework'),
+        0,
+        $cohortList
+    )
+);

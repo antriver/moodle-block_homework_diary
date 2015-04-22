@@ -1,15 +1,9 @@
 A homework diary for Moodle
 ===
 
-To Do:
-	Students can enter how long it actually took them
-		Timer for how long tasks took
-	Admin staff (pastoral) view
-		By grade
-		By class (need class data)
-	Pending homework page for students
-	Ability to put links to upload/submission/some resource on DragonNet in the description
+## TODO
 
-Bugs:
-	After saving edits, add homework tab is highlighted when it shouldn't be
-
+* Option to use group description as visible name instead of name (to show friendly names)
+* Students can enter how long it actually took them
+    * Timer to use for that
+* Ability to put links to upload/submission/some resource on DragonNet in the description

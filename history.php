@@ -8,7 +8,7 @@ require 'include/header.php';
 echo $OUTPUT->header();
 echo $hwblock->display->tabs('history');
 
-switch ($hwblock->mode()) {
+switch ($hwblock->getMode()) {
 
 	case 'pastoral-student':
 	case 'student':
@@ -18,7 +18,7 @@ switch ($hwblock->mode()) {
 		echo $hwblock->display->sign('th-list', 'View History', 'All Homework, Sorted By Due Date (Latest At The Top)');
 
 		// Get the user's group (class) IDs
-		$groupIDs = $hwblock->getUsersGroupIDs($hwblock->userID());
+		$groupIDs = $hwblock->groups->getAllUsersGroupIDs($hwblock->getUserId());
 
 		$approvedStatus = true; // Only show approved homework
 		$past = null; // Include future and past

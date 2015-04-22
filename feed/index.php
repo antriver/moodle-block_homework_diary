@@ -22,12 +22,12 @@ $hwblock = new \block_homework\Block;
 $hwblock->userID = $user->id;
 
 // Check the key
-if ($key != $hwblock->generateFeedKey($user)) {
+if ($key != $hwblock->feeds->generateFeedKey($user)) {
 	die("Invalid key");
 }
 
 // Get the user's group (class) IDs
-$groupIDs = $hwblock->getUsersGroupIDs($user->id, true);
+$groupIDs = $hwblock->groups->getAllUsersGroupIDs($user->id);
 
 $homework = $hwblock->getHomework(
 	$groupIDs, //$groupIDs = false,

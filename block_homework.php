@@ -79,6 +79,6 @@ class block_homework extends block_base {
 	}
 
 	public function has_config() {
-		return false;
+		return true;
 	}
 }
