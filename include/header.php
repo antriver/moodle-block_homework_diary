@@ -18,6 +18,8 @@ $PAGE->requires->css('/blocks/homework/assets/bootstrap/css/bootstrap.css');
 $PAGE->requires->css('/blocks/homework/assets/css/homework.css?v=5');
 
 $PAGE->requires->jquery();
+$PAGE->requires->jquery_plugin('ui');
+
 $PAGE->requires->js('/blocks/homework/assets/js/jquery.scrollTo.min.js');
 $PAGE->requires->js('/blocks/homework/assets/js/jquery.localScroll.min.js');
 $PAGE->requires->js('/blocks/homework/assets/js/jquery.autosize.min.js');
