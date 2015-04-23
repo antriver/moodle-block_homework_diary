@@ -64,6 +64,9 @@ $cohortList = array(
 );
 foreach ($cohorts['cohorts'] as $cohort) {
     $cohortList[$cohort->id] = $cohort->name;
+    if ($cohort->idnumber) {
+        $cohortList[$cohort->id] .= ' ['.s($cohort->idnumber).']';
+    }
 }
 
 // Student
