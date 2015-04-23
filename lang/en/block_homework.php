@@ -24,7 +24,7 @@
  */
 
 $string['blockstring'] = 'Homework';
-$string['pluginname'] = 'Homework';
+$string['pluginname'] = 'Homework Diary';
 $string['pagetitle'] = 'Homework';
 
 $string['homework:addinstance'] = 'Add a homework block';
