@@ -28,14 +28,14 @@ $(document).on('click', '.showAllHomeworkDates', function(e){
 
 	var ul = '<ul class="assignedDates">';
 
-		ul += '<li><i class="icon-pushpin"></i> <strong>To do on...</strong></li>';
+		ul += '<li><i class="fa fa-thumb-tack"></i> <strong>To do on...</strong></li>';
 
 		for (var i in dates) {
 			var date = dates[i];
 			ul += '<li>' + formatDate('D M jS', new Date(date)) + '</li>';
 		}
 
-		ul += '<li><i class="icon-bell"></i> <strong>Due on...</strong></li>';
+		ul += '<li><i class="fa fa-bell"></i> <strong>Due on...</strong></li>';
 		ul += '<li>' + formatDate('D M jS', new Date(duedate)) + '</li>';
 
 	ul += '</ul>';
@@ -57,12 +57,12 @@ $(document).on('click', '.approveHomeworkButton', function(e){
 	var id = hw.attr('data-id');
 
 	btn.addClass('loading');
-	btn.children('i').removeClass().addClass('icon-spinner icon-spin');
+	btn.children('i').removeClass().addClass('fa fa-spinner fa-spin');
 
 	$.post('/blocks/homework/ajax/manage.php', {homeworkid:id, action:'approve'}, function(res){
 
 		btn.removeClass('loading');
-		btn.children('i').removeClass().addClass('icon-ok');
+		btn.children('i').removeClass().addClass('fa fa-check');
 
 		if (res.success) {
 			$(hw).removeClass('unapproved');
@@ -155,14 +155,14 @@ $(document).on('click', '.saveNotes', function(e){
 	var id = hw.attr('data-id');
 
 	btn.addClass('loading');
-	btn.children('i').removeClass().addClass('icon-spinner icon-spin');
+	btn.children('i').removeClass().addClass('fa fa-spinner fa-spin');
 
 	var text = hw.find('textarea').val();
 
 	$.post('/blocks/homework/ajax/notes.php', {homeworkid:id, action:'save', notes:text}, function(res){
 
 		btn.removeClass('loading');
-		btn.children('i').removeClass().addClass('icon-save');
+		btn.children('i').removeClass().addClass('fa fa-save');
 
 		if (res.success) {
 			closeHomeworkNoteEditing(hw, false, res.text);
@@ -194,7 +194,7 @@ $(document).on('click', '.editHomeworkButton', function(e){
 	desc.replaceWith(textarea);
 
 	hw.find('.approveHomeworkButton, .editHomeworkButton, .deleteHomeworkButton').hide();
-	hw.find('.deleteHomeworkButton').after('<a class="saveEditHomeworkButton btn btn-success"><i class="icon-save"></i> Save</a><a class="cancelEditHomeworkButton btn btn-danger"><i class="icon-remove"></i> Cancel Changes</a>');
+	hw.find('.deleteHomeworkButton').after('<a class="saveEditHomeworkButton btn btn-success"><i class="fa fa-save"></i> Save</a><a class="cancelEditHomeworkButton btn btn-danger"><i class="fa fa-remove"></i> Cancel Changes</a>');
 
 });
 
@@ -219,14 +219,14 @@ $(document).on('click', '.saveEditHomeworkButton', function(e){
 	var id = hw.attr('data-id');
 
 	btn.addClass('loading');
-	btn.children('i').removeClass().addClass('icon-spinner icon-spin');
+	btn.children('i').removeClass().addClass('fa fa-spinner fa-spin');
 
 	var text = hw.find('textarea').val();
 
 	$.post('/blocks/homework/ajax/manage.php', {homeworkid:id, action:'edit', description:text}, function(res){
 
 		btn.removeClass('loading');
-		btn.children('i').removeClass().addClass('icon-save');
+		btn.children('i').removeClass().addClass('fa fa-save');
 
 		if (res.success) {
 			closeHomeworkEditing(hw, false);
@@ -273,12 +273,12 @@ $(document).on('click', '.deleteHomeworkButton', function(e){
 	}
 
 	btn.addClass('loading');
-	btn.children('i').removeClass().addClass('icon-spinner icon-spin');
+	btn.children('i').removeClass().addClass('fa fa-spinner fa-spin');
 
 	$.post('/blocks/homework/ajax/manage.php', {homeworkid:id, action:'delete'}, function(res){
 
 		btn.removeClass('loading');
-		btn.children('i').removeClass().addClass('icon-trash');
+		btn.children('i').removeClass().addClass('fa fa-trash');
 
 		if (res.success) {
 			$('.homework[data-id=' + id + ']').slideUp();
@@ -534,7 +534,7 @@ function studentSearch() {
 	}
 	var div = $(this).closest('.userList');
 
-	div.find('.courses').html('<div class="nothing"><i class="icon-spinner icon-spin"></i> Searching for <strong>' + q + '</strong>...</div>');
+	div.find('.courses').html('<div class="nothing"><i class="fa fa-spinner fa-spin"></i> Searching for <strong>' + q + '</strong>...</div>');
 
 	$.get('ajax/studentsearch.php', {q:q}, function(res)
 	{
@@ -542,7 +542,7 @@ function studentSearch() {
 
 		if (res.users.length < 1) {
 
-			html += '<div class="nothing"><i class="icon-frown"></i> Nothing to show here.</div>';
+			html += '<div class="nothing"><i class="fa fa-frown-o"></i> Nothing to show here.</div>';
 
 		} else {
 

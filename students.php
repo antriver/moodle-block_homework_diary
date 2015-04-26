@@ -13,7 +13,7 @@ switch ($hwblock->getMode()) {
 
 	case 'pastoral':
 
-		echo '<h2><i class="icon-user"></i> Student Lookup</h2>';
+		echo '<h2><i class="fa fa-user"></i> Student Lookup</h2>';
 
 		echo $hwblock->display->sign('search', 'Find A Student', 'This section allows you to see what a student sees. Search for a student by name or PowerSchool ID below and click on one of the results.');
 

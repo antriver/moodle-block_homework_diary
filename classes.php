@@ -30,7 +30,7 @@ switch ($hwblock->getMode()) {
 		/**
 		 * Show all classes in the school
 		 */
-		echo '<h2><i class="icon-group"></i> All Classes</h2>';
+		echo '<h2><i class="fa fa-group"></i> All Classes</h2>';
 		$groups = $hwblock->groups->getAllGroups();
 		echo $hwblock->display->classList($groups);
 

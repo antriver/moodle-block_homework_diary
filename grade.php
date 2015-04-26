@@ -36,7 +36,7 @@ switch ($hwblock->getMode()) {
 
 		echo '<hr/>';
 
-		echo '<h2><i class="icon-group"></i> Grade ' . $grade . ' Classes</h2>';
+		echo '<h2><i class="fa fa-group"></i> Grade ' . $grade . ' Classes</h2>';
 		$classes = $hwblock->getAllGroups($grade);
 		echo $hwblock->display->classList($classes);
 

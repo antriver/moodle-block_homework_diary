@@ -52,10 +52,10 @@ class DisplayManager
 		$possibleModes = $this->hwblock->getPossibleModes();
 
 		$modeLabels = array(
-			'student' => '<i class="icon-user"></i> Student Mode',
-			'parent' => '<i class="icon-male"></i> Parent Mode',
-			'teacher' => '<i class="icon-magic"></i> Teacher Mode',
-			'pastoral' => '<i class="icon-heart"></i> Pastoral Mode',
+			'student' => '<i class="fa fa-user"></i> Student Mode',
+			'parent' => '<i class="fa fa-male"></i> Parent Mode',
+			'teacher' => '<i class="fa fa-magic"></i> Teacher Mode',
+			'pastoral' => '<i class="fa fa-heartbeat"></i> Pastoral Mode',
 		);
 
 		if ($currentMode == 'pastoral-student') {
@@ -203,11 +203,11 @@ class DisplayManager
                     $icon = '';
 					$text = $item->coursename;
 				} else {
-					$icon = 'pushpin';
+					$icon = 'thumb-tack';
 					$text = $this->truncate($item->description, 30);
 				}
 
-				$r .= '<p>' . ($icon ? '<i class="icon-' . $icon . '"></i> ' : '') . $text . '</p>';
+				$r .= '<p>' . ($icon ? '<i class="fa fa-' . $icon . '"></i> ' : '') . $text . '</p>';
 			}
 			$r .= '</a>
 			</li>';
@@ -241,7 +241,7 @@ class DisplayManager
 			//foreach ($enrollment['groups'] as $group) {
 				$r .= '<div class="col-sm-3"><a href="' . $url . $group['id'] . '" class="btn">';
 					//if ($icon) {
-					//	$r .= '<i class="icon-' . $icon . '"></i> ';
+					//	$r .= '<i class="fa fa-' . $icon . '"></i> ';
 					//}
                     $r .= $group['coursefullname'];
 					//$r .= $enrollment['course']->fullname;
@@ -288,7 +288,7 @@ class DisplayManager
 			//$icon = course_get_icon($courseID);
 			$r .= '<div class="col-sm-3"><a href="' . $url . $courseID . '" class="btn">';
 				//if ($icon) {
-				//	$r .= '<i class="icon-' . $icon . '"></i> ';
+				//	$r .= '<i class="fa fa-' . $icon . '"></i> ';
 				//}
 				$r .= $course->fullname;
 			$r .= '</a></div>';
@@ -321,7 +321,7 @@ class DisplayManager
 	public function sign($icon, $bigText, $littleText)
 	{
 	    return '<div class="blueAlert alert alert-info">
-	    		<i class="icon-4x icon-' . $icon . ' pull-left"></i>
+	    		<i class="fa-4x fa fa-' . $icon . ' pull-left"></i>
 	    		<h4>' . $bigText . '</h4>
 	    		<p>' . $littleText . '</p>
 	    	</div>';
@@ -347,7 +347,7 @@ class DisplayManager
 	) {
 		if (count($homework) < 1) {
 			return '<div class="nothing">
-				<i class="icon-smile"></i> Nothing to show here.
+				<i class="fa fa-smile-o"></i> Nothing to show here.
 			</div>';
 		}
 
@@ -408,43 +408,43 @@ class DisplayManager
 		$r  = '<li class="homework ' . ($hw->approved ? 'approved' : 'unapproved') . ($canEdit ? ' canedit' : '') . ($past ? ' past' : '') . ($future ? ' future' : '') . ($hw->private ? ' private' : '') . '" data-id="' . $hw->id . '" data-duedate="'. $hw->duedate . '">';
 
 		if (!$hw->private && !$hw->approved) {
-			$r .= '<h5><i class="icon-pause"></i> This must be approved by a teacher before it is visible to the whole class.</h5>';
+			$r .= '<h5><i class="fa fa-pause"></i> This must be approved by a teacher before it is visible to the whole class.</h5>';
 		}
 
 		if (!$hw->private && $hw->approved && $this->hwblock->getMode() == 'teacher') {
-			$r .= '<h5><i class="icon-ok"></i> Approved and visible to the whole class.</h5>';
+			$r .= '<h5><i class="fa fa-check"></i> Approved and visible to the whole class.</h5>';
 		}
 
 		if ($past) {
-			$r .= '<h5><i class="icon-time"></i> The due date for this has passed.</h5>';
+			$r .= '<h5><i class="fa fa-clock-o"></i> The due date for this has passed.</h5>';
 		}
 
 		if ($hw->private) {
-			$r .= '<h5><i class="icon-eye-close"></i> Only ' . $this->getUsername($hw->userid) . ' can see this.</h5>';
+			$r .= '<h5><i class="fa fa-eye-slash"></i> Only ' . $this->getUsername($hw->userid) . ' can see this.</h5>';
 		}
 
 		// Button for teachers to approve pending homework
 		if (!$hw->approved && !$hw->private) {
 			// Only teachers should be seeing this
 			$r .= '<span class="buttons approvalButtons">';
-				$r .= '<span><i class="icon-user"></i> Submitted by ' . $hw->userfirstname . ' ' . $hw->userlastname . ' &nbsp;&nbsp; <i class="icon-warning-sign"></i> Not visible to students until approved</span> &nbsp;';
+				$r .= '<span><i class="fa fa-user"></i> Submitted by ' . $hw->userfirstname . ' ' . $hw->userlastname . ' &nbsp;&nbsp; <i class="fa fa-exclamation-triange"></i> Not visible to students until approved</span> &nbsp;';
 				if ($canEdit) {
-					$r .= '<a class="approveHomeworkButton btn-mini btn btn-success" href="#"><i class="icon-ok"></i> Approve</a>';
+					$r .= '<a class="approveHomeworkButton btn-mini btn btn-success" href="#"><i class="fa fa-check"></i> Approve</a>';
 				}
 			$r .= '</span>';
 		}
 
 		if ($future) {
 			$r .= '<span class="buttons approvalButtons">';
-				$r .= '<span><i class="icon-pause"></i> Will not appear to students until ' . date('l M jS Y', strtotime($hw->startdate)) . '</span>';
+				$r .= '<span><i class="fa fa-pause"></i> Will not appear to students until ' . date('l M jS Y', strtotime($hw->startdate)) . '</span>';
 			$r .= '</span>';
 		}
 
 		// Edit buttons
 		if ($canEdit) {
 			$r .= '<span class="buttons editButtons">';
-				$r .= '<a class="btn-mini btn btn-info" href="add.php?action=edit&editid=' . $hw->id . '" title="Edit"><i class="icon-pencil"></i> Edit</a>';
-				$r .= '<a class="deleteHomeworkButton btn-mini btn btn-danger" href="#" title="Delete"><i class="icon-trash"></i> Delete</a>';
+				$r .= '<a class="btn-mini btn btn-info" href="add.php?action=edit&editid=' . $hw->id . '" title="Edit"><i class="fa fa-pencil"></i> Edit</a>';
+				$r .= '<a class="deleteHomeworkButton btn-mini btn btn-danger" href="#" title="Delete"><i class="fa fa-trash"></i> Delete</a>';
 			$r .= '</span>';
 		}
 
@@ -455,16 +455,16 @@ class DisplayManager
 			// List of assigned dates
 			if ($showAssignedDates) {
 				$r .= $this->showAssignedDates($hw->getAssignedDates());
-				$r .= ' &nbsp; <i class="icon-arrow-right"></i> &nbsp; ';
+				$r .= ' &nbsp; <i class="fa fa-arrow-right"></i> &nbsp; ';
 			}
 
 			// Due date
-			$r .= '<i class="icon-bell"></i> <strong>Due on</strong> ' . date('D M jS Y', strtotime($hw->duedate));
+			$r .= '<i class="fa fa-bell"></i> <strong>Due on</strong> ' . date('D M jS Y', strtotime($hw->duedate));
 
 		$r .= '</h5>';
 
 		// Course name with link
-		$r .= '<h4><a href="class.php?groupid=' . $hw->groupid . '">' . ($icon ? '<i class="icon-' . $icon . '"></i> ' : '') . $hw->coursename . '</a></h4>';
+		$r .= '<h4><a href="class.php?groupid=' . $hw->groupid . '">' . ($icon ? '<i class="fa fa-' . $icon . '"></i> ' : '') . $hw->coursename . '</a></h4>';
 
 		// Class (group) name
 		if ($this->hwblock->getMode() || $showClassName) {
@@ -481,7 +481,7 @@ class DisplayManager
 			$r .= $this->filterText($hw->description);
 
 			// Duration
-			$r .= '<span class="duration"><i class="icon-time"></i> This should take ' . $this->showDuration($hw->duration) . ' in total.</span>';
+			$r .= '<span class="duration"><i class="fa fa-clock-o"></i> This should take ' . $this->showDuration($hw->duration) . ' in total.</span>';
 
 		$r .= '</p>';
 
@@ -498,9 +498,9 @@ class DisplayManager
 		if ($this->hwblock->getMode() == 'teacher' || $this->hwblock->getMode() == 'student') {
 			// Edit notes button
 			$r .= '<span class="buttons noteButtons">';
-				$r .= '<a class="btn-mini btn btn-primary editNotes" href="#"><i class="icon-comment"></i> Add Notes</a>';
-				$r .= '<a class="btn-mini btn btn-danger cancelNotes" href="#" style="display:none;"><i class="icon-remove"></i> Cancel</a>';
-				$r .= '<a class="btn-mini btn btn-success saveNotes" href="#" style="display:none;"><i class="icon-save"></i> Save Notes</a>';
+				$r .= '<a class="btn-mini btn btn-primary editNotes" href="#"><i class="fa fa-comment"></i> Add Notes</a>';
+				$r .= '<a class="btn-mini btn btn-danger cancelNotes" href="#" style="display:none;"><i class="fa fa-times"></i> Cancel</a>';
+				$r .= '<a class="btn-mini btn btn-success saveNotes" href="#" style="display:none;"><i class="fa fa-save"></i> Save Notes</a>';
 			$r .= '</span>';
 		}
 
@@ -651,7 +651,7 @@ class DisplayManager
                         $icon = '';
 						$text = $item->coursename;
 					} else {
-						$icon = 'pushpin';
+						$icon = 'thumb-tack';
 						$text = $this->truncate($item->description, 30);
 					}
 
@@ -663,7 +663,7 @@ class DisplayManager
 					}
 
 					$r .= '<p class="col-md-4"><a href="class.php?groupid=' . $item->groupid . '">';
-						$r .= ($icon ? '<i class="icon-' . $icon . '"></i> ' : '') . $text;
+						$r .= ($icon ? '<i class="fa fa-' . $icon . '"></i> ' : '') . $text;
 						$r .= '<br/><strong>' . $this->displayMinutes($item->duration, true) . ' total (' . $this->displayMinutes($averageDuration, true) . ' today)</strong>';
 					$r .= '</a></p>';
 				}

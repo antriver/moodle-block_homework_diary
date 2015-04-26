@@ -16,7 +16,7 @@ switch ($hwblock->getMode()) {
 	case 'student':
 	case 'parent':
 
-		echo '<h2><i class="icon-magic"></i> My Courses</h2>';
+		echo '<h2><i class="fa fa-th-list"></i> My Courses</h2>';
 		$courses = $hwblock->getUsersCourses($hwblock->getUserId());
 		echo $hwblock->display->courseList($courses);
 
@@ -24,7 +24,7 @@ switch ($hwblock->getMode()) {
 
 	case 'teacher':
 
-		echo '<h2><i class="icon-magic"></i> Courses I Teach</h2>';
+		echo '<h2><i class="fa fa-th-list"></i> Courses I Teach</h2>';
 		$teacherRoleID = 3;
 		$courses = $hwblock->getUsersCourses($hwblock->getUserId(), $teacherRoleID);
 		echo $hwblock->display->courseList($courses);
@@ -34,7 +34,7 @@ switch ($hwblock->getMode()) {
 	case 'pastoral':
 
 		 // Show all courses in the school
-		echo '<h2><i class="icon-magic"></i> All Courses</h2>';
+		echo '<h2><i class="fa fa-th-list"></i> All Courses</h2>';
 
 		$courses = $hwblock->getAllCourses();
 
