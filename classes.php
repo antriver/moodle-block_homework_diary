@@ -2,6 +2,10 @@
 
 /**
  * Display a list of the groups the user is enrolled in
+ *
+ * @package    block_homework
+ * @copyright  Anthony Kuske <www.anthonykuske.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require 'include/header.php';

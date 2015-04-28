@@ -1,10 +1,14 @@
 <?php
 
-die("Not used.");
-
 /**
  * Show all homework due on a single day
+ *
+ * @package    block_homework
+ * @copyright  Anthony Kuske <www.anthonykuske.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+die('Not used');
 
 /*
 include 'include/header.php';

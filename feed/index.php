@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @package    block_homework
+ * @copyright  Anthony Kuske <www.anthonykuske.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 // Allow caching for 30 minutes
 session_cache_expire(30);
 session_cache_limiter('public');

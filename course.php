@@ -1,9 +1,11 @@
 <?php
 
-// This isn't used
-
 /**
  * Display all homework due in a course
+ *
+ * @package    block_homework
+ * @copyright  Anthony Kuske <www.anthonykuske.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require 'include/header.php';

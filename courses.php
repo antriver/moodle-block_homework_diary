@@ -3,7 +3,10 @@
 /**
  * Display a list of the courses the user is enrolled in
  * It is preferable to use the classes.php page which shows groups instead.
- * This is just here in case it's needed someday
+ *
+ * @package    block_homework
+ * @copyright  Anthony Kuske <www.anthonykuske.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require 'include/header.php';

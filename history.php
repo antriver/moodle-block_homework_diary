@@ -1,7 +1,11 @@
 <?php
 
 /**
- * List of all homework page
+ * List of all homework for the current user
+ *
+ * @package    block_homework
+ * @copyright  Anthony Kuske <www.anthonykuske.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require 'include/header.php';

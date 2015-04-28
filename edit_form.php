@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @package    block_homework
+ * @copyright  Anthony Kuske <www.anthonykuske.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 class block_homework_edit_form extends block_edit_form {
 
 	protected function specific_definition($mform) {
