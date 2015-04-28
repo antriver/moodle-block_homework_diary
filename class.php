@@ -19,22 +19,22 @@ echo $hwblock->display->tabs(false, false, false, $group->id);
 
 $mode = $hwblock->getMode();
 
-// echo '<h2 style="float:right; margin:17px 10px 0;"><i class="icon-group"></i> ' . $group->name . '</h2>';
-// echo '<h2>' . ($courseIcon ? '<i class="icon-' . $courseIcon . '"></i> ' : '') . $course->fullname . '</h2>';
+// echo '<h2 style="float:right; margin:17px 10px 0;"><i class="fa fa-group"></i> ' . $group->name . '</h2>';
+// echo '<h2>' . ($courseIcon ? '<i class="fa fa-' . $courseIcon . '"></i> ' : '') . $course->fullname . '</h2>';
 
 echo $hwblock->display->sign($courseIcon, 'Now viewing ' . $course->fullname, '<small style="float:right;">Class: ' . $group->name . '</small> See below for upcoming and due homework.');
 
 if ($mode == 'teacher' || $mode == 'pastoral') {
 	$pendingHomework = $hwblock->getHomework(array($group->id), false, false, false);
-	echo '<h3><i class="icon-check"></i> Upcoming Homework For This Class</h3>';
+	echo '<h3><i class="fa fa-check"></i> Upcoming Homework For This Class</h3>';
 	echo $hwblock->display->homeworkList($pendingHomework);
 }
 
-echo '<h3><i class="icon-bell"></i> Due Homework For This Class</h3>';
+echo '<h3><i class="fa fa-bell"></i> Due Homework For This Class</h3>';
 $homework = $hwblock->getHomework(array($group->id), false, false, true);
 echo $hwblock->display->homeworkList($homework);
 
-echo '<h3><i class="icon-calendar"></i> Previous Homework For This Class</h3>';
+echo '<h3><i class="fa fa-calendar"></i> Previous Homework For This Class</h3>';
 $homework = $hwblock->getHomework(array($group->id), false, false, true, true, true);
 echo $hwblock->display->homeworkList($homework);
 

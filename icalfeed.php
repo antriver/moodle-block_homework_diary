@@ -12,7 +12,7 @@ switch ($hwblock->getMode()) {
 
 		echo $hwblock->display->icalFeedBox(false);
 
-		echo '<h2><i class="icon-group"></i> How To Add Your Homework Feed To iCal</h2>';
+		echo '<h2><i class="fa fa-group"></i> How To Add Your Homework Feed To iCal</h2>';
 
 		?>
 		<ol id="feedhowto">

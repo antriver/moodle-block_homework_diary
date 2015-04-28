@@ -97,10 +97,10 @@ switch ($action) {
 				$homeworkItem->addAssignedDate($date);
 			}
 
-			echo '<div class="alert alert-success"><i class="icon-ok"></i> Changes saved.</div>';
+			echo '<div class="alert alert-success"><i class="fa fa-check"></i> Changes saved.</div>';
 
 		} else {
-			echo '<div class="alert alert-error"><i class="icon-delete"></i> There was an error saving the changes.</div>';
+			echo '<div class="alert alert-error"><i class="fa fa-times"></i> There was an error saving the changes.</div>';
 		}
 
 		break;
@@ -155,22 +155,22 @@ var_dump($courseid);
 			if ($homeworkItem->private) {
 
 				// Student submitted private homework
-				echo '<div class="alert alert-success"><i class="icon-ok"></i> The homework has been saved and is visible on <a href="index.php">your overview</a>.</div>';
+				echo '<div class="alert alert-success"><i class="fa fa-check"></i> The homework has been saved and is visible on <a href="index.php">your overview</a>.</div>';
 
 			} elseif ($homeworkItem->approved && $homeworkItem->startdate <= $hwblock->today) {
 
 				// Approved homework that is visible today or in the past
-				echo '<div class="alert alert-success"><i class="icon-ok"></i> The homework has been submitted successfully and is now visible to students in the class.</div>';
+				echo '<div class="alert alert-success"><i class="fa fa-check"></i> The homework has been submitted successfully and is now visible to students in the class.</div>';
 
 			} elseif ($homeworkItem->approved && $homeworkItem->startdate > $hwblock->today) {
 
 				// Approved homework that becomes visible in the future
-				echo '<div class="alert alert-success"><i class="icon-pause"></i> The homework has been submitted successfully and will become visible to students on ' . date('l M jS', strtotime($homeworkItem->startdate)) . '</div>';
+				echo '<div class="alert alert-success"><i class="fa fa-pause"></i> The homework has been submitted successfully and will become visible to students on ' . date('l M jS', strtotime($homeworkItem->startdate)) . '</div>';
 
 			} elseif (!$homeworkItem->approved) {
 
 				// Unapproved homework
-				echo '<div class="alert alert-success"><i class="icon-ok"></i> The homework has been submitted successfully and will become visible to everybody in the class once a teacher approves it.</div>';
+				echo '<div class="alert alert-success"><i class="fa fa-check"></i> The homework has been submitted successfully and will become visible to everybody in the class once a teacher approves it.</div>';
 
 				// Email the teacher
 				#$hwblock->emailTeacherOnNewHomework($homeworkItem, $USER);
@@ -180,7 +180,7 @@ var_dump($courseid);
 			echo '<hr/>';
 
 		} else {
-			echo '<div class="alert alert-error"><i class="icon-delete"></i> There was an error adding the homework.</div>';
+			echo '<div class="alert alert-error"><i class="fa fa-times"></i> There was an error adding the homework.</div>';
 		}
 
 		break;
