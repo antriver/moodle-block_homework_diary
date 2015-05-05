@@ -257,10 +257,9 @@ class Block
 		// The purpose of the "key" field is because Moodle makes the first column
 		// the key for the array it returns. So it needs to be unique to get all the rows
 		// from the join
-
 		$sql = 'SELECT ' . ($distinct ? 'DISTINCT' : 'CONCAT(hw.id, \'-\', days.id) AS key,') . '
 			hw.*,
-			days.date AS assigneddate,
+			'. ($distinct ? '' : 'days.date AS assigneddate,') . '
 			crs.id AS courseid,
 			crs.fullname AS coursename,
 			usr.username AS username,
@@ -268,26 +267,25 @@ class Block
 			usr.lastname AS userlastname
 		FROM {block_homework} hw
 		LEFT JOIN {course} crs ON crs.id = hw.courseid
-		JOIN {block_homework_assign_dates} days ON days.homeworkid = hw.id
-		LEFT JOIN {user} usr ON usr.id = hw.userid';
-
-		$sql .= ' WHERE (';
-		$where = true;
+		' . ($distinct ? '' : 'JOIN {block_homework_assign_dates} days ON days.homeworkid = hw.id') . '
+		LEFT JOIN {user} usr ON usr.id = hw.userid
+        WHERE ';
 
 		// Begin selecting portion...
-		$and = false;
 
-		$privateSelector = "(private = 1 AND userID = " . intval($this->getUserId()) . ')';
+		$privateSelector = "private = 1 AND userID = " . intval($this->getUserId()) . '';
 
 		if ($includePrivate) {
 			// Include private homework for the current logged in user
-			$sql .= ' ' . $privateSelector;
-			$and = true;
+			$sql .= '(' . $privateSelector .') OR (';
 		} else {
 			// Exclude all private homework
-			$sql .= ' private = 0';
-			$and = true;
+			//$sql .= ' private = 0';
+			//$and = true;
+            $sql .= '(';
 		}
+
+        $and = false;
 
 		if (is_array($groupIDs)) {
 
@@ -296,14 +294,14 @@ class Block
 			}
 
 			// Group IDs
-			$sql .= ($and ? ' OR' : ' ');
+			$sql .= ($and ? 'OR ' : '');
 			$and = true;
 
 			if (count($groupIDs) == 1) {
-				$sql .= ' hw.groupid = ?';
+				$sql .= 'hw.groupid = ?';
 				$params[] = $groupIDs[0];
 			} elseif (count($groupIDs)) {
-				$sql .= ' hw.groupid IN (' . implode(',', $groupIDs) . ')';
+				$sql .= 'hw.groupid IN (' . implode(',', $groupIDs) . ')';
 			}
 		}
 
@@ -325,25 +323,24 @@ class Block
 			}
 		}
 
-		$sql .= ')';
 		// End selecting portion...
 
 		// Begin filtering portion...
 
 		// Show only stuff that has a start date (visible date) of today or earlier
 		if ($this->getMode() != 'teacher' && $this->getMode() != 'pastoral') {
-			$sql .= ($where ? ' AND' : ' WHERE');
-			$where = true;
+			$sql .= ($and ? ' AND' : ' ');
+			$and = true;
 
-			$sql .= ' (hw.startdate <= ? OR ' . $privateSelector . ')';
+			$sql .= ' hw.startdate <= ?';
 			$params[] = $this->today;
 		}
 
 		// Assigned dates
 		if (is_array($assignedFor)) {
 
-			$sql .= ($where ? ' AND' : ' WHERE');
-			$where = true;
+			$sql .= ($and ? ' AND' : ' ');
+			$and = true;
 
 			if (count($assignedFor) == 1) {
 				$sql .= ' days.date = ?';
@@ -356,22 +353,22 @@ class Block
 		// Approved?
 		if (!is_null($approved)) {
 
-			$sql .= ($where ? ' AND' : ' WHERE');
-			$where = true;
+			$sql .= ($and ? ' AND' : ' ');
+			$and = true;
 
 			// The IS NULL part is so private homework remains included
 			if ($approved) {
-				$sql .= ' (approved = 1 OR ' . $privateSelector . ')';
+				$sql .= ' approved = 1';
 			} else {
-				$sql .= ' (approved = 0 OR ' . $privateSelector . ')';
+				$sql .= ' approved = 0';
 			}
 		}
 
 		// In the past?
 		if (!is_null($past)) {
 
-			$sql .= ($where ? ' AND' : ' WHERE');
-			$where = true;
+			$sql .= ($and ? ' AND' : ' ');
+			$and = true;
 
 			if ($distinct) {
 				if ($past) {
@@ -391,29 +388,29 @@ class Block
 
 
 		if (!is_null($assignedRangeStart)) {
-			$sql .= ($where ? ' AND' : ' WHERE');
-			$where = true;
+			$sql .= ($and ? ' AND' : ' ');
+			$and = true;
 			$sql .= ' days.date >= ?';
 			$params[] = $assignedRangeStart;
 		}
 
 		if (!is_null($assignedRangeEnd)) {
-			$sql .= ($where ? ' AND' : ' WHERE');
-			$where = true;
+			$sql .= ($and ? ' AND' : ' ');
+			$and = true;
 			$sql .= ' days.date <= ?';
 			$params[] = $assignedRangeEnd;
 		}
 
+        $sql .= ')';
+
 		if (is_null($order)) {
-			$order = 'days.date ASC, hw.approved ASC, hw.duedate ASC';
+			$order = 'hw.approved ASC, hw.duedate ASC';
 		}
 
 		if ($order) {
-			$sql .= ' ORDER BY ' . $order;
+			$sql .= '
+            ORDER BY ' . $order;
 		}
-
-		#print_object($sql);
-		#print_object($params);
 
 		$records = $DB->get_records_sql($sql, $params);
 		$return = array();

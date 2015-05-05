@@ -1,4 +1,8 @@
 
+.tabs .btn-group {
+    margin-bottom:10px;
+}
+
 .help-block {
 	font-size: 12px;
 	padding: 5px;
@@ -156,6 +160,7 @@ h3 {
 	padding:10px;
 	width:100%;
 	margin-bottom:5px;
+    height:40px;
 }
 
 .courseList .courses div {

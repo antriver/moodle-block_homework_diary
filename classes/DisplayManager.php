@@ -75,14 +75,12 @@ class DisplayManager
 			return false;
 		}
 
-		$t = '<div class="tabs noborder">';
-		$t .= '<ul class="additional-tabs">';
+		$t = '<div class="tabs text-center">';
+		$t .= '<div class="btn-group">';
 		foreach ($possibleModes as $mode) {
-			$t .= '<li>';
-			$t .= '<a ' . ($mode == $currentMode ? 'class="selected"': '') . 'href="changemode.php?mode=' . $mode . '">' . $modeLabels[$mode] . '</a>';
-			$t .= '</li>';
+			$t .= '<a class="btn btn-sm btn-small' . ($mode == $currentMode ? ' active': '') . '" href="changemode.php?mode=' . $mode . '">' . $modeLabels[$mode] . '</a>';
 		}
-		$t .= '</ul>';
+		$t .= '</div>';
 		$t .= '</div>';
 
 		return $t;
@@ -103,14 +101,11 @@ class DisplayManager
 			return false;
 		}
 
-		$t = '<div class="tabs noborder">';
-		$t .= '<ul class="additional-tabs">';
+		$t = '<div class="tabs text-center">';
+		$t .= '<div class="btn-group">';
 		foreach ($children as $child) {
-			$t .= '<li>';
-			$t .= '<a ' . ($child->userid == $currentUser ? 'class="selected"': '') . 'href="changeuser.php?userid=' . $child->userid . '">' . $child->firstname . ' ' . $child->lastname . '</a>';
-			$t .= '</li>';
+			$t .= '<a class="btn btn-sm btn-small ' . ($child->userid == $currentUser ? ' active': '') . 'href="changeuser.php?userid=' . $child->userid . '">' . $child->firstname . ' ' . $child->lastname . '</a>';
 		}
-		$t .= '</ul>';
 		$t .= '</div>';
 		return $t;
 	}
@@ -138,27 +133,24 @@ class DisplayManager
 		// Show tabs for switching modes (if possible)
 		$t .= $this->modeTabs();
 
-		$t  .= '<div class="tabs">';
-		$t .= '<ul>';
+		$t  .= '<div class="tabs text-center">';
+
+		$t .= '<div class="btn-group">';
 		foreach ($tabs as $name => $tab) {
 			if ($groupid && $name == 'add') {
 				$tab[0] .= '?groupid=' . $groupid;
 			}
-			$t .= '<li>';
-				$t .= '<a ' . ($name == $current ? 'class="selected"': '') . 'href="' . $tab[0] . '">' . $tab[1] . '</a>';
-			$t .= '</li>';
+			$t .= '<a class="btn' . ($name == $current ? ' active': '') . '" href="' . $tab[0] . '">' . $tab[1] . '</a>';
 		}
-		$t .= '</ul>';
+		$t .= '</div>';
 
 
 		if ($subtabs) {
-			$t .= '<ul class="additional-tabs">';
+			$t .= '<div class="btn-group">';
 			foreach ($subtabs as $name => $tab) {
-				$t .= '<li>';
-					$t .= '<a ' . ($name == $currentsubtab ? 'class="selected"': '') . 'href="' . $tab[0] . '">' . $tab[1] . '</a>';
-				$t .= '</li>';
+				$t .= '<a class="btn btn-sm btn-small' . ($name == $currentsubtab ? ' active': '') . '" href="' . $tab[0] . '">' . $tab[1] . '</a>';
 			}
-			$t .= '</ul>';
+			$t .= '</div>';
 		}
 		$t .= '</div>';
 
@@ -205,7 +197,6 @@ class DisplayManager
 			$r .= '<h4>' . date('l M jS', strtotime($date)) . '</h4>';
 			foreach ($hw as $item) {
 				if ($item->courseid) {
-					//$icon = course_get_icon($item->courseid);
                     $icon = '';
 					$text = $item->coursename;
 				} else {
@@ -242,30 +233,27 @@ class DisplayManager
 		$r .= '<div class="row courses">';
 
 		foreach ($classes as $groupID => $group) {
-			//$icon = course_get_icon($courseID);
+			$r .= '<div class="col-sm-3"><a href="' . $url . $group['id'] . '" class="btn">';
 
-			//foreach ($enrollment['groups'] as $group) {
-				$r .= '<div class="col-sm-3"><a href="' . $url . $group['id'] . '" class="btn">';
-					//if ($icon) {
-					//	$r .= '<i class="fa fa-' . $icon . '"></i> ';
-					//}
-                    $r .= $group['coursefullname'];
-					//$r .= $enrollment['course']->fullname;
+                //if ($icon) {
+				//	$r .= '<i class="fa fa-' . $icon . '"></i> ';
+				//}
 
+                $r .= $group['coursefullname'];
+
+				$r .= '<span>' . $group['name'] . '</span>';
+
+				/*if (!empty($group['teacher'])) {
+					if ($this->hwblock->getMode() != 'student') {
+						$r .= ' <span style="font-size:9px;">' . $group['name'] . '</span>';
+					}
+					$r .= '</span>';
+
+				} else {
 					$r .= '<span>' . $group['name'] . '</span>';
+				}*/
 
-					/*if (!empty($group['teacher'])) {
-						if ($this->hwblock->getMode() != 'student') {
-							$r .= ' <span style="font-size:9px;">' . $group['name'] . '</span>';
-						}
-						$r .= '</span>';
-
-					} else {
-						$r .= '<span>' . $group['name'] . '</span>';
-					}*/
-
-				$r .= '</a></div>';
-			//}
+			$r .= '</a></div>';
 		}
 
 		$r .= '</div>';
@@ -291,7 +279,6 @@ class DisplayManager
 		$r .= '<div class="row courses">';
 
 		foreach ($courses as $courseID => $course) {
-			//$icon = course_get_icon($courseID);
 			$r .= '<div class="col-sm-3"><a href="' . $url . $courseID . '" class="btn">';
 				//if ($icon) {
 				//	$r .= '<i class="fa fa-' . $icon . '"></i> ';
@@ -326,8 +313,8 @@ class DisplayManager
 	*/
 	public function sign($icon, $bigText, $littleText)
 	{
-	    return '<div class="blueAlert alert alert-info">
-	    		<i class="fa-4x fa fa-' . $icon . ' pull-left"></i>
+	    return '<div class="alert alert-info">
+	    		<i class="fa-3x fa fa-' . $icon . ' pull-left"></i>
 	    		<h4>' . $bigText . '</h4>
 	    		<p>' . $littleText . '</p>
 	    	</div>';
@@ -454,7 +441,6 @@ class DisplayManager
 			$r .= '</span>';
 		}
 
-		//$icon = course_get_icon($hw->courseid);
         $icon = '';
 		$r .= '<h5 class="dates">';
 
@@ -653,7 +639,6 @@ class DisplayManager
 
 				foreach ($hw as $item) {
 					if ($item->courseid) {
-						//$icon = course_get_icon($item->courseid);
                         $icon = '';
 						$text = $item->coursename;
 					} else {

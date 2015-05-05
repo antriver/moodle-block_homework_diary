@@ -17,7 +17,6 @@ $action = optional_param('action', 'view', PARAM_RAW); //or groupid instead?
 $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 
 require_once $CFG->dirroot . '/course/lib.php';
-$courseIcon = course_get_icon($course->id);
 
 echo $OUTPUT->header();
 echo $hwblock->display->tabs();

@@ -2,6 +2,7 @@
 
 /**
  * List of all homework for the current user
+ * TODO: Add pagination
  *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
