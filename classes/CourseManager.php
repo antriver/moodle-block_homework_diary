@@ -36,7 +36,7 @@ class CourseManager
         LEFT JOIN {context} ct ON ct.instanceid = crs.id AND ct.contextlevel = 50';
         // context level 50 = a course
 
-        if ($categoryCtx = $this->getCategoryContext()) {
+        if ($categoryCtx = $this->hwblock->getCategoryContext()) {
             $path = $categoryCtx->path . '/%';
             $sql .= " WHERE ct.path LIKE ?";
             $values[] = $path;
@@ -47,10 +47,6 @@ class CourseManager
         return $DB->get_records_sql($sql, $values);
     }
 
-    /**
-     * Returns all courses in the Teaching & Learning category the user is enrolled in
-     * Not actually used now. It looks up the classes from the timetable profile field instead
-     */
     public function getUsersCourses($userId, $roleid = null)
     {
         global $DB;
@@ -65,11 +61,13 @@ class CourseManager
         FROM {role_assignments} ra
         JOIN {context} ct ON ct.id = ra.contextid
         JOIN {course} crs ON crs.id = ct.instanceid
-        WHERE
-            ra.userid = ?
-            AND
-            ct.path LIKE \'/1/6156/%\'
-            ';
+        WHERE ra.userid = ?';
+
+        if ($categoryCtx = $this->hwblock->getCategoryContext()) {
+            $path = $categoryCtx->path . '/%';
+            $sql .= " AND ct.path LIKE ?";
+            $values[] = $path;
+        }
 
         if (!is_null($roleid)) {
             $sql .= ' AND ra.roleid = ? ';
