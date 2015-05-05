@@ -233,15 +233,15 @@ class DisplayManager
 		$r .= '<div class="row courses">';
 
 		foreach ($classes as $groupID => $group) {
-			$r .= '<div class="col-sm-3"><a href="' . $url . $group['id'] . '" class="btn">';
+			$r .= '<div class="col-sm-3"><a href="' . $url . $group->id . '" class="btn">';
 
                 //if ($icon) {
 				//	$r .= '<i class="fa fa-' . $icon . '"></i> ';
 				//}
 
-                $r .= $group['coursefullname'];
+                $r .= $group->coursefullname;
 
-				$r .= '<span>' . $group['name'] . '</span>';
+				$r .= '<span>' . $group->name . '</span>';
 
 				/*if (!empty($group['teacher'])) {
 					if ($this->hwblock->getMode() != 'student') {

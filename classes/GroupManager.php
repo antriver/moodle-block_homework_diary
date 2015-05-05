@@ -20,14 +20,32 @@ class GroupManager
 
     /**
      * Returns every group from courses that are in the chosen
-     * category for the homwork diary
+     * category for the homework diary
      */
     public function getAllGroups()
     {
-        // FIXME: TODO
-        throw new \Exception('Fix call to SSIS Timetable');
-        #$timetable = new \SSIS\Timetable();
-        #return $timetable->getAllClasses(true, $grade);
+        global $DB;
+        $values = array();
+        $sql = 'SELECT
+            g.*,
+            crs.fullname AS coursefullname
+        FROM {course} crs
+        LEFT JOIN {context} ct ON ct.instanceid = crs.id AND ct.contextlevel = 50';
+        // context level 50 = a course
+
+        $sql .= '
+        JOIN {groups} g ON g.courseid = crs.id
+        ';
+
+        if ($categoryCtx = $this->hwblock->getCategoryContext()) {
+            $path = $categoryCtx->path . '/%';
+            $sql .= " WHERE ct.path LIKE ?";
+            $values[] = $path;
+        }
+
+        $sql .= ' ORDER BY crs.fullname, g.name';
+
+        return $DB->get_records_sql($sql, $values);
     }
 
     /**
@@ -47,7 +65,7 @@ class GroupManager
      * @param int $userId $USER if not specified
      * @return array Array[groupingid][groupid] including grouping id 0 which means all groups
      */
-    function getAllUsersGroups($userId = 0, $fullInfo = true)
+    function getAllUsersGroups($userId = 0)
     {
         global $USER, $DB;
 
@@ -86,38 +104,14 @@ class GroupManager
 
         if (!$rs->valid()) {
             $rs->close(); // Not going to iterate (but exit), close rs
-            if ($fullInfo) {
-                return array();
-            }
-            return array('0' => array());
+            return array();
         }
 
-        if ($fullInfo) {
-            $groups = array();
-            foreach ($rs as $group) {
-                $groups[$group->id] = (array)$group;
-            }
-            return $groups;
-        }
-
-        $result    = array();
-        $allgroups = array();
-
+        $groups = array();
         foreach ($rs as $group) {
-            $allgroups[$group->id] = $group->id;
-            if (is_null($group->groupingid)) {
-                continue;
-            }
-            if (!array_key_exists($group->groupingid, $result)) {
-                $result[$group->groupingid] = array();
-            }
-            $result[$group->groupingid][$group->id] = $group->id;
+            $groups[$group->id] = $group;
         }
-        $rs->close();
-
-        $result['0'] = array_keys($allgroups); // all groups
-
-        return $result;
+        return $groups;
     }
 
 
