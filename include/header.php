@@ -21,7 +21,7 @@ if (!empty($_SERVER['SCRIPT_NAME'])) {
 $hwblock = new block_homework\Block();
 
 $PAGE->requires->css('/blocks/homework/assets/bootstrap/css/bootstrap.css');
-$PAGE->requires->css('/blocks/homework/assets/css/homework.css?v=5');
+$PAGE->requires->css('/blocks/homework/assets/css/homework.css?v=2015050601');
 
 $PAGE->requires->jquery();
 $PAGE->requires->jquery_plugin('ui');
