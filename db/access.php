@@ -21,6 +21,16 @@ $capabilities = array(
 		'clonepermissionsfrom' => 'moodle/site:manageblocks'
 	),
 
+    'block/homework:myaddinstance' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_BLOCK,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'moodle/site:manageblocks'
+    ),
+
 	// Ability to approve homework
 	'block/homework:approvehomework' => array(
 		'captype' => 'write',
