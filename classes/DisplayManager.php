@@ -104,7 +104,7 @@ class DisplayManager
 		$t = '<div class="tabs text-center">';
 		$t .= '<div class="btn-group">';
 		foreach ($children as $child) {
-			$t .= '<a class="btn btn-sm btn-small ' . ($child->userid == $currentUser ? ' active': '') . 'href="changeuser.php?userid=' . $child->userid . '">' . $child->firstname . ' ' . $child->lastname . '</a>';
+			$t .= '<a class="btn btn-sm btn-small ' . ($child->userid == $currentUser ? ' active': '') . '" href="changeuser.php?userid=' . $child->userid . '">' . $child->firstname . ' ' . $child->lastname . '</a>';
 		}
 		$t .= '</div>';
 		return $t;
