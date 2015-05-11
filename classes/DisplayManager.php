@@ -445,8 +445,8 @@ class DisplayManager
 		$r .= '<h5 class="dates">';
 
 			// List of assigned dates
-			if ($showAssignedDates) {
-				$r .= $this->showAssignedDates($hw->getAssignedDates());
+			if ($showAssignedDates && $assignedStr = $this->showAssignedDates($hw->getAssignedDates())) {
+			    $r .= $assignedStr;
 				$r .= ' &nbsp; <i class="fa fa-arrow-right"></i> &nbsp; ';
 			}
 
@@ -504,6 +504,17 @@ class DisplayManager
 
 	private function showAssignedDates($dates)
 	{
+        // Remove empty dates from array
+        foreach ($dates as $i => $date) {
+            if (!$date) {
+                unset($dates[$i]);
+            }
+        }
+
+        if (empty($dates)) {
+            return '';
+        }
+
 		$output = '<strong>To Do On</strong> &nbsp;';
 		$count = count($dates);
 
