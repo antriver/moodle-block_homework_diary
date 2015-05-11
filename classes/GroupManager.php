@@ -54,7 +54,11 @@ class GroupManager
     public function getAllUsersGroupIDs($userId)
     {
         $groups = $this->getAllUsersGroups($userId);
-        return array_column($groups, 'id');
+        $groupIds = array();
+        foreach ($groups as $group) {
+            $groupIds[] = $group->id;
+        }
+        return $groupIds;
     }
 
     /**

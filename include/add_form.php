@@ -62,14 +62,14 @@
 			<?php
 			foreach ($groups as $groupID => $group) {
 					// TODO: Ability to pass courseid in the URL and select the first group in the course
-					echo '<option value="' . $group['id'] . '" data-courseid="' . $group['courseid'] . '" ' . ($group['id'] == $selectedGroupID ? 'selected' : '') . '>';
+					echo '<option value="' . $group->id . '" data-courseid="' . $group->courseid . '" ' . ($group->id == $selectedGroupID ? 'selected' : '') . '>';
 
-						echo $group['coursefullname'];
+						echo $group->coursefullname;
 
-						echo ' - ' . $group['name'];
+						echo ' - ' . $group->name;
 
-						if ($group['id'] == $selectedGroupID) {
-							$selectedCourseID = $group['courseid'];
+						if ($group->id == $selectedGroupID) {
+							$selectedCourseID = $group->courseid;
 						}
 					echo '</option>';
 			}

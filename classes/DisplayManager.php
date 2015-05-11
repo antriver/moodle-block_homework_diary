@@ -16,7 +16,7 @@ class DisplayManager
 			'index' => array('index.php', '<i class="fa fa-calendar"></i> To Do'),
 			'history' => array('history.php', '<i class="fa fa-th-list"></i> Full List / History'),
 			'classes' => array('classes.php', '<i class="fa fa-group"></i> View by Class'),
-			'add' => array('add.php', '<i class="fa fa-plus-sign"></i> Add Homework'),
+			'add' => array('add.php', '<i class="fa fa-plus-circle"></i> Add Homework'),
 			'icalfeed' => array('icalfeed.php', '<i class="fa fa-rss"></i> iCal'),
 		),
 		'pastoral-student' => array( // When a pastoral user clicks on a student (same as parent mode)
@@ -29,7 +29,7 @@ class DisplayManager
 			'index' => array('index.php', '<i class="fa fa-check"></i> Manage Submissions'),
 			'history' => array('history.php', '<i class="fa fa-th-list"></i> Full List / History'),
 			'classes' => array('classes.php', '<i class="fa fa-group"></i> View by Class'),
-			'add' => array('add.php', '<i class="fa fa-plus-sign"></i> Add Homework'),
+			'add' => array('add.php', '<i class="fa fa-plus-circle"></i> Add Homework'),
 		),
 		'parent' => array(
 			'index' => array('index.php', '<i class="fa fa-calendar"></i> To Do'),

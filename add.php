@@ -125,8 +125,6 @@ switch ($action) {
 		$duration = required_param('duration', PARAM_RAW);
 		$private = optional_param('private', 0, PARAM_INT);
 
-var_dump($courseid);
-
 		// If adding a new item
 		$homeworkItem = new stdClass();
 		$homeworkItem->approved = $hwblock->canApproveHomework($courseid) ? 1 : 0;

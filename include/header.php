@@ -25,6 +25,7 @@ $PAGE->requires->css('/blocks/homework/assets/css/homework.css?v=2015050601');
 
 $PAGE->requires->jquery();
 $PAGE->requires->jquery_plugin('ui');
+$PAGE->requires->jquery_plugin('ui-css');
 
 $PAGE->requires->js('/blocks/homework/assets/js/jquery.scrollTo.min.js');
 $PAGE->requires->js('/blocks/homework/assets/js/jquery.localScroll.min.js');
