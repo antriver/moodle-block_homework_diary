@@ -31,7 +31,10 @@ $PAGE->requires->js('/blocks/homework/assets/js/jquery.scrollTo.min.js');
 $PAGE->requires->js('/blocks/homework/assets/js/jquery.localScroll.min.js');
 $PAGE->requires->js('/blocks/homework/assets/js/jquery.autosize.min.js');
 $PAGE->requires->js('/blocks/homework/assets/js/date.js');
-$PAGE->requires->js('/blocks/homework/assets/js/homework.js?v=6');
+$PAGE->requires->js('/blocks/homework/assets/js/homework.js?v=8');
+if (get_config('block_homework', 'smooth_scroll')) {
+    $PAGE->requires->js('/blocks/homework/assets/js/localscroll.js');
+}
 
 $PAGE->set_title(get_string('pagetitle', 'block_homework'));
 $PAGE->set_heading(get_string('pagetitle', 'block_homework'));

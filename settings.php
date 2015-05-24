@@ -11,6 +11,18 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
+ * Smooth scrolling
+ */
+$settings->add(
+    new admin_setting_configcheckbox(
+        'block_homework/smooth_scroll',
+        get_string('settings_smooth_scroll_name', 'block_homework'),
+        get_string('settings_smooth_scroll_desc', 'block_homework'),
+        1
+    )
+);
+
+/**
  * Category to show courses from
  */
 

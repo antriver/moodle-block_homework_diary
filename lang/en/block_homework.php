@@ -14,11 +14,12 @@ $string['homework:addinstance'] = 'Add a homework block';
 $string['homework:myaddinstance'] = 'Add a homework block to my moodle';
 
 
+$string['settings_smooth_scroll_name'] = 'Smooth Scrolling';
+$string['settings_smooth_scroll_desc'] = 'Scroll smoothly instead of jumping when clicking on a date on the timetable page.';
+
 // Admin settings
 $string['settings_course_category_name'] = 'Course Category';
 $string['settings_course_category_desc'] = 'Only show courses from this category in the homework diary.';
-
-
 
 $string['settings_student_cohort_name'] = 'Student Cohort';
 $string['settings_student_cohort_desc'] = 'Users in this cohort will have be considered students in the homework diary';
