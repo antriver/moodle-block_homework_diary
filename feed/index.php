@@ -36,17 +36,17 @@ if ($key != $hwblock->feeds->generateFeedKey($user)) {
 $groupIDs = $hwblock->groups->getAllUsersGroupIDs($user->id);
 
 $homework = $hwblock->getHomework(
-	$groupIDs, //$groupIDs = false,
-	false, //$courseIDs = false,
-	false, //$assignedFor = false,
-	true, //$approved = true,
-	true ,//$distinct = true,
-	false, //$past = false,
-	false, //$dueDate = false,
-	null, //$order = null,
-	null, //$assignedRangeStart = null,
-	null, //$assignedRangeEnd = null,
-	true //$includePrivate = false
+	$groupIDs, //$groupIDs,
+	false, //$courseIDs,
+	false, //$assignedFor,
+	true, //$approved,
+	true ,//$distinct,
+	false, //$past,
+	false, //$dueDate,
+	null, //$order,
+	null, //$assignedRangeStart,
+	null, //$assignedRangeEnd,
+	true //$includePrivate
 );
 
 
