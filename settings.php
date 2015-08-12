@@ -110,3 +110,32 @@ $settings->add(
         $cohortList
     )
 );
+
+/**
+ * Additonal HTML
+ */
+$settings->add(new admin_setting_heading(
+    'block_homework_additional_html_heading',
+    get_string('settings_additional_html_heading_name', 'block_homework'),
+    get_string('settings_additional_html_heading_desc', 'block_homework')
+));
+
+$settings->add(
+    new admin_setting_confightmleditor(
+        'block_homework/additional_html_top',
+        get_string('settings_additional_html_top_name', 'block_homework'),
+        get_string('settings_additional_html_top_desc', 'block_homework'),
+        '',
+        PARAM_RAW
+    )
+);
+
+$settings->add(
+    new admin_setting_confightmleditor(
+        'block_homework/additional_html_bottom',
+        get_string('settings_additional_html_bottom_name', 'block_homework'),
+        get_string('settings_additional_html_bottom_desc', 'block_homework'),
+        '',
+        PARAM_RAW
+    )
+);

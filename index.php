@@ -15,6 +15,10 @@ require 'include/header.php';
 echo $OUTPUT->header();
 echo $hwblock->display->tabs('index');
 
+if ($tophtml = get_config('block_homework', 'additional_html_top')) {
+    echo $tophtml;
+}
+
 switch ($hwblock->getMode()) {
 
 	case 'pastoral-student':
@@ -96,6 +100,10 @@ switch ($hwblock->getMode()) {
 		echo $hwblock->display->weekStats($stats);
 
 		break;
+}
+
+if ($bottomhtml = get_config('block_homework', 'additional_html_bottom')) {
+    echo $bottomhtml;
 }
 
 echo $OUTPUT->footer();
