@@ -52,17 +52,17 @@ switch ($hwblock->getMode()) {
 		$approved = true;
 		$distinct = false;
 		$homework = $hwblock->getHomework(
-			$groupIDs, //$groupIDs = false,
-			false, //$courseIDs = false,
-			false, //$assignedFor = false,
-			$approved, //$approved = true,
-			$distinct ,//$distinct = true,
-			false, //$past = false,
-			false, //$dueDate = false,
-			null, //$order = null,
-			null, //$assignedRangeStart = null,
-			null, //$assignedRangeEnd = null,
-			true //$includePrivate = false
+			$groupIDs, // $groupIDs
+			false, // $courseIDs
+			false, // $assignedFor
+			$approved, // $approved
+			$distinct ,// $distinct
+			false, // $past
+			false, // $dueDate
+			null, // $order
+			null, // $assignedRangeStart
+			null, // $assignedRangeEnd
+			true // $includePrivate
 		);
 
 		echo $hwblock->display->overview($homework, true);
