@@ -55,7 +55,7 @@ class HomeworkItem
 	 */
 	public function getRow()
 	{
-		return $this-row;
+		return $this->row;
 	}
 
 	public function getTitle()
