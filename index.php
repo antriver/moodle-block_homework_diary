@@ -59,7 +59,7 @@ switch ($hwblock->getMode()) {
 			$distinct ,// $distinct
 			false, // $past
 			false, // $dueDate
-			null, // $order
+			'assigneddate', // $order
 			null, // $assignedRangeStart
 			null, // $assignedRangeEnd
 			true // $includePrivate
