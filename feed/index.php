@@ -32,7 +32,11 @@ $username = required_param('u', PARAM_RAW);
 $key = required_param('k', PARAM_RAW);
 
 // Get the user from their username.
-$user = $DB->get_record('user', array('username' => $username), '*', MUST_EXIST);
+$user = $DB->get_record('user', array('username' => $username), '*', IGNORE_MISSING);
+if (!$user) {
+    header('User not found', true, 404);
+    exit();
+}
 
 // Include the homework stuff.
 $hwblock = new \block_homework\local\block;
