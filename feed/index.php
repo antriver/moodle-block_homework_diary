@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * XML iCal feed of a student's homework.
+ * Generate an XML iCal compatible feed of a student's homework.
  *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
@@ -25,10 +25,6 @@
 // Allow caching for 30 minutes.
 session_cache_expire(30);
 session_cache_limiter('public');
-
-/**
- * Return an iCal compatible feed of a user's homework
- */
 
 require_once(dirname(dirname(dirname(__DIR__))) . '/config.php');
 
@@ -41,7 +37,7 @@ $user = $DB->get_record('user', array('username' => $username), '*', MUST_EXIST)
 // Include the homework stuff.
 $hwblock = new \block_homework\local\block;
 
-$hwblock->$userid = $user->id;
+$hwblock->userid = $user->id;
 
 // Check the key.
 if ($key != $hwblock->feeds->generate_feed_key($user)) {
