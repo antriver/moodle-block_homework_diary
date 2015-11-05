@@ -69,11 +69,33 @@ class block {
      * Constructor
      */
     public function __construct() {
+        $this->log();
+
         $this->today = date('Y-m-d');
 
         $this->display = new display_manager($this);
         $this->feeds = new feed_manager($this);
         $this->groups = new group_manager($this);
+    }
+
+    /**
+     * Write all request into to a log file for super debugging.
+     */
+    private function log() {
+        global $USER;
+        $filename = dirname(dirname(__DIR__)) . '/log.txt';
+        $file = fopen ($filename, 'a+');
+        $line = date('Y-m-d H:i:s')
+                . "\t" . $_SERVER['REMOTE_ADDR']
+                . "\t" . $_SERVER['HTTP_X_FORWARDED_FOR']
+                . "\t" . $_SERVER['HTTP_USER_AGENT']
+                . "\t" . ($USER ? $USER->id : '')
+                . "\t" . $_SERVER['REQUEST_URI']
+                . "\t" . $_SERVER['PHP_SELF']
+                . "\t" . var_export($_GET, true)
+                . "\t" . var_export($_POST, true) . PHP_EOL;
+        fwrite($file, $line);
+        fclose($file);
     }
 
     /**

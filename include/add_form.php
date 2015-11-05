@@ -36,6 +36,8 @@ if (isset($editiem)) {
 } else if (!empty($_GET['groupid'])) {
     $selectedgroupid = $_GET['groupid'];
 }
+
+$private = 0;
 ?>
 
 <form class="form form-horizontal addHomeworkForm" role="form" method="post">
@@ -52,8 +54,6 @@ if (isset($editiem)) {
 
     if (FORMACTION == 'edit' && $editiem->private) {
         $private = 1;
-    } else {
-        $private = 0;
     }
 
     ?>

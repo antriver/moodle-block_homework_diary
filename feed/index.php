@@ -39,7 +39,7 @@ if (!$user) {
 }
 
 // Include the homework stuff.
-$hwblock = new \block_homework\local\block;
+$hwblock = new \block_homework\local\block();
 
 $hwblock->userid = $user->id;
 
