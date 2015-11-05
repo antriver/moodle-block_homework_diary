@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Handles interacting with Moodle courses.
+ *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -22,21 +24,35 @@
 
 namespace block_homework;
 
+/**
+ * Handles interacting with Moodle courses.
+ *
+ * @package    block_homework
+ * @copyright  Anthony Kuske <www.anthonykuske.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class CourseManager {
+
+    /**
+     * @var Block
+     */
     private $hwblock;
 
+    /**
+     * Constructor.
+     *
+     * @param Block $hwblock
+     */
     public function __construct(Block $hwblock) {
         $this->hwblock = $hwblock;
     }
 
     /**
-     * Getting courses a user is in...
+     * Returns every course within the category the homework diary is configured to work with.
+     *
+     * @return object[]
      */
-
-    /**
-     * Returns every teaching and learning course
-     */
-    public function getAllCourses() {
+    public function get_all_courses() {
 
         global $DB;
         $values = array();
@@ -45,10 +61,10 @@ class CourseManager {
             crs.fullname
         FROM {course} crs
         LEFT JOIN {context} ct ON ct.instanceid = crs.id AND ct.contextlevel = 50';
-        // context level 50 = a course
+        // Context level 50 = a course.
 
-        if ($categoryCtx = $this->hwblock->getCategoryContext()) {
-            $path = $categoryCtx->path . '/%';
+        if ($categorycontext = $this->hwblock->get_category_context()) {
+            $path = $categorycontext->path . '/%';
             $sql .= " WHERE ct.path LIKE ?";
             $values[] = $path;
         }
@@ -58,11 +74,19 @@ class CourseManager {
         return $DB->get_records_sql($sql, $values);
     }
 
-    public function getUsersCourses($userId, $roleid = null) {
+    /**
+     * Returns every course within the scope of the homework diary that the current user is enroled in.
+     *
+     * @param int $userid
+     * @param int $roleid
+     *
+     * @return object[]
+     */
+    public function get_users_courses($userid, $roleid = null) {
         global $DB;
 
         $values = array(
-            $userId
+            $userid
         );
 
         $sql = 'SELECT
@@ -73,8 +97,8 @@ class CourseManager {
         JOIN {course} crs ON crs.id = ct.instanceid
         WHERE ra.userid = ?';
 
-        if ($categoryCtx = $this->hwblock->getCategoryContext()) {
-            $path = $categoryCtx->path . '/%';
+        if ($categorycontext = $this->hwblock->get_category_context()) {
+            $path = $categorycontext->path . '/%';
             $sql .= " AND ct.path LIKE ?";
             $values[] = $path;
         }
@@ -89,7 +113,14 @@ class CourseManager {
         return $DB->get_records_sql($sql, $values);
     }
 
-    public function coursesToIDs($courses) {
+    /**
+     * Returns an array of courseIDs from an array of coure objects.
+     *
+     * @param object[] $courses
+     *
+     * @return int[]
+     */
+    public function extract_course_ids($courses) {
         $ids = array();
         foreach ($courses as $course) {
             $ids[] = intval($course->id);
@@ -98,19 +129,15 @@ class CourseManager {
     }
 
     /**
-     * Returns all course IDs that the user is enrolled in
+     * Returns all course IDs that the user is enrolled in.
+     *
+     * @param int $userid
+     * @param int $roleid
+     *
+     * @return array
      */
-    public function getUsersCourseIDs($userId, $roleid = null) {
-        $courses = $this->getUsersCourses($userId, $roleid);
-        return $this->coursesToIDs($courses);
+    public function get_users_course_ids($userid, $roleid = null) {
+        $courses = $this->get_users_courses($userid, $roleid);
+        return $this->extract_course_ids($courses);
     }
-
-    public function getUsersTaughtCourses($userId) {
-        return $this->getUsersCourses($userId, 3);
-    }
-
-    public function getUsersTaughtCourseIDs($userId) {
-        return $this->getUsersCourseIDs($userId, 3);
-    }
-
 }

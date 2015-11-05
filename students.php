@@ -22,21 +22,25 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require 'include/header.php';
+require('include/header.php');
 echo $OUTPUT->header();
 
 echo $hwblock->display->tabs('students');
 
-switch ($hwblock->getMode()) {
+switch ($hwblock->get_mode()) {
 
     case 'pastoral':
 
         echo '<h2><i class="fa fa-user"></i> Student Lookup</h2>';
 
-        // FIXME: SSIS language
-        echo $hwblock->display->sign('search', 'Find A Student', 'This section allows you to see what a student sees. Search for a student by name or PowerSchool ID below and click on one of the results.');
+        // FIXME: SSIS language.
+        echo $hwblock->display->sign(
+            'search',
+            'Find A Student',
+            'This section allows you to see what a student sees.
+                Search for a student by name or PowerSchool ID below and click on one of the results.');
 
-        echo $hwblock->display->studentList();
+        echo $hwblock->display->student_list();
 
         break;
 }

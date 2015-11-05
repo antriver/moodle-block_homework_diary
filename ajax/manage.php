@@ -15,30 +15,31 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Interface for editing a homework item.
+ *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once dirname(dirname(dirname(__DIR__))) . '/config.php';
+require_once(dirname(dirname(dirname(__DIR__))) . '/config.php');
 
 require_login();
 
-// Include the goodies for this block
+// Include the goodies for this block.
 $hwblock = new \block_homework\Block;
 
 $action = required_param('action', PARAM_RAW);
-$homeworkID = required_param('homeworkid', PARAM_RAW);
+$homeworkid = required_param('homeworkid', PARAM_RAW);
 
-$hw = \block_homework\HomeworkItem::load($homeworkID);
+$hw = \block_homework\HomeworkItem::load($homeworkid);
 
-// Check permissions
-if (!$hwblock->canEditHomeworkItem($hw)) {
+// Check permissions.
+if (!$hwblock->can_edit_homework_item($hw)) {
     die("You don't have permission to edit that piece of homework.");
 }
 
 switch ($action) {
-
     case 'approve':
         $hw->approved = 1;
         $success = $hw->save();
@@ -51,6 +52,10 @@ switch ($action) {
 
     case 'delete':
         $success = $DB->delete_records('block_homework', array('id' => $hw->id));
+        break;
+
+    default:
+        $success = false;
         break;
 }
 

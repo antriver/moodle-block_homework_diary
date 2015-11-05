@@ -3,10 +3,11 @@
 $('.courseList .filter').bindWithDelay('keyup', function(){
 	var filter = $(this).val();
 
-	if (!$('.courseList').data('originalHTML')) {
-		$('.courseList').data('originalHTML', $('.courseList .courses').html());
+    var $courseList = $('.courseList');
+	if (!$courseList.data('originalHTML')) {
+		$courseList.data('originalHTML', $('.courseList .courses').html());
 	} else {
-		$('.courseList .courses').html( $('.courseList').data('originalHTML') );
+		$('.courseList .courses').html( $courseList.data('originalHTML') );
 	}
 
 	if (filter) {

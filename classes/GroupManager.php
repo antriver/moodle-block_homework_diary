@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Handles interacting with Moodle groups.
+ *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -22,34 +24,48 @@
 
 namespace block_homework;
 
+/**
+ * Handles interacting with Moodle groups.
+ *
+ * @package    block_homework
+ * @copyright  Anthony Kuske <www.anthonykuske.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class GroupManager {
+
+    /**
+     * @var Block
+     */
     private $hwblock;
 
+    /**
+     * Constructor.
+     *
+     * @param Block $hwblock
+     */
     public function __construct(Block $hwblock) {
         $this->hwblock = $hwblock;
     }
 
-
     /**
-     * Returns every group from courses that are in the chosen
-     * category for the homework diary
+     * Returns every group from courses that are in the chosen category for the homework diary.
+     *
+     * @return object[]
      */
-    public function getAllGroups() {
+    public function get_all_groups() {
         global $DB;
         $values = array();
+        // Context level 50 = a course.
         $sql = 'SELECT
             g.*,
             crs.fullname AS coursefullname
         FROM {course} crs
-        LEFT JOIN {context} ct ON ct.instanceid = crs.id AND ct.contextlevel = 50';
-        // context level 50 = a course
-
-        $sql .= '
+        LEFT JOIN {context} ct ON ct.instanceid = crs.id AND ct.contextlevel = 50
         JOIN {groups} g ON g.courseid = crs.id
         ';
 
-        if ($categoryCtx = $this->hwblock->getCategoryContext()) {
-            $path = $categoryCtx->path . '/%';
+        if ($categorycontext = $this->hwblock->get_category_context()) {
+            $path = $categorycontext->path . '/%';
             $sql .= " WHERE ct.path LIKE ?";
             $values[] = $path;
         }
@@ -60,35 +76,39 @@ class GroupManager {
     }
 
     /**
-     * Get an array of class group IDs a user is in
+     * Get an array of class/group IDs a user is in.
+     *
+     * @param int $userid
+     *
+     * @return int[]
      */
-    public function getAllUsersGroupIDs($userId) {
-        $groups = $this->getAllUsersGroups($userId);
-        $groupIds = array();
+    public function get_all_users_group_ids($userid) {
+        $groups = $this->get_all_users_groups($userid);
+        $groupids = array();
         foreach ($groups as $group) {
-            $groupIds[] = $group->id;
+            $groupids[] = $group->id;
         }
-        return $groupIds;
+        return $groupids;
     }
 
     /**
-     * Tweak of the Moodle groups_get_user_groups function,
-     * but returns every group a user is in, not just from a certain course
+     * Tweak of the Moodle groups_get_user_groups function;
+     * returns every group a user is in, not just from a certain course
      *
-     * @category group
-     * @param int $userId $USER if not specified
+     * @param int $userid $USER if not specified
+     *
      * @return array Array[groupingid][groupid] including grouping id 0 which means all groups
      */
-    function getAllUsersGroups($userId = 0) {
+    public function get_all_users_groups($userid = 0) {
         global $USER, $DB;
 
-        if (empty($userId)) {
-            $userId = $USER->id;
+        if (empty($userid)) {
+            $userid = $USER->id;
         }
 
-        $categoryContextPath = $this->hwblock->getCategoryContextPath();
+        $categorycontextpath = $this->hwblock->get_category_context_path();
 
-        $params = array($userId);
+        $params = array($userid);
 
         $sql = "SELECT
                 g.*,
@@ -101,14 +121,14 @@ class GroupManager {
             LEFT JOIN {groupings_groups} gg ON gg.groupid = g.id
             LEFT JOIN {course} c ON c.id = g.courseid";
 
-        if ($categoryContextPath) {
+        if ($categorycontextpath) {
             $sql .= ' LEFT JOIN {context} ctx ON ctx.contextlevel = 50 AND ctx.instanceid = c.id';
         }
 
         $sql .= ' WHERE gm.userid = ?';
-        if ($categoryContextPath) {
+        if ($categorycontextpath) {
             $sql .= ' AND ctx.path LIKE ?';
-            $params[] = $categoryContextPath . '/%';
+            $params[] = $categorycontextpath . '/%';
         }
 
         $sql .= ' ORDER BY coursefullname';
@@ -116,7 +136,7 @@ class GroupManager {
         $rs = $DB->get_recordset_sql($sql, $params);
 
         if (!$rs->valid()) {
-            $rs->close(); // Not going to iterate (but exit), close rs
+            $rs->close();
             return array();
         }
 
@@ -126,6 +146,4 @@ class GroupManager {
         }
         return $groups;
     }
-
-
 }

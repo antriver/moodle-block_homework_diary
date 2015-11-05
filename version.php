@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Homework diary version.
+ *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -22,6 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2015081201; // The current plugin version (Date: YYYYMMDDXX)
+$plugin = new stdClass();
+$plugin->version = 2015110500; // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires = 2013111800; // MOODLE_26_STABLE
-$plugin->component = 'block_homework'; // Full name of the plugin (used for diagnostics)
+$plugin->component = 'block_homework'; // Full name of the plugin (used for diagnostics).

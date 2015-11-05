@@ -15,14 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Initialises objects for the homework diary, includes styles and scripts.
+ *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once dirname(dirname(dirname(__DIR__))) . '/config.php';
+require_once(dirname(dirname(dirname(__DIR__))) . '/config.php');
 
-if (!defined('PUBLIC')) {
+if (!defined('PUBLIC_ACCESS')) {
     require_login();
 }
 
@@ -31,7 +33,7 @@ if (!empty($_SERVER['SCRIPT_NAME'])) {
     $PAGE->set_url($_SERVER['SCRIPT_NAME']);
 }
 
-// Include the goodies for this block
+// Include the goodies for this block.
 $hwblock = new block_homework\Block();
 
 $PAGE->requires->css('/blocks/homework/assets/bootstrap/css/bootstrap.css');
@@ -41,13 +43,13 @@ $PAGE->requires->jquery();
 $PAGE->requires->jquery_plugin('ui');
 $PAGE->requires->jquery_plugin('ui-css');
 
-$PAGE->requires->js('/blocks/homework/assets/js/jquery.scrollTo.min.js');
-$PAGE->requires->js('/blocks/homework/assets/js/jquery.localScroll.min.js');
-$PAGE->requires->js('/blocks/homework/assets/js/jquery.autosize.min.js');
-$PAGE->requires->js('/blocks/homework/assets/js/date.js');
+$PAGE->requires->js('/blocks/homework/assets/js/lib/jquery.scrollTo.min.js');
+$PAGE->requires->js('/blocks/homework/assets/js/lib/jquery.localScroll.min.js');
+$PAGE->requires->js('/blocks/homework/assets/js/lib/jquery.autosize.min.js');
+$PAGE->requires->js('/blocks/homework/assets/js/lib/date.js');
 $PAGE->requires->js('/blocks/homework/assets/js/homework.js?v=8');
 if (get_config('block_homework', 'smooth_scroll')) {
-    $PAGE->requires->js('/blocks/homework/assets/js/localscroll.js');
+    $PAGE->requires->js('/blocks/homework/assets/js/lib/localscroll.js');
 }
 
 $PAGE->set_title(get_string('pagetitle', 'block_homework'));

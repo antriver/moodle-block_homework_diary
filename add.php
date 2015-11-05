@@ -16,9 +16,13 @@
 
 /**
  * Displays all the homework for a specific course
+ *
+ * @package    block_homework
+ * @copyright  Anthony Kuske <www.anthonykuske.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require 'include/header.php';
+require('include/header.php');
 
 // Are we viewing the form or adding stuff?
 $action = optional_param('action', 'view', PARAM_RAW);
@@ -33,7 +37,7 @@ if ($courseid) {
 echo $OUTPUT->header();
 
 echo $hwblock->display->tabs('add');
-$mode = $hwblock->getMode();
+$mode = $hwblock->get_mode();
 
 switch ($action) {
 
@@ -44,13 +48,13 @@ switch ($action) {
 
         define('FORMACTION', 'edit');
         $editid = required_param('editid', PARAM_INT);
-        // Load the existing item
-        $editItem = \block_homework\HomeworkItem::load($editid);
-        if (!$editItem) {
+        // Load the existing item.
+        $editiem = \block_homework\HomeworkItem::load($editid);
+        if (!$editiem) {
             die("Unable to find that homework item.");
         }
 
-        if (!$hwblock->canEditHomeworkItem($editItem)) {
+        if (!$hwblock->can_edit_homework_item($editiem)) {
             die("You don't have permission to edit that piece of homework.");
         }
 
@@ -72,53 +76,51 @@ switch ($action) {
         $duedate = optional_param('duedate', null, PARAM_RAW);
         $duration = required_param('duration', PARAM_RAW);
 
-        // Check permissions
+        // Check permissions.
         if ($courseid) {
             $context = \context_course::instance($courseid);
             require_capability('block/homework:addhomework', $context);
         }
 
-        // Load the existing item
-        $homeworkItem = $DB->get_record('block_homework', array('id' => $editid), '*', MUST_EXIST);
+        // Load the existing item.
+        $homeworkitem = $DB->get_record('block_homework', array('id' => $editid), '*', MUST_EXIST);
 
-        if (!$hwblock->canEditHomeworkItem($homeworkItem)) {
+        if (!$hwblock->can_edit_homework_item($homeworkitem)) {
             die("You don't have permission to edit that piece of homework.");
         }
 
-        $homeworkItem->courseid = $courseid;
-        $homeworkItem->groupid = $groupid;
-        $homeworkItem->title = $title;
-        $homeworkItem->description = $description;
-        $homeworkItem->startdate = $startdate;
-        $homeworkItem->duedate = $duedate;
-        $homeworkItem->duration = $duration;
+        $homeworkitem->courseid = $courseid;
+        $homeworkitem->groupid = $groupid;
+        $homeworkitem->title = $title;
+        $homeworkitem->description = $description;
+        $homeworkitem->startdate = $startdate;
+        $homeworkitem->duedate = $duedate;
+        $homeworkitem->duration = $duration;
 
-        // Auto approve when a teacher edits
-        if ($mode == 'teacher' && !$homeworkItem->private) {
-            $homeworkItem->approved = 1;
+        // Auto approve when a teacher edits.
+        if ($mode == 'teacher' && !$homeworkitem->private) {
+            $homeworkitem->approved = 1;
         }
 
-        if ($DB->update_record('block_homework', $homeworkItem)) {
+        if ($DB->update_record('block_homework', $homeworkitem)) {
 
-            $homeworkItem = \block_homework\HomeworkItem::load($editid);
+            $homeworkitem = \block_homework\HomeworkItem::load($editid);
 
-            // Remove all existing assigned dates
-            $homeworkItem->clearAssignedDates();
+            // Remove all existing assigned dates.
+            $homeworkitem->clear_assigned_dates();
 
-            // Now add the assigned dates
+            // Now add the assigned dates.
             $assigneddates = explode(',', $assigneddates);
             foreach ($assigneddates as $date) {
-                $homeworkItem->addAssignedDate($date);
+                $homeworkitem->add_assigned_date($date);
             }
 
             echo '<div class="alert alert-success"><i class="fa fa-check"></i> Changes saved.</div>';
-
         } else {
             echo '<div class="alert alert-error"><i class="fa fa-times"></i> There was an error saving the changes.</div>';
         }
 
         break;
-
 
     case 'save':
 
@@ -139,58 +141,61 @@ switch ($action) {
         $duration = required_param('duration', PARAM_RAW);
         $private = optional_param('private', 0, PARAM_INT);
 
-        // If adding a new item
-        $homeworkItem = new stdClass();
-        $homeworkItem->approved = $hwblock->canApproveHomework($courseid) ? 1 : 0;
-        $homeworkItem->userid = $USER->id;
-        $homeworkItem->added = time();
+        // If adding a new item.
+        $homeworkitem = new stdClass();
+        $homeworkitem->approved = $hwblock->can_approve_homework($courseid) ? 1 : 0;
+        $homeworkitem->userid = $USER->id;
+        $homeworkitem->added = time();
 
-        $homeworkItem->courseid = $courseid;
-        $homeworkItem->groupid = $groupid;
-        $homeworkItem->title = $title;
-        $homeworkItem->description = $description;
-        $homeworkItem->startdate = $startdate;
-        $homeworkItem->duedate = $duedate;
-        $homeworkItem->duration = $duration;
-        $homeworkItem->private = $private;
+        $homeworkitem->courseid = $courseid;
+        $homeworkitem->groupid = $groupid;
+        $homeworkitem->title = $title;
+        $homeworkitem->description = $description;
+        $homeworkitem->startdate = $startdate;
+        $homeworkitem->duedate = $duedate;
+        $homeworkitem->duration = $duration;
+        $homeworkitem->private = $private;
 
-        if ($id = $DB->insert_record('block_homework', $homeworkItem)) {
+        if ($id = $DB->insert_record('block_homework', $homeworkitem)) {
 
-            $homeworkItem = \block_homework\HomeworkItem::load($id);
+            $homeworkitem = \block_homework\HomeworkItem::load($id);
 
-            // Now add the assigned dates
+            // Now add the assigned dates.
             $assigneddates = explode(',', $assigneddates);
             foreach ($assigneddates as $date) {
-                $homeworkItem->addAssignedDate($date);
+                $homeworkitem->add_assigned_date($date);
             }
 
-            if ($homeworkItem->private) {
+            if ($homeworkitem->private) {
 
-                // Student submitted private homework
-                echo '<div class="alert alert-success"><i class="fa fa-check"></i> The homework has been saved and is visible on <a href="index.php">your overview</a>.</div>';
+                // Student submitted private homework.
+                echo '<div class="alert alert-success">
+                <i class="fa fa-check"></i> The homework has been saved and is visible on <a href="index.php">your overview</a>.
+                </div>';
+            } else if ($homeworkitem->approved && $homeworkitem->startdate <= $hwblock->today) {
 
-            } elseif ($homeworkItem->approved && $homeworkItem->startdate <= $hwblock->today) {
+                // Approved homework that is visible today or in the past.
+                echo '<div class="alert alert-success">
+                <i class="fa fa-check"></i> The homework has been submitted successfully
+                and is now visible to students in the class.
+                </div>';
+            } else if ($homeworkitem->approved && $homeworkitem->startdate > $hwblock->today) {
 
-                // Approved homework that is visible today or in the past
-                echo '<div class="alert alert-success"><i class="fa fa-check"></i> The homework has been submitted successfully and is now visible to students in the class.</div>';
+                // Approved homework that becomes visible in the future.
+                echo '<div class="alert alert-success">
+                    <i class="fa fa-pause"></i>
+                    The homework has been submitted successfully and will become visible to students on '
+                    . date('l M jS', strtotime($homeworkitem->startdate))
+                    . '</div>';
+            } else if (!$homeworkitem->approved) {
 
-            } elseif ($homeworkItem->approved && $homeworkItem->startdate > $hwblock->today) {
-
-                // Approved homework that becomes visible in the future
-                echo '<div class="alert alert-success"><i class="fa fa-pause"></i> The homework has been submitted successfully and will become visible to students on ' . date('l M jS', strtotime($homeworkItem->startdate)) . '</div>';
-
-            } elseif (!$homeworkItem->approved) {
-
-                // Unapproved homework
-                echo '<div class="alert alert-success"><i class="fa fa-check"></i> The homework has been submitted successfully and will become visible to everybody in the class once a teacher approves it.</div>';
-
-                // Email the teacher
-                #$hwblock->emailTeacherOnNewHomework($homeworkItem, $USER);
-
+                // Unapproved homework.
+                echo '<div class="alert alert-success">
+                <i class="fa fa-check"></i> The homework has been submitted successfully and will
+                become visible to everybody in the class once a teacher approves it.</div>';
             }
 
             echo '<hr/>';
-
         } else {
             echo '<div class="alert alert-error"><i class="fa fa-times"></i> There was an error adding the homework.</div>';
         }
@@ -207,19 +212,27 @@ if (defined('FORMACTION')) {
 
     if (FORMACTION === 'edit') {
 
-        echo $hwblock->display->sign('edit-sign', 'Edit Homework', 'Click the Submit button at the bottom to save your changes.');
-
+        echo $hwblock->display->sign(
+            'edit-sign',
+            'Edit Homework',
+            'Click the Submit button at the bottom to save your changes.');
     } else if (FORMACTION === 'add' && $mode == 'student') {
 
-        echo $hwblock->display->sign('plus-sign', 'Add Homework', 'You may add homework for either just yourself, or everyone in your class. If the latter, your class teacher will have to approve it before it appears on DragonNet.');
-
+        echo $hwblock->display->sign(
+            'plus-sign',
+            'Add Homework',
+            'You may add homework for either just yourself, or everyone in your class.
+            If the latter, your class teacher will have to approve it before it appears on DragonNet.');
     } else if (FORMACTION === 'add' && $mode == 'teacher') {
 
-        echo $hwblock->display->sign('play-sign', 'Add Homework', 'Here you may add homework for every student in a class to see. It does not need to be approved separately, it will become visible instantly.');
-
+        echo $hwblock->display->sign(
+            'play-sign',
+            'Add Homework',
+            'Here you may add homework for every student in a class to see.
+            It does not need to be approved separately, it will become visible instantly.');
     }
 
-    include 'include/add_form.php';
+    include('include/add_form.php');
 }
 
 echo $OUTPUT->footer();

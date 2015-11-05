@@ -40,16 +40,17 @@ $settings->add(
  * Category to show courses from
  */
 
-// Load all categories to show in the list
-require_once $CFG->dirroot . '/course/externallib.php';
+// Load all categories to show in the list.
+/** @var object $CFG */
+require_once($CFG->dirroot . '/course/externallib.php');
 $categories = core_course_external::get_categories(array(), false);
-$categoryList = array(
+$categorylist = array(
     0 => '[All Cateogries]'
 );
 foreach ($categories as $category) {
-    $categoryList[$category['id']] = $category['name'];
+    $categorylist[$category['id']] = $category['name'];
 }
-asort($categoryList);
+asort($categorylist);
 
 $settings->add(
     new admin_setting_configselect(
@@ -57,70 +58,69 @@ $settings->add(
         get_string('settings_course_category_name', 'block_homework'),
         get_string('settings_course_category_desc', 'block_homework'),
         0,
-        $categoryList
+        $categorylist
     )
 );
-
 
 /**
  * User levels
  */
 
-// Get all system-level cohorts
-require_once $CFG->dirroot . '/cohort/lib.php';
-$systemCtx = context_system::instance();
-$cohorts = cohort_get_cohorts($systemCtx->id, 0, 1000000);
-$cohortList = array(
+// Get all system-level cohorts.
+require_once($CFG->dirroot . '/cohort/lib.php');
+$systemcontext = context_system::instance();
+$cohorts = cohort_get_cohorts($systemcontext->id, 0, 1000000);
+$cohortlist = array(
     0 => '[Not Set]'
 );
 foreach ($cohorts['cohorts'] as $cohort) {
-    $cohortList[$cohort->id] = $cohort->name;
+    $cohortlist[$cohort->id] = $cohort->name;
     if ($cohort->idnumber) {
-        $cohortList[$cohort->id] .= ' [' . s($cohort->idnumber) . ']';
+        $cohortlist[$cohort->id] .= ' [' . s($cohort->idnumber) . ']';
     }
 }
 
-// Student
+// Student.
 $settings->add(
     new admin_setting_configselect(
         'block_homework/student_cohort',
         get_string('settings_student_cohort_name', 'block_homework'),
         get_string('settings_student_cohort_desc', 'block_homework'),
         0,
-        $cohortList
+        $cohortlist
     )
 );
 
-// Teacher
+// Teacher.
 $settings->add(
     new admin_setting_configselect(
         'block_homework/teacher_cohort',
         get_string('settings_teacher_cohort_name', 'block_homework'),
         get_string('settings_teacher_cohort_desc', 'block_homework'),
         0,
-        $cohortList
+        $cohortlist
     )
 );
 
-// Parent
+// Parent.
 $settings->add(
     new admin_setting_configselect(
         'block_homework/parent_cohort',
         get_string('settings_parent_cohort_name', 'block_homework'),
         get_string('settings_parent_cohort_desc', 'block_homework'),
         0,
-        $cohortList
+        $cohortlist
     )
 );
 
-// Secretary
+// Secretary.
 $settings->add(
     new admin_setting_configselect(
         'block_homework/secretary_cohort',
         get_string('settings_secretary_cohort_name', 'block_homework'),
         get_string('settings_secretary_cohort_desc', 'block_homework'),
         0,
-        $cohortList
+        $cohortlist
     )
 );
 

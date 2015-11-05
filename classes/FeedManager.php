@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Generates an iCal feed of a student's homework.
+ *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -22,39 +24,56 @@
 
 namespace block_homework;
 
+/**
+ * Generates an iCal feed of a student's homework.
+ *
+ * @package    block_homework
+ * @copyright  Anthony Kuske <www.anthonykuske.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class FeedManager {
+    /**
+     * @var Block
+     */
     private $hwblock;
 
+    /**
+     * Constructor
+     * @param Block $hwblock
+     */
     public function __construct(Block $hwblock) {
         $this->hwblock = $hwblock;
     }
 
     /**
      * Generates a key to use in the URL for an iCal feed
+     *
      * @param  object $user Moodle user object
+     *
      * @return string
      */
-    public function generateFeedKey($user) {
-        global $DB;
+    public function generate_feed_key($user) {
         $key = sha1($user->id . $user->username . $user->firstaccess . $user->timecreated);
         return $key;
     }
 
     /**
      * Generate the absoloute iCal feed URL for a user's homework
-     * @param  boolean $userId
+     *
+     * @param  boolean $userid
+     *
      * @return string
      */
-    public function generateFeedURL($userId = null) {
+    public function generate_feed_url($userid = null) {
         global $DB, $CFG;
 
-        if ($userId === null) {
-            $userId = $this->hwblock->getUserId();
+        if ($userid === null) {
+            $userid = $this->hwblock->get_user_id();
         }
 
-        $user = $DB->get_record('user', array('id' => $userId));
+        $user = $DB->get_record('user', array('id' => $userid));
 
-        $key = $this->generateFeedKey($user);
+        $key = $this->generate_feed_key($user);
 
         $url = $CFG->wwwroot . '/blocks/homework/feed/?';
         $url .= http_build_query(
@@ -64,5 +83,30 @@ class FeedManager {
             ));
 
         return $url;
+    }
+
+    /**
+     * Formats a description string for outputting in the XML
+     *
+     * @param string $text
+     *
+     * @return string
+     */
+    public function format_description($text) {
+        $text = str_replace("\r\n", "\\n", $text);
+        $text = str_replace("\n", "\\n", $text);
+        return $text;
+    }
+
+    /**
+     * Wraps lines of text to a certain length.
+     * Alternative to PHP's wordwrap() because of https://bugs.php.net/bug.php?id=22487
+     *
+     * @param string $text
+     *
+     * @return string
+     */
+    public function wordwrap($text) {
+        return join("\r\n ", str_split($text, 75));
     }
 }

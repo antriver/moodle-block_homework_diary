@@ -15,21 +15,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Search for a user.
+ *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once dirname(dirname(dirname(__DIR__))) . '/config.php';
+require_once(dirname(dirname(dirname(__DIR__))) . '/config.php');
 
 require_login();
 
-// Include the goodies for this block
+// Include the goodies for this block.
 $hwblock = new block_homework\Block;
 
 $q = required_param('q', PARAM_RAW);
 
-// FIXME: SSIS
+// FIXME: SSIS.
 $sql = "SELECT id, idnumber, firstname, lastname
 FROM {user}
 WHERE
@@ -49,9 +51,9 @@ $words = explode(' ', $q);
 $wildq = strtolower('%' . implode('%', $words) . '%');
 
 $values = array(
-    intval($q), // userID
-    intval($q), // idnumber
-    strtolower($q), // department
+    intval($q), // UserID.
+    intval($q), // Idnumber.
+    strtolower($q), // Department.
     $wildq,
     $wildq,
     $wildq,

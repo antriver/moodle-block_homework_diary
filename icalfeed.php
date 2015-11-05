@@ -15,22 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Information about the iCal feature.
+ *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require 'include/header.php';
+require('include/header.php');
 echo $OUTPUT->header();
 echo $hwblock->display->tabs('icalfeed');
 
-switch ($hwblock->getMode()) {
+switch ($hwblock->get_mode()) {
 
     case 'pastoral-student':
     case 'student':
     case 'parent':
 
-        echo $hwblock->display->icalFeedBox(false);
+        echo $hwblock->display->ical_feed_box(false);
 
         echo '<h2><i class="fa fa-group"></i> How To Add Your Homework Feed To iCal</h2>';
 
@@ -50,7 +52,7 @@ switch ($hwblock->getMode()) {
             </li>
 
         </ol>
-        <?
+        <?php
 
         break;
 }

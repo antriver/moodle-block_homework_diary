@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Methods for generating HTML to display.
+ *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -22,9 +24,28 @@
 
 namespace block_homework;
 
+use DateTime;
+
+/**
+ * Methods for generating HTML to display.
+ *
+ * @package    block_homework
+ * @copyright  Anthony Kuske <www.anthonykuske.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class DisplayManager {
+
+    /**
+     * @var Block
+     */
     private $hwblock;
-    private $possibleTabs = array( // Array of which tabs are shown in differnet modes
+
+    /**
+     * Tabs to be displayed dpending on the mode.
+     *
+     * @var array
+     */
+    private $possibletabs = array( // Array of which tabs are shown in differnet modes.
                                    'student'          => array(
                                        'index'    => array('index.php', '<i class="fa fa-calendar"></i> To Do'),
                                        'history'  => array('history.php', '<i class="fa fa-th-list"></i> Full List / History'),
@@ -32,7 +53,7 @@ class DisplayManager {
                                        'add'      => array('add.php', '<i class="fa fa-plus-circle"></i> Add Homework'),
                                        'icalfeed' => array('icalfeed.php', '<i class="fa fa-rss"></i> iCal'),
                                    ),
-                                   'pastoral-student' => array( // When a pastoral user clicks on a student (same as parent mode)
+                                   'pastoral-student' => array( // When a pastoral user clicks on a student (same as parent mode).
                                                                 'index'    => array(
                                                                     'index.php',
                                                                     '<i class="fa fa-calendar"></i> To Do'
@@ -65,43 +86,56 @@ class DisplayManager {
                                    'pastoral'         => array(
                                        'index'    => array('index.php', '<i class="fa fa-home"></i> Overview'),
                                        'classes'  => array('classes.php', '<i class="fa fa-group"></i> Classes'),
-                                       #'courses' => array('courses.php', '<i class="fa fa-magic"></i> Courses'),
-                                       #'grades' => array('grades.php', '<i class="fa fa-sitemap"></i> Grades'),
                                        'students' => array('students.php', '<i class="fa fa-user"></i> Student Lookup'),
                                    ),
     );
 
+    /**
+     * Constructor.
+     *
+     * @param Block $hwblock
+     */
     public function __construct(Block $hwblock) {
         $this->hwblock = $hwblock;
     }
 
+    /**
+     * Output the tabs to swith mode.
+     *
+     * @return string
+     */
+    private function mode_tabs() {
+        $currentmode = $this->hwblock->get_mode();
+        $possiblemodes = $this->hwblock->get_possible_modes();
 
-    public function modeTabs() {
-        $currentMode = $this->hwblock->getMode();
-        $possibleModes = $this->hwblock->getPossibleModes();
-
-        $modeLabels = array(
+        $modelabels = array(
             'student'  => '<i class="fa fa-user"></i> Student Mode',
             'parent'   => '<i class="fa fa-male"></i> Parent Mode',
             'teacher'  => '<i class="fa fa-magic"></i> Teacher Mode',
             'pastoral' => '<i class="fa fa-heartbeat"></i> Pastoral Mode',
         );
 
-        if ($currentMode == 'pastoral-student') {
+        if ($currentmode == 'pastoral-student') {
             global $DB, $SESSION;
-            $possibleModes[] = 'pastoral-student';
-            $student = $DB->get_record('user', array('id' => $SESSION->homeworkBlockUser));
-            $modeLabels['pastoral-student'] = 'Student Mode: ' . $student->firstname . ' ' . $student->lastname;
+            $possiblemodes[] = 'pastoral-student';
+            $student = $DB->get_record('user', array('id' => $SESSION->homeworkblockuser));
+            $modelabels['pastoral-student'] = 'Student Mode: ' . $student->firstname . ' ' . $student->lastname;
         }
 
-        if (count($possibleModes) < 2) {
+        if (count($possiblemodes) < 2) {
             return false;
         }
 
         $t = '<div class="tabs text-center">';
         $t .= '<div class="btn-group">';
-        foreach ($possibleModes as $mode) {
-            $t .= '<a class="btn btn-sm btn-small' . ($mode == $currentMode ? ' active' : '') . '" href="changemode.php?mode=' . $mode . '">' . $modeLabels[$mode] . '</a>';
+        foreach ($possiblemodes as $mode) {
+            $t .= '<a class="btn btn-sm btn-small'
+                . ($mode == $currentmode ? ' active' : '')
+                . '" href="changemode.php?mode='
+                . $mode
+                . '">'
+                . $modelabels[$mode]
+                . '</a>';
         }
         $t .= '</div>';
         $t .= '</div>';
@@ -110,14 +144,16 @@ class DisplayManager {
     }
 
     /**
-     * Shows a tab for each of a user's children and allows them to switch between them
+     * Output a tab for each of a user's children and allows them to switch between them
+     *
+     * @return string
      */
-    public function parentTabs() {
-        global $SESSION, $USER;
+    private function parent_tabs() {
+        global $USER;
 
-        $currentUser = $this->hwblock->getUserId();
+        $currentuser = $this->hwblock->get_user_id();
 
-        $children = $this->hwblock->getUsersChildren($USER->id);
+        $children = $this->hwblock->get_users_children($USER->id);
 
         if (!isset($children) || !is_array($children)) {
             return false;
@@ -126,33 +162,46 @@ class DisplayManager {
         $t = '<div class="tabs text-center">';
         $t .= '<div class="btn-group">';
         foreach ($children as $child) {
-            $t .= '<a class="btn btn-sm btn-small ' . ($child->userid == $currentUser ? ' active' : '') . '" href="changeuser.php?userid=' . $child->userid . '">' . $child->firstname . ' ' . $child->lastname . '</a>';
+            $t .= '<a class="btn btn-sm btn-small '
+                . ($child->userid == $currentuser ? ' active' : '')
+                . '" href="changeuser.php?userid=' . $child->userid . '">'
+                . $child->firstname
+                . ' '
+                . $child->lastname
+                . '</a>';
         }
         $t .= '</div>';
         return $t;
     }
 
     /**
-     * Returns HTML for the tabs at the top of all homework pages.
+     * Output the tabs at the top of all homework pages.
      * Including the subtabs and mode / children tabs.
+     *
+     * @param bool  $current
+     * @param array $subtabs
+     * @param bool  $currentsubtab
+     * @param bool  $groupid
+     *
+     * @return string
      */
-    public function tabs($current = false, $subtabs = false, $currentsubtab = false, $groupid = false) {
+    public function tabs($current = false, $subtabs = array(), $currentsubtab = false, $groupid = false) {
         global $USER;
         if (!$USER->id) {
             return '';
         }
 
-        $tabs = $this->possibleTabs[$this->hwblock->getMode()];
+        $tabs = $this->possibletabs[$this->hwblock->get_mode()];
 
         $t = '';
 
         // If in parent mode, show the list of children at the top.
-        if ($this->hwblock->getMode() == 'parent') {
-            $t .= $this->parentTabs();
+        if ($this->hwblock->get_mode() == 'parent') {
+            $t .= $this->parent_tabs();
         }
 
-        // Show tabs for switching modes (if possible)
-        $t .= $this->modeTabs();
+        // Show tabs for switching modes (if possible).
+        $t .= $this->mode_tabs();
 
         $t .= '<div class="tabs text-center">';
 
@@ -165,11 +214,15 @@ class DisplayManager {
         }
         $t .= '</div>';
 
-
         if ($subtabs) {
             $t .= '<div class="btn-group">';
             foreach ($subtabs as $name => $tab) {
-                $t .= '<a class="btn btn-sm btn-small' . ($name == $currentsubtab ? ' active' : '') . '" href="' . $tab[0] . '">' . $tab[1] . '</a>';
+                $t .= '<a class="btn btn-sm btn-small'
+                    . ($name == $currentsubtab ? ' active' : '')
+                    . '" href="' . $tab[0]
+                    . '">'
+                    . $tab[1]
+                    . '</a>';
             }
             $t .= '</div>';
         }
@@ -178,17 +231,21 @@ class DisplayManager {
         return $t;
     }
 
-
     /**
-     * Index page for students
+     * Index page for students.
+     *
+     * @param HomeworkItem[] $homework
+     * @param bool           $hashlinks
+     *
+     * @return string
      */
-    public function overview($homework, $hashLinks = false) {
+    public function overview(array $homework, $hashlinks = false) {
         $today = $this->hwblock->today;
 
-        //Build an array of dates for the next fortnight
+        // Build an array of dates for the next fortnight.
         $dates = array();
 
-        $date = new \DateTime('monday this week');
+        $date = new DateTime('monday this week');
 
         for ($i = 0; $i < 14; $i++) {
 
@@ -199,7 +256,7 @@ class DisplayManager {
             $date->modify('+1 day');
         }
 
-        // Sort the homework into the days it's assigned for
+        // Sort the homework into the days it's assigned for.
         foreach ($homework as $hw) {
             if (isset($dates[$hw->assigneddate])) {
                 $dates[$hw->assigneddate][] = $hw;
@@ -213,7 +270,7 @@ class DisplayManager {
             ++$i;
             $past = $date < $today;
             $r .= '<li class="col-md-2 ' . ($past ? 'past' : '') . '">
-			<a class="day" href="' . ($hashLinks ? '#' . $date : 'day.php?date=' . $date) . '">';
+			<a class="day" href="' . ($hashlinks ? '#' . $date : 'day.php?date=' . $date) . '">';
             $r .= '<h4>' . date('l M jS', strtotime($date)) . '</h4>';
             foreach ($hw as $item) {
                 if ($item->courseid) {
@@ -239,54 +296,42 @@ class DisplayManager {
     }
 
     /**
-     * Show an array of classes as buttons, with a filter box
+     * Output an array of classes (groups) as buttons, with a filter box
+     *
+     * @param object[] $classes
+     *
+     * @return string
      */
-    public function classList($classes, $url = 'class.php?groupid=') {
+    public function class_list($classes) {
         global $PAGE;
         $PAGE->requires->js('/blocks/homework/assets/js/bindWithDelay.js');
         $PAGE->requires->js('/blocks/homework/assets/js/filter.js');
 
         $r = '<div class="courseList">';
         $r .= '<input type="text" class="filter" placeholder="Type here to filter by name or teacher..." />';
-
         $r .= '<div class="row courses">';
 
-        foreach ($classes as $groupID => $group) {
-            $r .= '<div class="col-sm-3"><a href="' . $url . $group->id . '" class="btn">';
-
-            //if ($icon) {
-            //	$r .= '<i class="fa fa-' . $icon . '"></i> ';
-            //}
-
+        foreach ($classes as $groupid => $group) {
+            $r .= '<div class="col-sm-3"><a href="/blocks/homework/class.php?groupid=' . $group->id . '" class="btn">';
             $r .= $group->coursefullname;
-
             $r .= '<span>' . $group->name . '</span>';
-
-            /*if (!empty($group['teacher'])) {
-                if ($this->hwblock->getMode() != 'student') {
-                    $r .= ' <span style="font-size:9px;">' . $group['name'] . '</span>';
-                }
-                $r .= '</span>';
-
-            } else {
-                $r .= '<span>' . $group['name'] . '</span>';
-            }*/
-
             $r .= '</a></div>';
         }
 
         $r .= '</div>';
-
         $r .= '<div class="clear"></div>';
-
         $r .= '</div>';
         return $r;
     }
 
     /**
-     * Show an array of courses as buttons, with a filter box
+     * Show an array of courses as buttons, with a filter box.
+     *
+     * @param object[] $courses
+     *
+     * @return string
      */
-    public function courseList($courses, $url = 'course.php?courseid=') {
+    public function course_list($courses) {
         global $PAGE;
         $PAGE->requires->js('/blocks/homework/assets/js/bindWithDelay.js');
         $PAGE->requires->js('/blocks/homework/assets/js/filter.js');
@@ -296,11 +341,8 @@ class DisplayManager {
 
         $r .= '<div class="row courses">';
 
-        foreach ($courses as $courseID => $course) {
-            $r .= '<div class="col-sm-3"><a href="' . $url . $courseID . '" class="btn">';
-            //if ($icon) {
-            //	$r .= '<i class="fa fa-' . $icon . '"></i> ';
-            //}
+        foreach ($courses as $courseid => $course) {
+            $r .= '<div class="col-sm-3"><a href="/blocks/homework/course.php?courseid=' . $courseid . '" class="btn">';
             $r .= $course->fullname;
             $r .= '</a></div>';
         }
@@ -312,13 +354,21 @@ class DisplayManager {
         return $r;
     }
 
-    public function studentList() {
+    /**
+     * Output a placeholder for a list of students, with a search box.
+     *
+     * @return string
+     */
+    public function student_list() {
         global $PAGE;
         $PAGE->requires->js('/blocks/homework/assets/js/bindWithDelay.js');
         $PAGE->requires->js('/blocks/homework/assets/js/filter.js');
 
         $r = '<div class="courseList userList">';
-        $r .= '<input type="text" class="filter" placeholder="Type part of a student\'s name or their whole PowerSchool ID to search..." />';
+        $r .= '<input
+            type="text"
+            class="filter"
+            placeholder="Type part of a student\'s name or their whole PowerSchool ID to search..." />';
         $r .= '<div class="row courses"></div>';
         $r .= '<div class="clear"></div>';
         $r .= '</div>';
@@ -326,33 +376,46 @@ class DisplayManager {
     }
 
     /**
-     * Returns HTML for a bootstrap alert
+     * Output a bootstrap alert
+     *
+     * @param string $icon
+     * @param string $bigtext
+     * @param string $littletext
+     *
+     * @return string
      */
-    public function sign($icon, $bigText, $littleText) {
+    public function sign($icon, $bigtext, $littletext) {
         return '<div class="alert alert-info">
 	    		<i class="fa-3x fa fa-' . $icon . ' pull-left"></i>
-	    		<h4>' . $bigText . '</h4>
-	    		<p>' . $littleText . '</p>
+	    		<h4>' . $bigtext . '</h4>
+	    		<p>' . $littletext . '</p>
 	    	</div>';
     }
 
-
     /**
-     * Returns HTML to display a list of homework to do,
-     * optionally organised with headings for a certain field
+     * Output a list of homework to do ooptionally organised with headings for a certain field.
      *
-     * @param headingsForField    Watch this field in each homework item, if the contents of this field is not the same as the last one, a new header will be shown. This should be a field containing a date that can be parsed by strtotime()
-     * @param headingPrefix    Show this text before each heading
-     * @param headingDateFormat    The format to show the date from the headingsForField field
-     * @param showClassName    true or false to show the class (group) name each item is assigned in
+     * @param HomeworkItem[] $homework
+     * @param string|null    $headingsforfield                  Watch this field in each homework item, if the contents of this
+     *                                                          field is not the same as the last one, a new header will be shown.
+     *                                                          This should be a field containing a date that can be parsed by
+     *                                                          strtotime()
+     * @param string|null    $headingprefix                     Show this text before each heading
+     * @param string         $headingdateformat                 The format to show the date from the headingsForField field
+     * @param bool           $showclassname                     true or false to show the class (group) name each item is assigned
+     *                                                          in
+     *
+     * @param bool           $showassigneddates
+     *
+     * @return string
      */
-    public function homeworkList(
-        $homework,
-        $headingsForField = false,
-        $headingPrefix = false,
-        $headingDateFormat = 'l M jS Y',
-        $showClassName = false,
-        $showAssignedDates = true
+    public function homework_list(
+        array $homework,
+        $headingsforfield = null,
+        $headingprefix = null,
+        $headingdateformat = 'l M jS Y',
+        $showclassname = false,
+        $showassigneddates = true
     ) {
         if (count($homework) < 1) {
             return '<div class="nothing">
@@ -360,66 +423,85 @@ class DisplayManager {
 			</div>';
         }
 
-        $r = '<div class="homeworkListContainer">'; //container
+        $r = '<div class="homeworkListContainer">';
 
-        if ($headingsForField) {
-            $inList = false;
-            $lastHeadingFieldValue = 0;
+        $lastheadingfieldvalue = null;
+
+        if ($headingsforfield) {
+            $inlist = false;
         } else {
-            // If the headingsForField headings are NOT used, start the list here
+            // If the headingsForField headings are NOT used, start the list here.
             $r .= '<ul class="homeworkList">';
-            $inList = true;
+            $inlist = true;
         }
 
         foreach ($homework as $hw) {
 
-            // If the headingsForField headers are used, check if it's time for a new heading and start a new list
-            if ($headingsForField && $hw->{$headingsForField} != $lastHeadingFieldValue) {
+            // If the $headingsforfield headers are used, check if it's time for a new heading and start a new list.
+            if ($headingsforfield && $hw->{$headingsforfield} != $lastheadingfieldvalue) {
 
-                if ($inList) {
+                if ($inlist) {
                     $r .= '</ul>';
                 }
 
-                $r .= '<h3 id="' . $hw->{$headingsForField} . '">';
-                $r .= $headingPrefix . date($headingDateFormat, strtotime($hw->{$headingsForField}));
+                $r .= '<h3 id="' . $hw->{$headingsforfield} . '">';
+                $r .= $headingprefix;
+                $r .= date($headingdateformat, strtotime($hw->{$headingsforfield}));
                 $r .= '</h3>';
 
                 $r .= '<ul class="homeworkList">';
-                $inList = true;
-                $lastHeadingFieldValue = $hw->{$headingsForField};
+                $inlist = true;
+                $lastheadingfieldvalue = $hw->{$headingsforfield};
             }
 
-            $r .= $this->homeworkItem($hw, $showClassName, $showAssignedDates);
+            $r .= $this->homework_item($hw, $showclassname, $showassigneddates);
         }
 
-        $r .= '</ul>'; // end list
-        $r .= '</div>'; // end container
+        $r .= '</ul>';
+        $r .= '</div>';
 
         return $r;
     }
 
     /**
-     * Returns the HTML to display a single homework item
+     * Output a single homework item.
+     *
+     * @param HomeworkItem $hw
+     * @param bool         $showclassname
+     * @param bool         $showassigneddates
+     *
+     * @return string
      */
-    private function homeworkItem($hw, $showClassName = false, $showAssignedDates = false) {
+    private function homework_item(HomeworkItem $hw, $showclassname = false, $showassigneddates = false) {
         // Is this item only visible to students in the future?
         $future = $hw->startdate > $this->hwblock->today;
 
         // Should we show the edit / delete buttons?
         // true if the item is a user's private item,
-        // or it's not private and the user is a techer for the course
-        $canEdit = $this->hwblock->canEditHomeworkItem($hw);
+        // or it's not private and the user is a techer for the course.
+        $canedit = $this->hwblock->can_edit_homework_item($hw);
 
         // Is this due in the past?
         $past = $hw->duedate < $this->hwblock->today;
 
-        $r = '<li class="homework ' . ($hw->approved ? 'approved' : 'unapproved') . ($canEdit ? ' canedit' : '') . ($past ? ' past' : '') . ($future ? ' future' : '') . ($hw->private ? ' private' : '') . '" data-id="' . $hw->id . '" data-duedate="' . $hw->duedate . '">';
+        $classes = array(
+            'homework',
+            ($hw->approved ? 'approved' : 'unapproved'),
+            ($canedit ? ' canedit' : ''),
+            ($past ? ' past' : ''),
+            ($future ? ' future' : ''),
+            ($hw->private ? ' private' : '')
+        );
+
+        $r = '<li class="' . implode(' ', $classes) . '" data-id="' . $hw->id . '" data-duedate="' . $hw->duedate . '">';
 
         if (!$hw->private && !$hw->approved) {
-            $r .= '<h5><i class="fa fa-pause"></i> This must be approved by a teacher before it is visible to the whole class.</h5>';
+            $r .= '<h5>
+                <i class="fa fa-pause"></i> This must be approved by a teacher before it is visible to the whole class.
+            </h5>';
         }
 
-        if (!$hw->private && $hw->approved && $this->hwblock->getMode() == 'teacher') {
+        if (!$hw->private && $hw->approved && $this->hwblock->get_mode() == 'teacher') {
             $r .= '<h5><i class="fa fa-check"></i> Approved and visible to the whole class.</h5>';
         }
 
@@ -428,15 +510,17 @@ class DisplayManager {
         }
 
         if ($hw->private) {
-            $r .= '<h5><i class="fa fa-eye-slash"></i> Only ' . $this->getUsername($hw->userid) . ' can see this.</h5>';
+            $r .= '<h5><i class="fa fa-eye-slash"></i> Only ' . $this->get_username($hw->userid) . ' can see this.</h5>';
         }
 
-        // Button for teachers to approve pending homework
+        // Button for teachers to approve pending homework.
         if (!$hw->approved && !$hw->private) {
-            // Only teachers should be seeing this
+            // Only teachers should be seeing this.
             $r .= '<span class="buttons approvalButtons">';
-            $r .= '<span><i class="fa fa-user"></i> Submitted by ' . $hw->userfirstname . ' ' . $hw->userlastname . ' &nbsp;&nbsp; <i class="fa fa-exclamation-triange"></i> Not visible to students until approved</span> &nbsp;';
-            if ($canEdit) {
+            $r .= '<span>
+                <i class="fa fa-user"></i> Submitted by ' . $hw->userfirstname . ' ' . $hw->userlastname . '
+                 &nbsp;&nbsp; <i class="fa fa-exclamation-triange"></i> Not visible to students until approved</span> &nbsp;';
+            if ($canedit) {
                 $r .= '<a class="approveHomeworkButton btn-mini btn btn-success" href="#"><i class="fa fa-check"></i> Approve</a>';
             }
             $r .= '</span>';
@@ -444,70 +528,88 @@ class DisplayManager {
 
         if ($future) {
             $r .= '<span class="buttons approvalButtons">';
-            $r .= '<span><i class="fa fa-pause"></i> Will not appear to students until ' . date('l M jS Y', strtotime($hw->startdate)) . '</span>';
+            $r .= '<span><i class="fa fa-pause"></i> Will not appear to students until ' . date(
+                    'l M jS Y',
+                    strtotime($hw->startdate)) . '</span>';
             $r .= '</span>';
         }
 
-        // Edit buttons
-        if ($canEdit) {
+        // Edit buttons.
+        if ($canedit) {
             $r .= '<span class="buttons editButtons">';
-            $r .= '<a class="btn-mini btn btn-info" href="add.php?action=edit&editid=' . $hw->id . '" title="Edit"><i class="fa fa-pencil"></i> Edit</a>';
-            $r .= '<a class="deleteHomeworkButton btn-mini btn btn-danger" href="#" title="Delete"><i class="fa fa-trash"></i> Delete</a>';
+            $r .= '<a
+                class="btn-mini btn btn-info"
+                href="add.php?action=edit&editid=' . $hw->id . '"
+                title="Edit">
+                <i class="fa fa-pencil"></i> Edit
+                </a>';
+            $r .= '<a class="deleteHomeworkButton btn-mini btn btn-danger" href="#" title="Delete">
+                <i class="fa fa-trash"></i> Delete
+            </a>';
             $r .= '</span>';
         }
 
         $icon = '';
         $r .= '<h5 class="dates">';
 
-        // List of assigned dates
-        if ($showAssignedDates && $assignedStr = $this->showAssignedDates($hw->getAssignedDates())) {
-            $r .= $assignedStr;
+        // List of assigned dates.
+        if ($showassigneddates && $assignedstr = $this->homework_assigned_dates($hw->get_assigned_dates())) {
+            $r .= $assignedstr;
             $r .= ' &nbsp; <i class="fa fa-arrow-right"></i> &nbsp; ';
         }
 
-        // Due date
+        // Due date.
         $r .= '<i class="fa fa-bell"></i> <strong>Due on</strong> ' . date('D M jS Y', strtotime($hw->duedate));
 
         $r .= '</h5>';
 
-        // Course name with link
-        $r .= '<h4><a href="class.php?groupid=' . $hw->groupid . '">' . ($icon ? '<i class="fa fa-' . $icon . '"></i> ' : '') . $hw->coursename . '</a></h4>';
+        // Course name with link.
+        $r .= '<h4><a href="/blocks/homework/class.php?groupid=' . $hw->groupid . '">'
+            . ($icon ? '<i class="fa fa-' . $icon . '"></i> ' : '')
+            . $hw->coursename
+            . '</a></h4>';
 
-        // Class (group) name
-        if ($this->hwblock->getMode() || $showClassName) {
-            $r .= '<h4>' . $hw->getGroupName() . '</h4>';
+        // Class (group) name.
+        if ($this->hwblock->get_mode() || $showclassname) {
+            $r .= '<h4>' . $hw->get_group_name() . '</h4>';
         }
 
-        // Description
+        // Description.
         $r .= '<p>';
 
         if ($hw->title) {
             $r .= '<strong>' . $hw->title . '</strong><br/>';
         }
 
-        $r .= $this->filterText($hw->description);
+        $r .= $this->filter_text($hw->description);
 
-        // Duration
-        $r .= '<span class="duration"><i class="fa fa-clock-o"></i> This should take ' . $this->showDuration($hw->duration) . ' in total.</span>';
+        // Duration.
+        $r .= '<span class="duration"><i class="fa fa-clock-o"></i> This should take ' . $this->homework_duration(
+                $hw->duration) . ' in total.</span>';
 
         $r .= '</p>';
 
-        // Notes
-        if ($notes = $hw->getNotes($this->hwblock->getUserId())) {
-            $notes = $this->filterText($notes);
+        // Notes.
+        if ($notes = $hw->get_notes($this->hwblock->get_user_id())) {
+            $notes = $this->filter_text($notes);
         } else {
             $notes = '';
         }
 
         $r .= '<p class="notes" ' . ($notes ? '' : 'style="display:none;"') . '>' . $notes . '</p>';
 
-
-        if ($this->hwblock->getMode() == 'teacher' || $this->hwblock->getMode() == 'student') {
-            // Edit notes button
+        if ($this->hwblock->get_mode() == 'teacher' || $this->hwblock->get_mode() == 'student') {
+            // Edit notes button.
             $r .= '<span class="buttons noteButtons">';
-            $r .= '<a class="btn-mini btn btn-primary editNotes" href="#"><i class="fa fa-comment"></i> Add Notes</a>';
-            $r .= '<a class="btn-mini btn btn-danger cancelNotes" href="#" style="display:none;"><i class="fa fa-times"></i> Cancel</a>';
-            $r .= '<a class="btn-mini btn btn-success saveNotes" href="#" style="display:none;"><i class="fa fa-save"></i> Save Notes</a>';
+            $r .= '<a class="btn-mini btn btn-primary editNotes" href="#">
+                <i class="fa fa-comment"></i> Add Notes
+                </a>';
+            $r .= '<a class="btn-mini btn btn-danger cancelNotes" href="#" style="display:none;">
+                <i class="fa fa-times"></i> Cancel
+                </a>';
+            $r .= '<a class="btn-mini btn btn-success saveNotes" href="#" style="display:none;">
+                <i class="fa fa-save"></i> Save Notes
+                </a>';
             $r .= '</span>';
         }
 
@@ -517,8 +619,15 @@ class DisplayManager {
         return $r;
     }
 
-    private function showAssignedDates($dates) {
-        // Remove empty dates from array
+    /**
+     * Output the dates a piece of homework is assigned for.
+     *
+     * @param string[] $dates
+     *
+     * @return string
+     */
+    private function homework_assigned_dates($dates) {
+        // Remove empty dates from array.
         foreach ($dates as $i => $date) {
             if (!$date) {
                 unset($dates[$i]);
@@ -536,7 +645,8 @@ class DisplayManager {
 
         // Show the first two dates
         // or three if there are only three
-        // but only two if there are more than three
+        // but only two if there are more than three.
+        $i = 0;
         foreach ($dates as $i => $date) {
 
             if ($i > 0) {
@@ -545,13 +655,13 @@ class DisplayManager {
 
             $output .= date('D M jS', strtotime($date));
 
-            // If there are more than 3 dates and this is the 2nd one, stop
+            // If there are more than 3 dates and this is the 2nd one, stop.
             if ($count > 3 && $i >= 1) {
                 break;
             }
         }
 
-        // Show a 'more' link if there are more than 3 dates
+        // Show a 'more' link if there are more than 3 dates.
         if ($count > 3) {
             $overflow = $count - $i - 1;
             $output .= $joiner . '<a href="#" class="showAllHomeworkDates">' . $overflow . ' more days...</a>';
@@ -562,7 +672,15 @@ class DisplayManager {
         return $output;
     }
 
-    private function showDuration($duration, $short = false) {
+    /**
+     * Output the length of time a homework item should take.
+     *
+     * @param string $duration Duration data from DB.
+     * @param bool   $short
+     *
+     * @return string
+     */
+    private function homework_duration($duration, $short = false) {
         $r = '';
 
         if (stripos('-', $duration)) {
@@ -574,28 +692,33 @@ class DisplayManager {
 
         if ($min == 0 && $max) {
 
-            $r .= 'up to ' . $this->displayMinutes($max, $short);
-
-        } elseif ($max) {
+            $r .= 'up to ' . $this->minutes($max, $short);
+        } else if ($max) {
 
             $r .= $short ? '' : 'between ';
 
-            $r .= $this->displayMinutes($min, $short);
+            $r .= $this->minutes($min, $short);
 
             $r .= $short ? ' to ' : ' and ';
 
-            $r .= $this->displayMinutes($max, $short);
-
+            $r .= $this->minutes($max, $short);
         } else {
 
-            $r .= 'up to ' . $this->displayMinutes($min, $short);
-
+            $r .= 'up to ' . $this->minutes($min, $short);
         }
 
         return $r;
     }
 
-    private function displayMinutes($mins, $short = false) {
+    /**
+     * Format a number of minutes.
+     *
+     * @param int  $mins
+     * @param bool $short
+     *
+     * @return string
+     */
+    private function minutes($mins, $short = false) {
         $hours = floor($mins / 60);
         $mins = $mins % 60;
 
@@ -619,19 +742,24 @@ class DisplayManager {
         return $str;
     }
 
-
     /**
      * Weekly stats view for pastoral staff
+     *
+     * @param HomeworkStats $stats
+     *
+     * @return string
      */
-    public function weekStats(HomeworkStats $stats) {
-        //Build an array of dates for the next fortnight
+    public function week_stats(HomeworkStats $stats) {
+
+        // Build an array of dates for the next fortnight.
+        /** @var HomeworkItem[][] $dates */
         $dates = array();
 
-        $date = clone $stats->getStartDate();
+        $date = clone $stats->get_start_date();
 
-        $dateInterval = $date->diff($stats->getEndDate());
+        $dateinterval = $date->diff($stats->get_end_date());
 
-        for ($i = 0; $i < $dateInterval->d; $i++) {
+        for ($i = 0; $i < $dateinterval->d; $i++) {
 
             if ($date->format('l') != 'Saturday' && $date->format('l') != 'Sunday') {
                 $dates[$date->format('Y-m-d')] = array();
@@ -640,9 +768,9 @@ class DisplayManager {
             $date->modify('+1 day');
         }
 
-        $homework = $stats->getHomework();
+        $homework = $stats->get_homework();
 
-        // Sort the homework into the days it's assigned for
+        // Sort the homework into the days it's assigned for.
         foreach ($homework as $hw) {
             if (isset($dates[$hw->assigneddate])) {
                 $dates[$hw->assigneddate][] = $hw;
@@ -668,16 +796,18 @@ class DisplayManager {
                     $text = $this->truncate($item->description, 30);
                 }
 
-                $assignedDates = $item->getAssignedDates();
-                if ($assignedDates) {
-                    $averageDuration = $item->duration / count($assignedDates);
+                $assigneddates = $item->get_assigned_dates();
+                if ($assigneddates) {
+                    $averageduration = $item->duration / count($assigneddates);
                 } else {
-                    $averageDuration = $item->duration;
+                    $averageduration = $item->duration;
                 }
 
-                $r .= '<p class="col-md-4"><a href="class.php?groupid=' . $item->groupid . '">';
+                $r .= '<p class="col-md-4"><a href="/blocks/homework/class.php?groupid=' . $item->groupid . '">';
                 $r .= ($icon ? '<i class="fa fa-' . $icon . '"></i> ' : '') . $text;
-                $r .= '<br/><strong>' . $this->displayMinutes($item->duration, true) . ' total (' . $this->displayMinutes($averageDuration, true) . ' today)</strong>';
+                $r .= '<br/><strong>' . $this->minutes($item->duration, true) . ' total (' . $this->minutes(
+                        $averageduration,
+                        true) . ' today)</strong>';
                 $r .= '</a></p>';
             }
 
@@ -690,38 +820,59 @@ class DisplayManager {
         return $r;
     }
 
-
-    function icalFeedBox($button = true) {
-        // Feed link
+    /**
+     * Output a box with the current user's iCal feed URL.
+     *
+     * @param bool $button Add a help button
+     *
+     * @return string
+     */
+    public function ical_feed_box($button = true) {
         $r = '<div class="feedLink">';
         $text = 'You can see due dates for your homework in iCal by adding this URL.';
         if ($button) {
-            $text .= ' <a class="btn btn-mini btn-primary" href="icalfeed.php">Click here to learn how</a>';
+            $text .= ' <a class="btn btn-mini btn-primary" href="/blocks/homework/icalfeed.php">Click here to learn how</a>';
         }
-        $text .= '<input type="text" readonly="readonly" value="' . $this->hwblock->feeds->generateFeedURL() . '"/>';
+        $text .= '<input type="text" readonly="readonly" value="' . $this->hwblock->feeds->generate_feed_url() . '"/>';
         $r .= $this->sign('calendar', 'iCal Feed', $text);
         $r .= '</dv>';
         return $r;
     }
 
     /**
-     * Utility functions...
-     */
-
-    /**
      * Returns an s to pluralize a word depending on if the given number is greater than 1
+     *
+     * @param int $num
+     *
+     * @return string
      */
     private function s($num) {
         return $num == 1 ? '' : 's';
     }
 
-    public function filterText($text) {
+    /**
+     * Escape a string.
+     *
+     * @param string $text
+     *
+     * @return string
+     */
+    public function filter_text($text) {
         $text = htmlentities($text, ENT_COMPAT, 'UTF-8', false);
         $text = nl2br($text);
-        $text = $this->parseURLs($text);
+        $text = $this->parse_urls($text);
         return $text;
     }
 
+    /**
+     * Truncate a string
+     *
+     * @param string $text
+     * @param int    $limit
+     * @param string $append
+     *
+     * @return string
+     */
     public function truncate($text, $limit, $append = '...') {
         if ($limit < 1) {
             return '';
@@ -733,8 +884,15 @@ class DisplayManager {
         }
     }
 
-    //Shows beginning and end of URL. Cuts out the middle
-    function truncateURL($text, $limit, $append = '...') {
+    /**
+     * Shows beginning and end of URL. Cuts out the middle.
+     *
+     * @param string $text
+     * @param int    $limit
+     *
+     * @return string
+     */
+    public function truncate_url($text, $limit) {
         if ($limit < 1) {
             return '';
         }
@@ -751,36 +909,61 @@ class DisplayManager {
 
     /**
      * Turn URLs into anchor tags, and images into images
+     *
+     * @param string $text
+     * @param int    $maxurllen
+     * @param string $target
+     * @param bool   $embedimages
+     *
+     * @return mixed
      */
-    public function parseURLs($text, $maxurl_len = 50, $target = "_blank", $embedImages = true) {
+    public function parse_urls($text, $maxurllen = 50, $target = "_blank", $embedimages = true) {
         if (preg_match_all('/((ht|f)tps?:\/\/([\w\.]+\.)?[\w-]+(\.[a-zA-Z]{2,4})?[^\s\r\n"\'<>]+)/si', $text, $urls)) {
 
             foreach (array_unique($urls[1]) as $url) {
 
-                $urltext = $this->truncateURL($url, $maxurl_len);
+                $urltext = $this->truncate_url($url, $maxurllen);
 
-                // Images
-                if ($embedImages && $this->isURLImage($url)) {
-                    $text = str_replace($url, '<a href="' . $url . '" target="' . $target . '" class="embeddedPhoto"><img src="' . $url . '"  /></a>', $text);
+                // Images.
+                if ($embedimages && $this->is_url_image($url)) {
+                    $text = str_replace(
+                        $url,
+                        '<a href="' . $url . '" target="' . $target . '" class="embeddedPhoto"><img src="' . $url . '"  /></a>',
+                        $text);
                     continue;
                 }
 
-                $text = str_replace($url, '<a href="' . $url . '" target="' . $target . '" title="' . $url . '" rel="nofollow">' . $urltext . '</a>', $text);
-
+                $text = str_replace(
+                    $url,
+                    '<a href="' . $url . '" target="' . $target . '" title="' . $url . '" rel="nofollow">' . $urltext . '</a>',
+                    $text);
             }
         }
 
         return $text;
     }
 
-    private function isURLImage($url) {
+    /**
+     * Check if a URL is for an image file (based on the extension)
+     *
+     * @param string $url
+     *
+     * @return bool
+     */
+    private function is_url_image($url) {
         $ext = strtolower(substr($url, strrpos($url, '.')));
         return $ext == '.jpg' || $ext == '.png' || $ext == '.gif' || $ext == '.bmp';
     }
 
-    private function getUsername($userid) {
+    /**
+     * Returns the username for a user ID.
+     *
+     * @param int $userid
+     *
+     * @return string|bool
+     */
+    private function get_username($userid) {
         global $DB;
         return $DB->get_field('user', 'username', array('id' => $userid));
     }
-
 }

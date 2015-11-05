@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Capabilities for homework block.
+ *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -24,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
 
-    // Ability to add a homework block to a page
+    // Ability to add a homework block to a page.
     'block/homework:addinstance'     => array(
         'captype'              => 'write',
         'contextlevel'         => CONTEXT_BLOCK,
@@ -43,7 +45,7 @@ $capabilities = array(
         ),
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
-    // Ability to approve homework
+    // Ability to approve homework.
     'block/homework:approvehomework' => array(
         'captype'              => 'write',
         'contextlevel'         => CONTEXT_COURSE,
@@ -54,7 +56,7 @@ $capabilities = array(
         ),
         'clonepermissionsfrom' => 'moodle/course:manageactivities'
     ),
-    // Ability to add homework
+    // Ability to add homework.
     'block/homework:addhomework'     => array(
         'captype'      => 'write',
         'contextlevel' => CONTEXT_COURSE,

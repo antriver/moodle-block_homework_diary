@@ -22,12 +22,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require 'include/header.php';
+require('include/header.php');
 echo $OUTPUT->header();
 
 echo $hwblock->display->tabs('classes');
 
-switch ($hwblock->getMode()) {
+switch ($hwblock->get_mode()) {
 
     case 'pastoral-student':
     case 'student':
@@ -37,9 +37,12 @@ switch ($hwblock->getMode()) {
         /**
          * Show the timetable view of the student's homework due in the next 2 weeks
          */
-        echo $hwblock->display->sign('group', 'View by Class', 'Find a summary of homework information (including upcoming and due) by class only.');
-        $groups = $hwblock->groups->getAllUsersGroups($hwblock->getUserId());
-        echo $hwblock->display->classList($groups);
+        echo $hwblock->display->sign(
+            'group',
+            'View by Class',
+            'Find a summary of homework information (including upcoming and due) by class only.');
+        $groups = $hwblock->groups->get_all_users_groups($hwblock->get_user_id());
+        echo $hwblock->display->class_list($groups);
 
         break;
 
@@ -49,8 +52,8 @@ switch ($hwblock->getMode()) {
          * Show all classes in the school
          */
         echo '<h2><i class="fa fa-group"></i> All Classes</h2>';
-        $groups = $hwblock->groups->getAllGroups();
-        echo $hwblock->display->classList($groups);
+        $groups = $hwblock->groups->get_all_groups();
+        echo $hwblock->display->class_list($groups);
 
         break;
 }

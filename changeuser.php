@@ -15,19 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Set the current user for the homework block (for admin staff or parents viewing another student)
+ *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require '../../config.php';
+require('../../config.php');
 $userid = required_param('userid', PARAM_INT);
 
-//TODO: Permissions check here?
+// TODO: Permissions check here?
 
-if ($SESSION->homeworkBlockMode == 'pastoral') {
-    $SESSION->homeworkBlockMode = 'pastoral-student';
+if ($SESSION->homeworkblockmode == 'pastoral') {
+    $SESSION->homeworkblockmode = 'pastoral-student';
 }
 
-$SESSION->homeworkBlockUser = $userid;
+$SESSION->homeworkblockuser = $userid;
 header('Location: index.php');

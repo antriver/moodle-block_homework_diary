@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Class for calculating stats about a set of courseids
+ * Class for calculating reports about a set of courseids
  *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
@@ -24,69 +24,139 @@
 
 namespace block_homework;
 
+use DateTime;
+
+/**
+ * Class for calculating reports about a set of courseids
+ *
+ * @package    block_homework
+ * @copyright  Anthony Kuske <www.anthonykuske.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class HomeworkStats {
-    private $courseIDs;
-    private $groupIDs;
-    private $startDate;
-    private $endDate;
+
+    /**
+     * @var array
+     */
+    private $courseids = array();
+
+    /**
+     * @var array
+     */
+    private $groupids = array();
+
+    /**
+     * @var DateTime
+     */
+    private $startdate;
+
+    /**
+     * @var DateTime
+     */
+    private $enddate;
+
+    /**
+     * @var Block
+     */
     private $hwblock;
 
-    function __construct($hwblock) {
+    /**
+     * Constructor.
+     *
+     * @param Block $hwblock
+     */
+    public function __construct(Block $hwblock) {
         $this->hwblock = $hwblock;
-        $this->startDate = new \DateTime('monday this week');
-        $this->endDate = new \DateTime('sunday this week');
+        $this->startdate = new DateTime('monday this week');
+        $this->enddate = new DateTime('sunday this week');
     }
 
-    function setCourseIDs($courseIDs) {
-        $this->courseIDs = $courseIDs;
+    /**
+     * Set the course IDs to limit the report to.
+     *
+     * @param array $courseids
+     */
+    public function set_course_ids(array $courseids) {
+        $this->courseids = $courseids;
     }
 
-    function getCourseIDs() {
-        return $this->courseIDs;
+    /**
+     * Get the course IDs the report is limited to.
+     *
+     * @return array
+     */
+    public function get_course_ids() {
+        return $this->courseids;
     }
 
-    function setGroupIDs($groupIDs) {
-        $this->groupIDs = $groupIDs;
+    /**
+     * Set the group IDs to limit the report to.
+     *
+     * @param array $groupids
+     */
+    public function set_group_ids(array $groupids) {
+        $this->groupids = $groupids;
     }
 
-    function getGroupIDs() {
-        return $this->groupIDs;
+    /**
+     * Get the group IDs the report is limited to.
+     *
+     * @return array
+     */
+    public function get_group_ids() {
+        return $this->groupids;
     }
 
     /**
      * Set the date range to calculate stats for
-     * @param string $startDate Y-m-d format
-     * @param string $endDate Y-m-d format
+     *
+     * @param DateTime $startdate
+     * @param DateTime $enddate
      */
-    function setDates(\DateTime $startDate, \DateTime $endDate) {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
+    public function set_dates(DateTime $startdate, DateTime $enddate) {
+        $this->startdate = $startdate;
+        $this->enddate = $enddate;
     }
 
-    function getStartDate() {
-        return $this->startDate;
+    /**
+     * Get the start date of the report.
+     *
+     * @return DateTime
+     */
+    public function get_start_date() {
+        return $this->startdate;
     }
 
-    function getEndDate() {
-        return $this->endDate;
+    /**
+     * Get the end date of the report.
+     *
+     * @return DateTime
+     */
+    public function get_end_date() {
+        return $this->enddate;
     }
 
-    function getHomework() {
-        $assignedRangeStart = $this->startDate->format('Y-m-d');
-        $assignedRangeEnd = $this->endDate->format('Y-m-d');
+    /**
+     * Fetch the homework items that apply to the given criteria (date ranges etc.)
+     *
+     * @return HomeworkItem[]
+     */
+    public function get_homework() {
+        $assignedrangestart = $this->startdate->format('Y-m-d');
+        $assignedrangeend = $this->enddate->format('Y-m-d');
         $distinct = false;
-        $homework = $this->hwblock->getHomework(
-            $this->groupIDs, //groupIDs
-            $this->courseIDs, //courseIDs
-            null, //assignedFor
-            true, //approved
-            false, //distinct
-            null, //past
-            null, //dueDate
-            null, //order
-            $assignedRangeStart,
-            $assignedRangeEnd,
-            false //exclude private
+        $homework = $this->hwblock->get_homework(
+            $this->groupids,
+            $this->courseids,
+            null,
+            true,
+            $distinct,
+            null,
+            null,
+            null,
+            $assignedrangestart,
+            $assignedrangeend,
+            false
         );
         return $homework;
     }

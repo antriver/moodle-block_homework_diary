@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * English language strings for homework diary.
+ *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,11 +29,12 @@ $string['pagetitle'] = 'Homework';
 $string['homework:addinstance'] = 'Add a homework block';
 $string['homework:myaddinstance'] = 'Add a homework block to my moodle';
 
-
 $string['settings_smooth_scroll_name'] = 'Smooth Scrolling';
 $string['settings_smooth_scroll_desc'] = 'Scroll smoothly instead of jumping when clicking on a date on the timetable page.';
 
-// Admin settings
+/**
+ * Admin settings
+ */
 $string['settings_course_category_name'] = 'Course Category';
 $string['settings_course_category_desc'] = 'Only show courses from this category in the homework diary.';
 
@@ -45,7 +48,8 @@ $string['settings_parent_cohort_name'] = 'Parent Cohort';
 $string['settings_parent_cohort_desc'] = 'Users in this cohort will be considered parents in the homework diary.';
 
 $string['settings_secretary_cohort_name'] = 'Secretary Cohort';
-$string['settings_secretary_cohort_desc'] = 'Users in this cohort will be considered secretaries / pastoral staff in the homework diary.';
+$string['settings_secretary_cohort_desc'] = 'Users in this cohort will be considered
+secretaries / pastoral staff in the homework diary.';
 
 $string['settings_additional_html_heading_name'] = 'Additional HTML';
 $string['settings_additional_html_heading_desc'] = '';

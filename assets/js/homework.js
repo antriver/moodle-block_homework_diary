@@ -21,7 +21,7 @@ $(document).on('click', '.showAllHomeworkDates', function(e){
 
 		ul += '<li><i class="fa fa-thumb-tack"></i> <strong>To do on...</strong></li>';
 
-		for (var i in dates) {
+        for (var i = 0; i < dates.length; i++) {
 			var date = dates[i];
 			ul += '<li>' + formatDate('D M jS', new Date(date)) + '</li>';
 		}
@@ -85,7 +85,7 @@ $(document).on('click', '.editNotes', function(e){
 	});
 
 	var text = notesP.text();
-	var textarea = $('<textarea/>').val(text);
+	var textarea = $('<textarea></textarea>').val(text);
 
 	$(notesP).html(textarea);
 	$(notesP).show();
@@ -132,9 +132,6 @@ $(document).on('click', '.cancelNotes', function(e){
 });
 
 $(document).on('click', '.saveNotes', function(e){
-	e.preventDefault();
-	var hw = $(this).closest('.homework');
-
 	e.preventDefault();
 
 	var btn = $(this);
@@ -293,7 +290,7 @@ $(document).on('click', '.addHomeworkPrivateToggle a', function(e) {
 	if (value == 1) {
 		$('#groupIDSelelect').append('<option value="-1">Other / Not Applicable</option>');
 	} else {
-		$('#groupIDSelelect').find('option[value=-1]').remove();
+		$('#groupIDSelelect').find('option[value="-1"]').remove();
 	}
 });
 
@@ -397,14 +394,16 @@ function setPossibleDays() {
 
 	var days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 	for (var day in days) {
-		html += '<li><span>' + days[day] + '</span></li>';
+        if (days.hasOwnProperty(day)) {
+            html += '<li><span>' + days[day] + '</span></li>';
+        }
 	}
 
-	for (var i in possibleDates) {
+    for (var i = 0; i < possibleDates.length; i++) {
 		var date = possibleDates[i];
 
 		if (i === '0' && formatDate('N', date) !== '1') {
-			for (pad = 1; pad < parseInt(formatDate('N', date)); pad++) {
+			for (var pad = 1; pad < parseInt(formatDate('N', date)); pad++) {
 				html += '<li></li>';
 			}
 		}
@@ -419,14 +418,14 @@ function setPossibleDays() {
 	updateSelectedDates();
 }
 
-if (typeof(homeworkFormAssignedDates) === 'undefined') {
+if (typeof homeworkFormAssignedDates === 'undefined') {
 	var homeworkFormAssignedDates = [];
 } else {
 	$(document).ready(setPossibleDays);
 }
 function updateSelectedDates() {
 	homeworkFormAssignedDates = [];
-	$('#possibleDays .btn.active').each(function(){
+	$('#possibleDays').find('.btn.active').each(function(){
 		homeworkFormAssignedDates.push($(this).attr('data-date'));
 	});
 	$('#assigneddates').val(homeworkFormAssignedDates.join(','));
@@ -537,9 +536,9 @@ function studentSearch() {
 
 		} else {
 
-			for (var i in res.users) {
+            for (var i = 0; i < res.users.length; i++) {
 				var user = res.users[i];
-				html += '<div class="col-sm-3"><a href="changeuser.php?userid=' + user.id + '" class="btn">';
+				html += '<div class="col-sm-3"><a href="/blocks/homework/changeuser.php?userid=' + user.id + '" class="btn">';
 					html += user.firstname + ' ' + user.lastname;
 					//html += '<span>' + user.idnumber + '&nbsp;</span>';
 				html += '</a></div>';

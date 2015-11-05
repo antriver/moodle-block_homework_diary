@@ -15,15 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Set the current user mode for the homework block.
+ *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require 'include/header.php';
+require('include/header.php');
 
 $mode = required_param('mode', PARAM_RAW);
-if ($hwblock->setMode($mode)) {
+if ($hwblock->set_mode($mode)) {
     redirect('/blocks/homework');
 } else {
     die('Invalid mode.');

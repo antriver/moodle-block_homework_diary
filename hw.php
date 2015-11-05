@@ -22,8 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define('PUBLIC', true);
-require 'include/header.php';
+define('PUBLIC_ACCESS', true);
+require('include/header.php');
 
 $id = required_param('id', PARAM_INT);
 
@@ -32,6 +32,6 @@ echo $hwblock->display->tabs();
 
 $hw = \block_homework\HomeworkItem::load($id);
 
-echo $hwblock->display->homeworkList(array($hw));
+echo $hwblock->display->homework_list(array($hw));
 
 echo $OUTPUT->footer();

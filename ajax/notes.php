@@ -15,34 +15,35 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Update student notes for a homework item.
+ *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once dirname(dirname(dirname(__DIR__))) . '/config.php';
+require_once(dirname(dirname(dirname(__DIR__))) . '/config.php');
 
 require_login();
 
-// Include the goodies for this block
+// Include the goodies for this block.
 $hwblock = new \block_homework\Block;
 
 $action = required_param('action', PARAM_RAW);
-$homeworkID = required_param('homeworkid', PARAM_RAW);
+$homeworkid = required_param('homeworkid', PARAM_RAW);
 $notes = required_param('notes', PARAM_RAW);
 
-// Get the item
-$hw = \block_homework\HomeworkItem::load($homeworkID);
+// Get the item.
+$hw = \block_homework\HomeworkItem::load($homeworkid);
 
 switch ($action) {
 
     case 'save':
         $response = array(
-            'success' => $hw->setNotes($hwblock->getUserId(), $notes),
-            'text'    => $hwblock->display->filterText($notes)
+            'success' => $hw->set_notes($hwblock->get_user_id(), $notes),
+            'text'    => $hwblock->display->filter_text($notes)
         );
         break;
-
 }
 
 header('Cache-Control: no-cache, must-revalidate');

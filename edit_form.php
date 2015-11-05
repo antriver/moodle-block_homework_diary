@@ -15,12 +15,29 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Settings for adding an instance of a homework block.
+ *
+ * @package    block_homework
+ * @copyright  Anthony Kuske <www.anthonykuske.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+/**
+ * Settings for adding an instance of a homework block.
+ *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_homework_edit_form extends block_edit_form {
 
+    /**
+     * Creates form fields specific to this type of block.
+     *
+     * @param object $mform
+     *
+     * @throws coding_exception
+     */
     protected function specific_definition($mform) {
 
         // Section header title according to language file.
@@ -29,8 +46,6 @@ class block_homework_edit_form extends block_edit_form {
         // A sample string variable with a default value.
         $mform->addElement('text', 'config_text', get_string('blockstring', 'block_homework'));
         $mform->setDefault('config_text', 'default value');
-        $mform->setType('config_text', PARAM_MULTILANG);
-
+        $mform->setType('config_text', PARAM_TEXT);
     }
-
 }

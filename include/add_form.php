@@ -15,36 +15,42 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Displays the form for adding homework.
+ *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$mode = $hwblock->getMode();
+$mode = $hwblock->get_mode();
 
-// Get all the user's classes
-$groups = $hwblock->groups->getAllUsersGroups($USER->id);
+// Get all the user's classes.
 
-$selectedCourseID = '';
-$selectedGroupID = '';
-if (isset($editItem)) {
-    $selectedGroupID = $editItem->groupid;
-} elseif (!empty($_GET['groupid'])) {
-    $selectedGroupID = $_GET['groupid'];
+/** @var object $USER */
+$groups = $hwblock->groups->get_all_users_groups($USER->id);
+
+$selectedcourseid = '';
+$selectedgroupid = '';
+if (isset($editiem)) {
+    $selectedgroupid = $editiem->groupid;
+} else if (!empty($_GET['groupid'])) {
+    $selectedgroupid = $_GET['groupid'];
 }
 ?>
 
 <form class="form form-horizontal addHomeworkForm" role="form" method="post">
 
-<?php if (FORMACTION == 'edit') { ?>
-    <input type="hidden" name="editid" value="<?= $editItem->id ?>"/>
-<?php } ?>
+<?php if (FORMACTION == 'edit') {
+    ?>
+    <input type="hidden" name="editid" value="<?php echo $editiem->id; ?>"/>
+<?php
+} ?>
 
-<input type="hidden" name="action" value="<?= (FORMACTION == 'edit' ? 'saveedit' : 'save') ?>"/>
+<input type="hidden" name="action" value="<?php echo(FORMACTION == 'edit' ? 'saveedit' : 'save'); ?>"/>
 
 <?php if ($mode == 'student') {
 
-    if (FORMACTION == 'edit' && $editItem->private) {
+    if (FORMACTION == 'edit' && $editiem->private) {
         $private = 1;
     } else {
         $private = 0;
@@ -57,46 +63,63 @@ if (isset($editItem)) {
         <div class="col-md-9">
             <div class="row addHomeworkPrivateToggle">
                 <div class="col-md-6">
-                    <a class="btn btn-block <?= (!$private ? 'active' : '') ?> publicHomeworkButton" data-value="0" href="#"><i
-                            class="fa fa-group"></i><br/><b>Everybody in the Class</b><br/>(Everyone can see after teacher approves)</a>
+                    <a
+                        class="btn btn-block <?php echo(!$private ? 'active' : ''); ?> publicHomeworkButton"
+                        data-value="0"
+                        href="#">
+                        <i class="fa fa-group"></i>
+                        <br/><b>Everybody in the Class</b>
+                        <br/>(Everyone can see after teacher approves)
+                    </a>
                 </div>
                 <div class="col-md-6">
-                    <a class="btn btn-block  <?= ($private ? 'active' : '') ?> privateHomeworkButton" data-value="1" href="#"><i
-                            class="fa fa-user"></i><br/><b>Just Me</b><br/>(Only you see it, no teacher approval needed)</a>
+                    <a
+                        class="btn btn-block  <?php echo($private ? 'active' : ''); ?> privateHomeworkButton"
+                        data-value="1"
+                        href="#">
+                        <i class="fa fa-user"></i>
+                        <br/><b>Just Me</b>
+                        <br/>(Only you see it, no teacher approval needed)</a>
                 </div>
             </div>
         </div>
     </div>
-<? } ?>
-<input type="hidden" name="private" value="<?= $private ?>"/>
+<?php
+} ?>
+<input type="hidden" name="private" value="<?php echo $private; ?>"/>
 
 
 <div class="form-group">
-    <label for="assigned" class="col-md-3 control-label">Class:</label>
+    <label for="groupIDSelelect" class="col-md-3 control-label">Class:</label>
 
     <div class="col-md-9">
         <select name="groupid" class="form-control" id="groupIDSelelect">
             <option value="">Please select...</option>
             <?php
-            foreach ($groups as $groupID => $group) {
-                // TODO: Ability to pass courseid in the URL and select the first group in the course
-                echo '<option value="' . $group->id . '" data-courseid="' . $group->courseid . '" ' . ($group->id == $selectedGroupID ? 'selected' : '') . '>';
+            foreach ($groups as $groupid => $group) {
+                // TODO: Ability to pass courseid in the URL and select the first group in the course.
+                echo '<option
+                    value="' . $group->id . '"
+                    data-courseid="' . $group->courseid . '" ' . ($group->id == $selectedgroupid ? 'selected' : '') . '>';
 
                 echo $group->coursefullname;
 
                 echo ' - ' . $group->name;
 
-                if ($group->id == $selectedGroupID) {
-                    $selectedCourseID = $group->courseid;
+                if ($group->id == $selectedgroupid) {
+                    $selectedcourseid = $group->courseid;
                 }
                 echo '</option>';
             }
             if ($private) {
-                echo '<option value="-1" ' . ($private && !$selectedGroupID ? 'selected' : '') . '>Other / Not Applicable</option>';
+                echo '<option value="-1" ' . ($private && !$selectedgroupid ? 'selected' : '') . '>Other / Not Applicable</option>';
             }
             ?>
         </select>
-        <input type="hidden" name="courseid" value="<?= (FORMACTION == 'edit' ? $editItem->courseid : $selectedCourseID) ?>"/>
+        <input
+            type="hidden"
+            name="courseid"
+            value="<?php echo(FORMACTION == 'edit' ? $editiem->courseid : $selectedcourseid); ?>"/>
 
     </div>
 </div>
@@ -106,7 +129,7 @@ if (isset($editItem)) {
 
     <div class="col-md-9">
         <input type="text" id="title" name="title" class="form-control" placeholder="Title of the assignment"
-               value="<?= (FORMACTION == 'edit' ? $editItem->title : '') ?>"/>
+               value="<?php echo(FORMACTION == 'edit' ? $editiem->title : ''); ?>"/>
     </div>
 </div>
 
@@ -115,24 +138,24 @@ if (isset($editItem)) {
 
     <div class="col-md-9">
         <textarea name="description" class="form-control" placeholder="What is the homework?"
-                  rows="10"><?= (FORMACTION == 'edit' ? $editItem->description : '') ?></textarea>
+                  rows="10"><?php echo(FORMACTION == 'edit' ? $editiem->description : ''); ?></textarea>
     </div>
 </div>
 
 <?php
 if ($mode == 'student') {
-    // Visible date hidden for students
-    $hideStartDate = true;
+    // Visible date hidden for students.
+    $hidestartdate = true;
 } else {
-    $hideStartDate = false;
+    $hidestartdate = false;
 }
 ?>
-<div class="form-group" <?= ($hideStartDate ? 'style="display:none;"' : '') ?>>
-    <label for="assigned" class="col-md-3 control-label">Visible From:</label>
+<div class="form-group" <?php echo($hidestartdate ? 'style="display:none;"' : ''); ?>>
+    <label for="startdate" class="col-md-3 control-label">Visible From:</label>
 
     <div class="col-md-9">
         <input type="text" id="startdate" name="startdate" class="form-control"
-               value="<?= (FORMACTION == 'edit' ? $editItem->startdate : date('Y-m-d')) ?>"/>
+               value="<?php echo(FORMACTION == 'edit' ? $editiem->startdate : date('Y-m-d')); ?>"/>
 
         <p class="help-block">(Students won't see this on their page until this date)</p>
         <script>
@@ -161,7 +184,7 @@ if ($mode == 'student') {
     <div class="col-md-9">
         <input type="text" id="duedate" name="duedate" class="form-control"
                placeholder="Enter a date the assignment should be handed in by. (YYYY-MM-DD)"
-               value="<?= (FORMACTION == 'edit' ? $editItem->duedate : '') ?>"/>
+               value="<?php echo(FORMACTION == 'edit' ? $editiem->duedate : ''); ?>"/>
         <script>
             $(function () {
                 $('#duedate').datepicker({
@@ -190,8 +213,8 @@ if ($mode == 'student') {
 </div>
 
 <?php if (FORMACTION == 'edit') {
-    // Show the assigned day toggle buttons on pageload if editing and existing item
-    echo '<script> var homeworkFormAssignedDates = ' . json_encode($editItem->getAssignedDates()) . '; </script>';
+    // Show the assigned day toggle buttons on pageload if editing and existing item.
+    echo '<script> var homeworkFormAssignedDates = ' . json_encode($editiem->get_assigned_dates()) . '; </script>';
 } ?>
 
 <div class="form-group">
@@ -219,7 +242,7 @@ if ($mode == 'student') {
                     135: '2 hours 15 minutes',
                     150: '2 hours 30 minutes',
                     165: '2 hours 45 minutes',
-                    180: '3 or more hours',
+                    180: '3 or more hours'
                 };
 
                 function setDuration(mins) {
@@ -234,9 +257,9 @@ if ($mode == 'student') {
 
                 <?php
                     if (FORMACTION == 'edit') {
-                        $initialMinDuration = $editItem->duration;
+                        $initialminduration = $editiem->duration;
                     } else {
-                        $initialMinDuration = 30;
+                        $initialminduration = 30;
                     }
                 ?>
 
@@ -244,22 +267,22 @@ if ($mode == 'student') {
                     min: 0,
                     step: 15,
                     max: 180,
-                    values: [<?=$initialMinDuration?>],
+                    values: [<?php echo $initialminduration; ?>],
                     slide: function (event, ui) {
                         setDuration(ui.values);
                     }
                 });
 
-                setDuration(<?=$initialMinDuration?>);
+                setDuration(<?php echo $initialminduration; ?>);
             });
         </script>
     </div>
 </div>
 
 <?php
-if ($mode == 'teacher' && FORMACTION == 'edit' && !$editItem->approved) {
+if ($mode == 'teacher' && FORMACTION == 'edit' && !$editiem->approved) {
     $label = 'Save and Approve';
-} elseif (FORMACTION == 'edit') {
+} else if (FORMACTION == 'edit') {
     $label = 'Save Changes';
 } else {
     $label = 'Submit';
@@ -268,7 +291,7 @@ if ($mode == 'teacher' && FORMACTION == 'edit' && !$editItem->approved) {
 
 <div class="form-group">
     <div class="col-md-offset-3 col-md-5">
-        <button type="submit" class="btn btn-lg"><?= $label ?></button>
+        <button type="submit" class="btn btn-lg"><?php echo $label; ?></button>
     </div>
 </div>
 
