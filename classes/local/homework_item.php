@@ -145,7 +145,7 @@ class homework_item {
     /**
      * Save a user's notes about this item
      *
-     * @param int $userid
+     * @param int    $userid
      * @param string $notes
      *
      * @return bool|int
@@ -273,7 +273,7 @@ class homework_item {
      * @param bool $simple
      *
      * @throws \Exception
-     * @return \block_homework\homework_item
+     * @return homework_item
      */
     public static function load($homeworkid, $simple = false) {
         global $DB;

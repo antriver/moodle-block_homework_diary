@@ -24,8 +24,6 @@
 
 namespace block_homework\local;
 
-use block_homework\local\homework_item;
-use block_homework\local\homework_stats;
 use DateTime;
 
 /**
@@ -237,7 +235,7 @@ class display_manager {
      * Index page for students.
      *
      * @param homework_item[] $homework
-     * @param bool           $hashlinks
+     * @param bool            $hashlinks
      *
      * @return string
      */
@@ -398,16 +396,16 @@ class display_manager {
      * Output a list of homework to do ooptionally organised with headings for a certain field.
      *
      * @param homework_item[] $homework
-     * @param string|null    $headingsforfield                  Watch this field in each homework item, if the contents of this
+     * @param string|null     $headingsforfield                 Watch this field in each homework item, if the contents of this
      *                                                          field is not the same as the last one, a new header will be shown.
      *                                                          This should be a field containing a date that can be parsed by
      *                                                          strtotime()
-     * @param string|null    $headingprefix                     Show this text before each heading
-     * @param string         $headingdateformat                 The format to show the date from the headingsForField field
-     * @param bool           $showclassname                     true or false to show the class (group) name each item is assigned
+     * @param string|null     $headingprefix                    Show this text before each heading
+     * @param string          $headingdateformat                The format to show the date from the headingsForField field
+     * @param bool            $showclassname                    true or false to show the class (group) name each item is assigned
      *                                                          in
      *
-     * @param bool           $showassigneddates
+     * @param bool            $showassigneddates
      *
      * @return string
      */
@@ -469,8 +467,8 @@ class display_manager {
      * Output a single homework item.
      *
      * @param homework_item $hw
-     * @param bool         $showclassname
-     * @param bool         $showassigneddates
+     * @param bool          $showclassname
+     * @param bool          $showassigneddates
      *
      * @return string
      */

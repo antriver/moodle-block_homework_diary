@@ -24,8 +24,6 @@
 
 namespace block_homework\local;
 
-use block_homework\local\block;
-
 /**
  * Handles interacting with Moodle groups.
  *

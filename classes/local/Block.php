@@ -24,10 +24,6 @@
 
 namespace block_homework\local;
 
-use block_homework\local\display_manager;
-use block_homework\local\feed_manager;
-use block_homework\local\group_manager;
-use block_homework\local\homework_item;
 use context_course;
 use context_coursecat;
 
