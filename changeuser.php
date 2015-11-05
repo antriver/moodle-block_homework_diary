@@ -26,7 +26,7 @@ $userid = required_param('userid', PARAM_INT);
 //TODO: Permissions check here?
 
 if ($SESSION->homeworkBlockMode == 'pastoral') {
-	$SESSION->homeworkBlockMode = 'pastoral-student';
+    $SESSION->homeworkBlockMode = 'pastoral-student';
 }
 
 $SESSION->homeworkBlockUser = $userid;

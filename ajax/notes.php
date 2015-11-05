@@ -36,12 +36,12 @@ $hw = \block_homework\HomeworkItem::load($homeworkID);
 
 switch ($action) {
 
-	case 'save':
-		$response = array(
-			'success' => $hw->setNotes($hwblock->getUserId(), $notes),
-			'text' => $hwblock->display->filterText($notes)
-		);
-		break;
+    case 'save':
+        $response = array(
+            'success' => $hw->setNotes($hwblock->getUserId(), $notes),
+            'text'    => $hwblock->display->filterText($notes)
+        );
+        break;
 
 }
 

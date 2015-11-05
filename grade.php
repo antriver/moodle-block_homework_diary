@@ -38,29 +38,29 @@ echo $hwblock->display->tabs('grades');
 
 switch ($hwblock->getMode()) {
 
-	case 'pastoral':
+    case 'pastoral':
 
-		echo $hwblock->display->sign('calendar', "Grade {$grade} Overview", "This page shows homework assigned this week for grade {$grade} classes.");
+        echo $hwblock->display->sign('calendar', "Grade {$grade} Overview", "This page shows homework assigned this week for grade {$grade} classes.");
 
-		// Load classes in this grade
+        // Load classes in this grade
 
-		$groups = $hwblock->getAllGroups($grade);
-		$groupIDs = $hwblock->extractGroupIDsFromTimetable($groups);
+        $groups = $hwblock->getAllGroups($grade);
+        $groupIDs = $hwblock->extractGroupIDsFromTimetable($groups);
 
-		$stats = new \block_homework\HomeworkStats($hwblock);
-		$stats->setGroupIDs($groupIDs);
+        $stats = new \block_homework\HomeworkStats($hwblock);
+        $stats->setGroupIDs($groupIDs);
 
-		echo $hwblock->display->weekStats($stats);
+        echo $hwblock->display->weekStats($stats);
 
-		// Show classes in this grade
+        // Show classes in this grade
 
-		echo '<hr/>';
+        echo '<hr/>';
 
-		echo '<h2><i class="fa fa-group"></i> Grade ' . $grade . ' Classes</h2>';
-		$classes = $hwblock->getAllGroups($grade);
-		echo $hwblock->display->classList($classes);
+        echo '<h2><i class="fa fa-group"></i> Grade ' . $grade . ' Classes</h2>';
+        $classes = $hwblock->getAllGroups($grade);
+        echo $hwblock->display->classList($classes);
 
-		break;
+        break;
 }
 
 echo $OUTPUT->footer();

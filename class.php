@@ -42,9 +42,9 @@ $mode = $hwblock->getMode();
 echo $hwblock->display->sign('', 'Now viewing ' . $course->fullname, '<small style="float:right;">Class: ' . $group->name . '</small> See below for upcoming and due homework.');
 
 if ($mode == 'teacher' || $mode == 'pastoral') {
-	$pendingHomework = $hwblock->getHomework(array($group->id), false, false, false);
-	echo '<h3><i class="fa fa-check"></i> Upcoming Homework For This Class</h3>';
-	echo $hwblock->display->homeworkList($pendingHomework);
+    $pendingHomework = $hwblock->getHomework(array($group->id), false, false, false);
+    echo '<h3><i class="fa fa-check"></i> Upcoming Homework For This Class</h3>';
+    echo $hwblock->display->homeworkList($pendingHomework);
 }
 
 echo '<h3><i class="fa fa-bell"></i> Due Homework For This Class</h3>';

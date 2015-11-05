@@ -22,12 +22,10 @@
 
 namespace block_homework;
 
-class GroupManager
-{
+class GroupManager {
     private $hwblock;
 
-    public function __construct(Block $hwblock)
-    {
+    public function __construct(Block $hwblock) {
         $this->hwblock = $hwblock;
     }
 
@@ -36,8 +34,7 @@ class GroupManager
      * Returns every group from courses that are in the chosen
      * category for the homework diary
      */
-    public function getAllGroups()
-    {
+    public function getAllGroups() {
         global $DB;
         $values = array();
         $sql = 'SELECT
@@ -65,8 +62,7 @@ class GroupManager
     /**
      * Get an array of class group IDs a user is in
      */
-    public function getAllUsersGroupIDs($userId)
-    {
+    public function getAllUsersGroupIDs($userId) {
         $groups = $this->getAllUsersGroups($userId);
         $groupIds = array();
         foreach ($groups as $group) {
@@ -83,8 +79,7 @@ class GroupManager
      * @param int $userId $USER if not specified
      * @return array Array[groupingid][groupid] including grouping id 0 which means all groups
      */
-    function getAllUsersGroups($userId = 0)
-    {
+    function getAllUsersGroups($userId = 0) {
         global $USER, $DB;
 
         if (empty($userId)) {

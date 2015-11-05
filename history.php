@@ -29,40 +29,40 @@ echo $hwblock->display->tabs('history');
 
 switch ($hwblock->getMode()) {
 
-	case 'pastoral-student':
-	case 'student':
-	case 'parent':
-	case 'teacher':
+    case 'pastoral-student':
+    case 'student':
+    case 'parent':
+    case 'teacher':
 
-		echo $hwblock->display->sign('th-list', 'View History', 'All Homework, Sorted By Due Date (Latest At The Top)');
+        echo $hwblock->display->sign('th-list', 'View History', 'All Homework, Sorted By Due Date (Latest At The Top)');
 
-		// Get the user's group (class) IDs
-		$groupIDs = $hwblock->groups->getAllUsersGroupIDs($hwblock->getUserId());
+        // Get the user's group (class) IDs
+        $groupIDs = $hwblock->groups->getAllUsersGroupIDs($hwblock->getUserId());
 
-		$approvedStatus = true; // Only show approved homework
-		$past = null; // Include future and past
-		$order = 'hw.duedate DESC'; // Latest due date at the top
+        $approvedStatus = true; // Only show approved homework
+        $past = null; // Include future and past
+        $order = 'hw.duedate DESC'; // Latest due date at the top
 
-		$homework = $hwblock->getHomework(
-			$groupIDs,
-			false,
-			false,
-			$approvedStatus,
-			true,
-			$past,
-			false,
-			$order
-		);
+        $homework = $hwblock->getHomework(
+            $groupIDs,
+            false,
+            false,
+            $approvedStatus,
+            true,
+            $past,
+            false,
+            $order
+        );
 
-		echo $hwblock->display->homeworkList($homework);
+        echo $hwblock->display->homeworkList($homework);
 
-		break;
+        break;
 
-	case 'pastoral':
+    case 'pastoral':
 
-		// What to show here?
+        // What to show here?
 
-		break;
+        break;
 
 }
 

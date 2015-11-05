@@ -35,85 +35,85 @@ if ($tophtml = get_config('block_homework', 'additional_html_top')) {
 
 switch ($hwblock->getMode()) {
 
-	case 'pastoral-student':
-	case 'student':
-	case 'parent':
+    case 'pastoral-student':
+    case 'student':
+    case 'parent':
 
-		/**
-		 * Show the timetable view of the student's homework due in the next 2 weeks
-		 */
+        /**
+         * Show the timetable view of the student's homework due in the next 2 weeks
+         */
 
-		echo $hwblock->display->sign('calendar', 'To Do', 'This page presents a two-week overview of your homework.');
+        echo $hwblock->display->sign('calendar', 'To Do', 'This page presents a two-week overview of your homework.');
 
-		// Get the user's group (class) IDs
-		$groupIDs = $hwblock->groups->getAllUsersGroupIDs($hwblock->getUserId(), true);
+        // Get the user's group (class) IDs
+        $groupIDs = $hwblock->groups->getAllUsersGroupIDs($hwblock->getUserId(), true);
 
-		// Get the homework for those groups
-		$approved = true;
-		$distinct = false;
-		$homework = $hwblock->getHomework(
-			$groupIDs, // $groupIDs
-			false, // $courseIDs
-			false, // $assignedFor
-			$approved, // $approved
-			$distinct ,// $distinct
-			false, // $past
-			false, // $dueDate
-			'assigneddate', // $order
-			null, // $assignedRangeStart
-			null, // $assignedRangeEnd
-			true // $includePrivate
-		);
+        // Get the homework for those groups
+        $approved = true;
+        $distinct = false;
+        $homework = $hwblock->getHomework(
+            $groupIDs, // $groupIDs
+            false, // $courseIDs
+            false, // $assignedFor
+            $approved, // $approved
+            $distinct,// $distinct
+            false, // $past
+            false, // $dueDate
+            'assigneddate', // $order
+            null, // $assignedRangeStart
+            null, // $assignedRangeEnd
+            true // $includePrivate
+        );
 
-		echo $hwblock->display->overview($homework, true);
+        echo $hwblock->display->overview($homework, true);
 
-		echo '<br/><br/>';
+        echo '<br/><br/>';
 
-		// Show the list
-		echo $hwblock->display->homeworkList($homework, 'assigneddate', 'To Do On ', 'l M jS Y', false, false);
+        // Show the list
+        echo $hwblock->display->homeworkList($homework, 'assigneddate', 'To Do On ', 'l M jS Y', false, false);
 
-		echo $hwblock->display->icalFeedBox();
+        echo $hwblock->display->icalFeedBox();
 
-		break;
+        break;
 
-	case 'teacher':
+    case 'teacher':
 
-		/**
-		 * Pending homework approval page
-		 */
+        /**
+         * Pending homework approval page
+         */
 
-		echo $hwblock->display->sign('check', 'Manage Submissions', 'This section shows homework that a students in your classes have submitted. Other students will NOT see these until approved by you.');
+        echo $hwblock->display->sign('check', 'Manage Submissions', 'This section shows homework that a students in your classes have submitted. Other students will NOT see these until approved by you.');
 
-		// Get the user's group (class) IDs
-		$groupIDs = $hwblock->groups->getAllUsersGroupIDs($hwblock->getUserId());
+        // Get the user's group (class) IDs
+        $groupIDs = $hwblock->groups->getAllUsersGroupIDs($hwblock->getUserId());
 
-		// Get the homework for those groups
-		$approved = false;
-		$distinct = true;
-		$homework = $hwblock->getHomework(
-			$groupIDs,
-			false,
-			false,
-			$approved,
-			$distinct);
+        // Get the homework for those groups
+        $approved = false;
+        $distinct = true;
+        $homework = $hwblock->getHomework(
+            $groupIDs,
+            false,
+            false,
+            $approved,
+            $distinct);
 
-		// Show the list
-		echo $hwblock->display->homeworkList($homework);
+        // Show the list
+        echo $hwblock->display->homeworkList($homework);
 
-		break;
+        break;
 
-	case 'pastoral':
+    case 'pastoral':
 
-		echo $hwblock->display->sign('calendar', 'Overview', 'This page shows all homework assigned this week.');
+        echo $hwblock->display->sign('calendar', 'Overview', 'This page shows all homework assigned this week.');
 
-		/**
-		 * Whole school week overview
-		 */
+        /**
+         * Whole school week overview
+         */
 
-		$stats = new \block_homework\HomeworkStats($hwblock);
-		echo $hwblock->display->weekStats($stats);
+        $stats = new \block_homework\HomeworkStats($hwblock);
+        echo $hwblock->display->weekStats($stats);
 
-		break;
+        break;
 }
 
 if ($bottomhtml = get_config('block_homework', 'additional_html_bottom')) {

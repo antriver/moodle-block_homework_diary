@@ -35,21 +35,21 @@ echo $hwblock->display->tabs('grades');
 
 switch ($hwblock->getMode()) {
 
-	case 'pastoral':
+    case 'pastoral':
 
-		echo '<h2><i class="fa fa-group"></i> All Grades</h2>';
+        echo '<h2><i class="fa fa-group"></i> All Grades</h2>';
 
-		echo '<ul class="buttons">';
-		for ($grade = 1; $grade <= 12; $grade++) {
+        echo '<ul class="buttons">';
+        for ($grade = 1; $grade <= 12; $grade++) {
 
-			echo '<li>';
-				echo '<a class="btn" href="grade.php?grade=' . $grade . '">Grade ' . $grade . '</a>';
-			echo '</li>';
+            echo '<li>';
+            echo '<a class="btn" href="grade.php?grade=' . $grade . '">Grade ' . $grade . '</a>';
+            echo '</li>';
 
-		}
-		echo '</ul>';
+        }
+        echo '</ul>';
 
-		break;
+        break;
 }
 
 echo $OUTPUT->footer();

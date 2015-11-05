@@ -23,7 +23,7 @@
 require_once dirname(dirname(dirname(__DIR__))) . '/config.php';
 
 if (!defined('PUBLIC')) {
-	require_login();
+    require_login();
 }
 
 $PAGE->set_context(context_system::instance());

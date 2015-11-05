@@ -49,13 +49,13 @@ $words = explode(' ', $q);
 $wildq = strtolower('%' . implode('%', $words) . '%');
 
 $values = array(
-	intval($q), // userID
-	intval($q), // idnumber
-	strtolower($q), // department
-	$wildq,
-	$wildq,
-	$wildq,
-	$wildq,
+    intval($q), // userID
+    intval($q), // idnumber
+    strtolower($q), // department
+    $wildq,
+    $wildq,
+    $wildq,
+    $wildq,
 );
 $records = $DB->get_records_sql($sql, $values);
 

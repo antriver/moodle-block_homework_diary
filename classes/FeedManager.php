@@ -22,12 +22,10 @@
 
 namespace block_homework;
 
-class FeedManager
-{
+class FeedManager {
     private $hwblock;
 
-    public function __construct(Block $hwblock)
-    {
+    public function __construct(Block $hwblock) {
         $this->hwblock = $hwblock;
     }
 
@@ -36,8 +34,7 @@ class FeedManager
      * @param  object $user Moodle user object
      * @return string
      */
-    public function generateFeedKey($user)
-    {
+    public function generateFeedKey($user) {
         global $DB;
         $key = sha1($user->id . $user->username . $user->firstaccess . $user->timecreated);
         return $key;
@@ -48,8 +45,7 @@ class FeedManager
      * @param  boolean $userId
      * @return string
      */
-    public function generateFeedURL($userId = null)
-    {
+    public function generateFeedURL($userId = null) {
         global $DB, $CFG;
 
         if ($userId === null) {
@@ -61,10 +57,11 @@ class FeedManager
         $key = $this->generateFeedKey($user);
 
         $url = $CFG->wwwroot . '/blocks/homework/feed/?';
-        $url .= http_build_query(array(
-            'u' => $user->username,
-            'k' => $key
-        ));
+        $url .= http_build_query(
+            array(
+                'u' => $user->username,
+                'k' => $key
+            ));
 
         return $url;
     }

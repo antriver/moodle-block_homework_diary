@@ -22,12 +22,10 @@
 
 namespace block_homework;
 
-class CourseManager
-{
+class CourseManager {
     private $hwblock;
 
-    public function __construct(Block $hwblock)
-    {
+    public function __construct(Block $hwblock) {
         $this->hwblock = $hwblock;
     }
 
@@ -38,8 +36,7 @@ class CourseManager
     /**
      * Returns every teaching and learning course
      */
-    public function getAllCourses()
-    {
+    public function getAllCourses() {
 
         global $DB;
         $values = array();
@@ -61,8 +58,7 @@ class CourseManager
         return $DB->get_records_sql($sql, $values);
     }
 
-    public function getUsersCourses($userId, $roleid = null)
-    {
+    public function getUsersCourses($userId, $roleid = null) {
         global $DB;
 
         $values = array(
@@ -93,8 +89,7 @@ class CourseManager
         return $DB->get_records_sql($sql, $values);
     }
 
-    public function coursesToIDs($courses)
-    {
+    public function coursesToIDs($courses) {
         $ids = array();
         foreach ($courses as $course) {
             $ids[] = intval($course->id);
@@ -105,19 +100,16 @@ class CourseManager
     /**
      * Returns all course IDs that the user is enrolled in
      */
-    public function getUsersCourseIDs($userId, $roleid = null)
-    {
+    public function getUsersCourseIDs($userId, $roleid = null) {
         $courses = $this->getUsersCourses($userId, $roleid);
         return $this->coursesToIDs($courses);
     }
 
-    public function getUsersTaughtCourses($userId)
-    {
+    public function getUsersTaughtCourses($userId) {
         return $this->getUsersCourses($userId, 3);
     }
 
-    public function getUsersTaughtCourseIDs($userId)
-    {
+    public function getUsersTaughtCourseIDs($userId) {
         return $this->getUsersCourseIDs($userId, 3);
     }
 

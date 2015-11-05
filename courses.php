@@ -30,34 +30,34 @@ echo $hwblock->display->tabs('courses');
 
 switch ($hwblock->getMode()) {
 
-	case 'student':
-	case 'parent':
+    case 'student':
+    case 'parent':
 
-		echo '<h2><i class="fa fa-th-list"></i> My Courses</h2>';
-		$courses = $hwblock->getUsersCourses($hwblock->getUserId());
-		echo $hwblock->display->courseList($courses);
+        echo '<h2><i class="fa fa-th-list"></i> My Courses</h2>';
+        $courses = $hwblock->getUsersCourses($hwblock->getUserId());
+        echo $hwblock->display->courseList($courses);
 
-		break;
+        break;
 
-	case 'teacher':
+    case 'teacher':
 
-		echo '<h2><i class="fa fa-th-list"></i> Courses I Teach</h2>';
-		$teacherRoleID = 3;
-		$courses = $hwblock->getUsersCourses($hwblock->getUserId(), $teacherRoleID);
-		echo $hwblock->display->courseList($courses);
+        echo '<h2><i class="fa fa-th-list"></i> Courses I Teach</h2>';
+        $teacherRoleID = 3;
+        $courses = $hwblock->getUsersCourses($hwblock->getUserId(), $teacherRoleID);
+        echo $hwblock->display->courseList($courses);
 
-		break;
+        break;
 
-	case 'pastoral':
+    case 'pastoral':
 
-		 // Show all courses in the school
-		echo '<h2><i class="fa fa-th-list"></i> All Courses</h2>';
+        // Show all courses in the school
+        echo '<h2><i class="fa fa-th-list"></i> All Courses</h2>';
 
-		$courses = $hwblock->getAllCourses();
+        $courses = $hwblock->getAllCourses();
 
-		echo $hwblock->display->courseList($courses);
+        echo $hwblock->display->courseList($courses);
 
-		break;
+        break;
 }
 
 echo $OUTPUT->footer();

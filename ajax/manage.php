@@ -34,24 +34,24 @@ $hw = \block_homework\HomeworkItem::load($homeworkID);
 
 // Check permissions
 if (!$hwblock->canEditHomeworkItem($hw)) {
-	die("You don't have permission to edit that piece of homework.");
+    die("You don't have permission to edit that piece of homework.");
 }
 
 switch ($action) {
 
-	case 'approve':
-		$hw->approved = 1;
-		$success = $hw->save();
-		break;
+    case 'approve':
+        $hw->approved = 1;
+        $success = $hw->save();
+        break;
 
-	case 'edit':
-		$hw->description = required_param('description', PARAM_RAW);
-		$success = $hw->save();
-		break;
+    case 'edit':
+        $hw->description = required_param('description', PARAM_RAW);
+        $success = $hw->save();
+        break;
 
-	case 'delete':
-		$success = $DB->delete_records('block_homework', array('id' => $hw->id));
-		break;
+    case 'delete':
+        $success = $DB->delete_records('block_homework', array('id' => $hw->id));
+        break;
 }
 
 header('Cache-Control: no-cache, must-revalidate');

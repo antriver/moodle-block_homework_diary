@@ -62,7 +62,6 @@ $settings->add(
 );
 
 
-
 /**
  * User levels
  */
@@ -77,7 +76,7 @@ $cohortList = array(
 foreach ($cohorts['cohorts'] as $cohort) {
     $cohortList[$cohort->id] = $cohort->name;
     if ($cohort->idnumber) {
-        $cohortList[$cohort->id] .= ' ['.s($cohort->idnumber).']';
+        $cohortList[$cohort->id] .= ' [' . s($cohort->idnumber) . ']';
     }
 }
 
@@ -128,11 +127,12 @@ $settings->add(
 /**
  * Additonal HTML
  */
-$settings->add(new admin_setting_heading(
-    'block_homework_additional_html_heading',
-    get_string('settings_additional_html_heading_name', 'block_homework'),
-    get_string('settings_additional_html_heading_desc', 'block_homework')
-));
+$settings->add(
+    new admin_setting_heading(
+        'block_homework_additional_html_heading',
+        get_string('settings_additional_html_heading_name', 'block_homework'),
+        get_string('settings_additional_html_heading_desc', 'block_homework')
+    ));
 
 $settings->add(
     new admin_setting_confightmleditor(
