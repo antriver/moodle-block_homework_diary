@@ -126,7 +126,7 @@ class homework_item {
     public function get_group_name() {
         global $DB;
         $group = $DB->get_record('groups', array('id' => $this->row->groupid));
-        return $group->name;
+        return $group ? $group->name : '';
     }
 
     /**
