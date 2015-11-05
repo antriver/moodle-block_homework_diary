@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_homework;
+namespace block_homework\local;
 
 /**
  * A single homework assignment.
@@ -31,7 +31,7 @@ namespace block_homework;
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class HomeworkItem {
+class homework_item {
 
     /**
      * Row of data from the database
@@ -267,13 +267,13 @@ class HomeworkItem {
     }
 
     /**
-     * Loads a HomeworkItem instance with info from the database for the given ID
+     * Loads a homework_item instance with info from the database for the given ID
      *
      * @param int  $homeworkid
      * @param bool $simple
      *
      * @throws \Exception
-     * @return \block_homework\HomeworkItem
+     * @return \block_homework\homework_item
      */
     public static function load($homeworkid, $simple = false) {
         global $DB;
@@ -307,6 +307,6 @@ class HomeworkItem {
             }
             $row = reset($rows);
         }
-        return new HomeworkItem($row);
+        return new homework_item($row);
     }
 }

@@ -112,7 +112,7 @@ switch ($hwblock->get_mode()) {
          * Whole school week overview
          */
 
-        $stats = new \block_homework\HomeworkStats($hwblock);
+        $stats = new \block_homework\local\homework_stats($hwblock);
         echo $hwblock->display->week_stats($stats);
 
         break;

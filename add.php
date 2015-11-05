@@ -49,7 +49,7 @@ switch ($action) {
         define('FORMACTION', 'edit');
         $editid = required_param('editid', PARAM_INT);
         // Load the existing item.
-        $editiem = \block_homework\HomeworkItem::load($editid);
+        $editiem = \block_homework\local\homework_item::load($editid);
         if (!$editiem) {
             die("Unable to find that homework item.");
         }
@@ -104,7 +104,7 @@ switch ($action) {
 
         if ($DB->update_record('block_homework', $homeworkitem)) {
 
-            $homeworkitem = \block_homework\HomeworkItem::load($editid);
+            $homeworkitem = \block_homework\local\homework_item::load($editid);
 
             // Remove all existing assigned dates.
             $homeworkitem->clear_assigned_dates();
@@ -158,7 +158,7 @@ switch ($action) {
 
         if ($id = $DB->insert_record('block_homework', $homeworkitem)) {
 
-            $homeworkitem = \block_homework\HomeworkItem::load($id);
+            $homeworkitem = \block_homework\local\homework_item::load($id);
 
             // Now add the assigned dates.
             $assigneddates = explode(',', $assigneddates);

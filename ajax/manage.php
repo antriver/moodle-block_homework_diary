@@ -27,12 +27,12 @@ require_once(dirname(dirname(dirname(__DIR__))) . '/config.php');
 require_login();
 
 // Include the goodies for this block.
-$hwblock = new \block_homework\Block;
+$hwblock = new \block_homework\local\block;
 
 $action = required_param('action', PARAM_RAW);
 $homeworkid = required_param('homeworkid', PARAM_RAW);
 
-$hw = \block_homework\HomeworkItem::load($homeworkid);
+$hw = \block_homework\local\homework_item::load($homeworkid);
 
 // Check permissions.
 if (!$hwblock->can_edit_homework_item($hw)) {

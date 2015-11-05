@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_homework;
+namespace block_homework\local;
 
 use DateTime;
 
@@ -33,7 +33,7 @@ use DateTime;
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class HomeworkStats {
+class homework_stats {
 
     /**
      * @var array
@@ -56,16 +56,16 @@ class HomeworkStats {
     private $enddate;
 
     /**
-     * @var Block
+     * @var block
      */
     private $hwblock;
 
     /**
      * Constructor.
      *
-     * @param Block $hwblock
+     * @param block $hwblock
      */
-    public function __construct(Block $hwblock) {
+    public function __construct(block $hwblock) {
         $this->hwblock = $hwblock;
         $this->startdate = new DateTime('monday this week');
         $this->enddate = new DateTime('sunday this week');
@@ -139,7 +139,7 @@ class HomeworkStats {
     /**
      * Fetch the homework items that apply to the given criteria (date ranges etc.)
      *
-     * @return HomeworkItem[]
+     * @return homework_item[]
      */
     public function get_homework() {
         $assignedrangestart = $this->startdate->format('Y-m-d');

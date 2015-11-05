@@ -34,7 +34,7 @@ if (!empty($_SERVER['SCRIPT_NAME'])) {
 }
 
 // Include the goodies for this block.
-$hwblock = new block_homework\Block();
+$hwblock = new \block_homework\local\block();
 
 $PAGE->requires->css('/blocks/homework/assets/bootstrap/css/bootstrap.css');
 $PAGE->requires->css('/blocks/homework/assets/css/homework.css?v=2015050601');

@@ -22,8 +22,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_homework;
+namespace block_homework\local;
 
+use block_homework\local\display_manager;
+use block_homework\local\feed_manager;
+use block_homework\local\group_manager;
+use block_homework\local\homework_item;
 use context_course;
 use context_coursecat;
 
@@ -34,20 +38,20 @@ use context_coursecat;
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class Block {
+class block {
 
     /**
-     * @var DisplayManager
+     * @var display_manager
      */
     public $display;
 
     /**
-     * @var FeedManager
+     * @var feed_manager
      */
     public $feeds;
 
     /**
-     * @var FeedManager
+     * @var feed_manager
      */
     public $groups;
 
@@ -71,9 +75,9 @@ class Block {
     public function __construct() {
         $this->today = date('Y-m-d');
 
-        $this->display = new DisplayManager($this);
-        $this->feeds = new FeedManager($this);
-        $this->groups = new GroupManager($this);
+        $this->display = new display_manager($this);
+        $this->feeds = new feed_manager($this);
+        $this->groups = new group_manager($this);
     }
 
     /**
@@ -240,11 +244,11 @@ class Block {
     /**
      * Check user has permission to edit the homework
      *
-     * @param HomeworkItem $homeworkitem
+     * @param homework_item $homeworkitem
      *
      * @return bool
      */
-    public function can_edit_homework_item(HomeworkItem $homeworkitem) {
+    public function can_edit_homework_item(homework_item $homeworkitem) {
         if ($homeworkitem->private) {
             return $homeworkitem->userid == $this->get_user_id();
         } else {
@@ -314,7 +318,7 @@ class Block {
      *
      * @param bool                 $includeprivate
      *
-     * @return HomeworkItem[]
+     * @return homework_item[]
      */
     public function get_homework(
         $groupids = null,
@@ -492,7 +496,7 @@ class Block {
         $records = $DB->get_records_sql($sql, $params);
         $return = array();
         foreach ($records as $record) {
-            $return[] = new HomeworkItem($record);
+            $return[] = new homework_item($record);
         }
 
         return $return;

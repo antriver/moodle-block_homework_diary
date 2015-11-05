@@ -30,7 +30,7 @@ $id = required_param('id', PARAM_INT);
 echo $OUTPUT->header();
 echo $hwblock->display->tabs();
 
-$hw = \block_homework\HomeworkItem::load($id);
+$hw = \block_homework\local\homework_item::load($id);
 
 echo $hwblock->display->homework_list(array($hw));
 

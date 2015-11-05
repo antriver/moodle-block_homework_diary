@@ -39,7 +39,7 @@ $key = required_param('k', PARAM_RAW);
 $user = $DB->get_record('user', array('username' => $username), '*', MUST_EXIST);
 
 // Include the homework stuff.
-$hwblock = new \block_homework\Block;
+$hwblock = new \block_homework\local\block;
 
 $hwblock->$userid = $user->id;
 

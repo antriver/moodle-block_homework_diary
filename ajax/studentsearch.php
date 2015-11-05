@@ -27,7 +27,7 @@ require_once(dirname(dirname(dirname(__DIR__))) . '/config.php');
 require_login();
 
 // Include the goodies for this block.
-$hwblock = new block_homework\Block;
+$hwblock = new \block_homework\local\block;
 
 $q = required_param('q', PARAM_RAW);
 

@@ -22,8 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_homework;
+namespace block_homework\local;
 
+use block_homework\local\homework_item;
+use block_homework\local\homework_stats;
 use DateTime;
 
 /**
@@ -33,10 +35,10 @@ use DateTime;
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class DisplayManager {
+class display_manager {
 
     /**
-     * @var Block
+     * @var block
      */
     private $hwblock;
 
@@ -45,7 +47,7 @@ class DisplayManager {
      *
      * @var array
      */
-    private $possibletabs = array( // Array of which tabs are shown in differnet modes.
+    private $possibletabs = array( // Array of which tabs are shown in different modes.
                                    'student'          => array(
                                        'index'    => array('index.php', '<i class="fa fa-calendar"></i> To Do'),
                                        'history'  => array('history.php', '<i class="fa fa-th-list"></i> Full List / History'),
@@ -93,9 +95,9 @@ class DisplayManager {
     /**
      * Constructor.
      *
-     * @param Block $hwblock
+     * @param block $hwblock
      */
-    public function __construct(Block $hwblock) {
+    public function __construct(block $hwblock) {
         $this->hwblock = $hwblock;
     }
 
@@ -234,7 +236,7 @@ class DisplayManager {
     /**
      * Index page for students.
      *
-     * @param HomeworkItem[] $homework
+     * @param homework_item[] $homework
      * @param bool           $hashlinks
      *
      * @return string
@@ -395,7 +397,7 @@ class DisplayManager {
     /**
      * Output a list of homework to do ooptionally organised with headings for a certain field.
      *
-     * @param HomeworkItem[] $homework
+     * @param homework_item[] $homework
      * @param string|null    $headingsforfield                  Watch this field in each homework item, if the contents of this
      *                                                          field is not the same as the last one, a new header will be shown.
      *                                                          This should be a field containing a date that can be parsed by
@@ -466,13 +468,13 @@ class DisplayManager {
     /**
      * Output a single homework item.
      *
-     * @param HomeworkItem $hw
+     * @param homework_item $hw
      * @param bool         $showclassname
      * @param bool         $showassigneddates
      *
      * @return string
      */
-    private function homework_item(HomeworkItem $hw, $showclassname = false, $showassigneddates = false) {
+    private function homework_item(homework_item $hw, $showclassname = false, $showassigneddates = false) {
         // Is this item only visible to students in the future?
         $future = $hw->startdate > $this->hwblock->today;
 
@@ -745,14 +747,14 @@ class DisplayManager {
     /**
      * Weekly stats view for pastoral staff
      *
-     * @param HomeworkStats $stats
+     * @param homework_stats $stats
      *
      * @return string
      */
-    public function week_stats(HomeworkStats $stats) {
+    public function week_stats(homework_stats $stats) {
 
         // Build an array of dates for the next fortnight.
-        /** @var HomeworkItem[][] $dates */
+        /** @var homework_item[][] $dates */
         $dates = array();
 
         $date = clone $stats->get_start_date();

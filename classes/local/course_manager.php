@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_homework;
+namespace block_homework\local;
 
 /**
  * Handles interacting with Moodle courses.
@@ -31,19 +31,19 @@ namespace block_homework;
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class CourseManager {
+class course_manager {
 
     /**
-     * @var Block
+     * @var block
      */
     private $hwblock;
 
     /**
      * Constructor.
      *
-     * @param Block $hwblock
+     * @param block $hwblock
      */
-    public function __construct(Block $hwblock) {
+    public function __construct(block $hwblock) {
         $this->hwblock = $hwblock;
     }
 
