@@ -386,6 +386,7 @@ function setPossibleDays() {
 	var div = $('#possibleDays');
 	var html = '';
 
+    // Print Mon Tue Wed etc. across the top
 	var days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 	for (var day in days) {
         if (days.hasOwnProperty(day)) {
@@ -396,7 +397,8 @@ function setPossibleDays() {
     for (var i = 0; i < possibleDates.length; i++) {
 		var date = possibleDates[i];
 
-		if (i === '0' && formatDate('N', date) !== '1') {
+        // If the first date is not a Monday add emptyness until it's the right day
+		if (i === 0 && formatDate('N', date) !== '1') {
 			for (var pad = 1; pad < parseInt(formatDate('N', date)); pad++) {
 				html += '<li></li>';
 			}
