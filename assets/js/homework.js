@@ -288,9 +288,9 @@ $(document).on('click', '.addHomeworkPrivateToggle a', function(e) {
 	$(this).closest('form').find('input[name=private]').val(value);
 
 	if (value == 1) {
-		$('#groupIDSelelect').append('<option value="-1">Other / Not Applicable</option>');
+		$('#groupid-select').append('<option value="0">Other / Not Applicable</option>');
 	} else {
-		$('#groupIDSelelect').find('option[value="-1"]').remove();
+		$('#groupid-select').find('option[value="0"]').remove();
 	}
 });
 
@@ -305,12 +305,6 @@ function ensureFieldHasValue(field, errorText)
 	field.after('<p class="help-block error">' + errorText + '</p>');
 	return false;
 }
-
-$(document).on('change', '.addHomeworkForm select[name=groupid]', function(){
-	var option = $(this).find(':selected');
-	var courseID = $(option).attr('data-courseid');
-	$(this).closest('.addHomeworkForm').find('input[name=courseid]').val(courseID);
-});
 
 $(document).on('submit', '.addHomeworkForm', function(e){
 

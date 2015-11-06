@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Displays all the homework for a specific course
+ * Form for adding/editing homework.
  *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
@@ -26,13 +26,6 @@ require('include/header.php');
 
 // Are we viewing the form or adding stuff?
 $action = optional_param('action', 'view', PARAM_RAW);
-$courseid = optional_param('courseid', '', PARAM_INT);
-
-if ($courseid) {
-    $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
-    $context = \context_course::instance($courseid);
-    require_capability('block/homework:addhomework', $context);
-}
 
 echo $OUTPUT->header();
 
@@ -49,12 +42,12 @@ switch ($action) {
         define('FORMACTION', 'edit');
         $editid = required_param('editid', PARAM_INT);
         // Load the existing item.
-        $editiem = \block_homework\local\homework_item::load($editid);
-        if (!$editiem) {
+        $homeworkitem = \block_homework\local\homework_item::load($editid);
+        if (!$homeworkitem) {
             die("Unable to find that homework item.");
         }
 
-        if (!$hwblock->can_edit_homework_item($editiem)) {
+        if (!$hwblock->can_edit_homework_item($homeworkitem)) {
             die("You don't have permission to edit that piece of homework.");
         }
 
@@ -65,46 +58,49 @@ switch ($action) {
      */
     case 'saveedit':
 
-        $editid = required_param('editid', PARAM_INT);
-        $courseid = required_param('courseid', PARAM_INT);
-        $private = optional_param('private', null, PARAM_INT);
-        $groupid = optional_param('groupid', null, PARAM_INT);
-        $title = required_param('title', PARAM_RAW);
-        $description = optional_param('description', '', PARAM_RAW);
-        $startdate = required_param('startdate', PARAM_RAW);
         $assigneddates = required_param('assigneddates', PARAM_RAW);
+        $description = optional_param('description', '', PARAM_RAW);
         $duedate = optional_param('duedate', null, PARAM_RAW);
         $duration = required_param('duration', PARAM_RAW);
-
-        // Check permissions.
-        if ($courseid) {
-            $context = \context_course::instance($courseid);
-            require_capability('block/homework:addhomework', $context);
-        }
+        $editid = required_param('editid', PARAM_INT);
+        $groupid = required_param('groupid', PARAM_INT);
+        $private = optional_param('private', 0, PARAM_INT);
+        $startdate = required_param('startdate', PARAM_RAW);
+        $title = required_param('title', PARAM_RAW);
 
         // Load the existing item.
-        $homeworkitem = $DB->get_record('block_homework', array('id' => $editid), '*', MUST_EXIST);
+        $homeworkitem = \block_homework\local\homework_item::load($editid);
+        if (!$homeworkitem) {
+            die("Unable to find that homework item.");
+        }
+
+        // Find the course.
+        $courseid = $DB->get_field('groups', 'courseid', array('id' => $groupid), MUST_EXIST);
+
+        // Check permissions.
+        $context = \context_course::instance($courseid);
+        require_capability('block/homework:addhomework', $context);
 
         if (!$hwblock->can_edit_homework_item($homeworkitem)) {
-            die("You don't have permission to edit that piece of homework.");
+            throw new unauthorized_access_exception("You don't have permission to edit that piece of homework.");
         }
 
         $homeworkitem->courseid = $courseid;
-        $homeworkitem->groupid = $groupid;
-        $homeworkitem->title = $title;
         $homeworkitem->description = $description;
-        $homeworkitem->startdate = $startdate;
         $homeworkitem->duedate = $duedate;
         $homeworkitem->duration = $duration;
+        $homeworkitem->groupid = $groupid;
+        $homeworkitem->startdate = $startdate;
+        $homeworkitem->title = $title;
 
         // Auto approve when a teacher edits.
         if ($mode == 'teacher' && !$homeworkitem->private) {
             $homeworkitem->approved = 1;
         }
 
-        if ($DB->update_record('block_homework', $homeworkitem)) {
+        if ($homeworkitem->save()) {
 
-            $homeworkitem = \block_homework\local\homework_item::load($editid);
+            //$homeworkitem = \block_homework\local\homework_item::load($editid);
 
             // Remove all existing assigned dates.
             $homeworkitem->clear_assigned_dates();
@@ -125,74 +121,78 @@ switch ($action) {
     case 'save':
 
         if ($mode != 'student' && $mode != 'teacher') {
-            die("You need to be in student or teacher mode to add homework.");
+            throw new unauthorized_access_exception("You need to be in student or teacher mode to add homework.");
         }
 
-        $courseid = optional_param('courseid', null, PARAM_INT);
-        $groupid = optional_param('groupid', null, PARAM_INT);
-        if ($groupid == -1) {
-            $groupid = 0;
-        }
-        $title = required_param('title', PARAM_RAW);
-        $description = optional_param('description', '', PARAM_RAW);
-        $startdate = required_param('startdate', PARAM_RAW);
         $assigneddates = required_param('assigneddates', PARAM_RAW);
+        $description = optional_param('description', '', PARAM_RAW);
         $duedate = optional_param('duedate', null, PARAM_RAW);
         $duration = required_param('duration', PARAM_RAW);
+        $groupid = required_param('groupid', PARAM_INT);
         $private = optional_param('private', 0, PARAM_INT);
+        $startdate = required_param('startdate', PARAM_RAW);
+        $title = required_param('title', PARAM_RAW);
 
-        // If adding a new item.
+        // Find the course.
+        $courseid = $DB->get_field('groups', 'courseid', array('id' => $groupid), MUST_EXIST);
+
+        // Check permissions.
+        $context = \context_course::instance($courseid);
+        require_capability('block/homework:addhomework', $context);
+
+        // Create the item.
         $homeworkitem = new stdClass();
-        $homeworkitem->approved = $hwblock->can_approve_homework($courseid) ? 1 : 0;
-        $homeworkitem->userid = $USER->id;
         $homeworkitem->added = time();
-
+        $homeworkitem->approved = $hwblock->can_approve_homework($courseid) ? 1 : 0;
         $homeworkitem->courseid = $courseid;
-        $homeworkitem->groupid = $groupid;
-        $homeworkitem->title = $title;
         $homeworkitem->description = $description;
-        $homeworkitem->startdate = $startdate;
         $homeworkitem->duedate = $duedate;
         $homeworkitem->duration = $duration;
+        $homeworkitem->groupid = $groupid;
         $homeworkitem->private = $private;
+        $homeworkitem->startdate = $startdate;
+        $homeworkitem->title = $title;
+        $homeworkitem->userid = $USER->id;
 
+        // Save in the database.
         if ($id = $DB->insert_record('block_homework', $homeworkitem)) {
 
+            // Fetch it from the database so we know the real saved data.
             $homeworkitem = \block_homework\local\homework_item::load($id);
 
-            // Now add the assigned dates.
+            // Add the assigned dates.
             $assigneddates = explode(',', $assigneddates);
             foreach ($assigneddates as $date) {
                 $homeworkitem->add_assigned_date($date);
             }
 
             if ($homeworkitem->private) {
-
                 // Student submitted private homework.
                 echo '<div class="alert alert-success">
                 <i class="fa fa-check"></i> The homework has been saved and is visible on <a href="index.php">your overview</a>.
                 </div>';
-            } else if ($homeworkitem->approved && $homeworkitem->startdate <= $hwblock->today) {
 
+            } else if ($homeworkitem->approved && $homeworkitem->startdate <= $hwblock->today) {
                 // Approved homework that is visible today or in the past.
                 echo '<div class="alert alert-success">
                 <i class="fa fa-check"></i> The homework has been submitted successfully
                 and is now visible to students in the class.
                 </div>';
-            } else if ($homeworkitem->approved && $homeworkitem->startdate > $hwblock->today) {
 
+            } else if ($homeworkitem->approved && $homeworkitem->startdate > $hwblock->today) {
                 // Approved homework that becomes visible in the future.
                 echo '<div class="alert alert-success">
                     <i class="fa fa-pause"></i>
                     The homework has been submitted successfully and will become visible to students on '
                     . date('l M jS', strtotime($homeworkitem->startdate))
                     . '</div>';
-            } else if (!$homeworkitem->approved) {
 
+            } else if (!$homeworkitem->approved) {
                 // Unapproved homework.
                 echo '<div class="alert alert-success">
                 <i class="fa fa-check"></i> The homework has been submitted successfully and will
                 become visible to everybody in the class once a teacher approves it.</div>';
+
             }
 
             echo '<hr/>';

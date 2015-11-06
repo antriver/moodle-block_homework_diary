@@ -25,14 +25,12 @@
 $mode = $hwblock->get_mode();
 
 // Get all the user's classes.
-
 /** @var object $USER */
 $groups = $hwblock->groups->get_all_users_groups($USER->id);
 
-$selectedcourseid = '';
 $selectedgroupid = '';
-if (isset($editiem)) {
-    $selectedgroupid = $editiem->groupid;
+if (isset($homeworkitem)) {
+    $selectedgroupid = $homeworkitem->groupid;
 } else if (!empty($_GET['groupid'])) {
     $selectedgroupid = $_GET['groupid'];
 }
@@ -44,7 +42,7 @@ $private = 0;
 
 <?php if (FORMACTION == 'edit') {
     ?>
-    <input type="hidden" name="editid" value="<?php echo $editiem->id; ?>"/>
+    <input type="hidden" name="editid" value="<?php echo $homeworkitem->id; ?>"/>
 <?php
 } ?>
 
@@ -52,7 +50,7 @@ $private = 0;
 
 <?php if ($mode == 'student') {
 
-    if (FORMACTION == 'edit' && $editiem->private) {
+    if (FORMACTION == 'edit' && $homeworkitem->private) {
         $private = 1;
     }
 
@@ -88,39 +86,25 @@ $private = 0;
 } ?>
 <input type="hidden" name="private" value="<?php echo $private; ?>"/>
 
-
 <div class="form-group">
-    <label for="groupIDSelelect" class="col-md-3 control-label">Class:</label>
+    <label for="groupid-select" class="col-md-3 control-label">Class:</label>
 
     <div class="col-md-9">
-        <select name="groupid" class="form-control" id="groupIDSelelect">
+        <select name="groupid" class="form-control" id="groupid-select">
             <option value="">Please select...</option>
             <?php
             foreach ($groups as $groupid => $group) {
-                // TODO: Ability to pass courseid in the URL and select the first group in the course.
                 echo '<option
                     value="' . $group->id . '"
-                    data-courseid="' . $group->courseid . '" ' . ($group->id == $selectedgroupid ? 'selected' : '') . '>';
-
-                echo $group->coursefullname;
-
-                echo ' - ' . $group->name;
-
-                if ($group->id == $selectedgroupid) {
-                    $selectedcourseid = $group->courseid;
-                }
+                    ' . ($group->id == $selectedgroupid ? 'selected' : '') . '>';
+                echo $group->coursefullname . ' - ' . $group->name;
                 echo '</option>';
             }
             if ($private) {
-                echo '<option value="-1" ' . ($private && !$selectedgroupid ? 'selected' : '') . '>Other / Not Applicable</option>';
+                echo '<option value="0" ' . ($private && !$selectedgroupid ? 'selected' : '') . '>Other / Not Applicable</option>';
             }
             ?>
         </select>
-        <input
-            type="hidden"
-            name="courseid"
-            value="<?php echo(FORMACTION == 'edit' ? $editiem->courseid : $selectedcourseid); ?>"/>
-
     </div>
 </div>
 
@@ -129,7 +113,7 @@ $private = 0;
 
     <div class="col-md-9">
         <input type="text" id="title" name="title" class="form-control" placeholder="Title of the assignment"
-               value="<?php echo(FORMACTION == 'edit' ? $editiem->title : ''); ?>"/>
+               value="<?php echo(FORMACTION == 'edit' ? $homeworkitem->title : ''); ?>"/>
     </div>
 </div>
 
@@ -138,7 +122,7 @@ $private = 0;
 
     <div class="col-md-9">
         <textarea name="description" class="form-control" placeholder="What is the homework?"
-                  rows="10"><?php echo(FORMACTION == 'edit' ? $editiem->description : ''); ?></textarea>
+                  rows="10"><?php echo(FORMACTION == 'edit' ? $homeworkitem->description : ''); ?></textarea>
     </div>
 </div>
 
@@ -155,7 +139,7 @@ if ($mode == 'student') {
 
     <div class="col-md-9">
         <input type="text" id="startdate" name="startdate" class="form-control"
-               value="<?php echo(FORMACTION == 'edit' ? $editiem->startdate : date('Y-m-d')); ?>"/>
+               value="<?php echo(FORMACTION == 'edit' ? $homeworkitem->startdate : date('Y-m-d')); ?>"/>
 
         <p class="help-block">(Students won't see this on their page until this date)</p>
         <script>
@@ -184,7 +168,7 @@ if ($mode == 'student') {
     <div class="col-md-9">
         <input type="text" id="duedate" name="duedate" class="form-control"
                placeholder="Enter a date the assignment should be handed in by. (YYYY-MM-DD)"
-               value="<?php echo(FORMACTION == 'edit' ? $editiem->duedate : ''); ?>"/>
+               value="<?php echo(FORMACTION == 'edit' ? $homeworkitem->duedate : ''); ?>"/>
         <script>
             $(function () {
                 $('#duedate').datepicker({
@@ -214,7 +198,7 @@ if ($mode == 'student') {
 
 <?php if (FORMACTION == 'edit') {
     // Show the assigned day toggle buttons on pageload if editing and existing item.
-    echo '<script> var homeworkFormAssignedDates = ' . json_encode($editiem->get_assigned_dates()) . '; </script>';
+    echo '<script> var homeworkFormAssignedDates = ' . json_encode($homeworkitem->get_assigned_dates()) . '; </script>';
 } ?>
 
 <div class="form-group">
@@ -257,7 +241,7 @@ if ($mode == 'student') {
 
                 <?php
                     if (FORMACTION == 'edit') {
-                        $initialminduration = $editiem->duration;
+                        $initialminduration = $homeworkitem->duration;
                     } else {
                         $initialminduration = 30;
                     }
@@ -280,7 +264,7 @@ if ($mode == 'student') {
 </div>
 
 <?php
-if ($mode == 'teacher' && FORMACTION == 'edit' && !$editiem->approved) {
+if ($mode == 'teacher' && FORMACTION == 'edit' && !$homeworkitem->approved) {
     $label = 'Save and Approve';
 } else if (FORMACTION == 'edit') {
     $label = 'Save Changes';

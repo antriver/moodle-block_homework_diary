@@ -601,7 +601,7 @@ class display_manager {
         if ($this->hwblock->get_mode() == 'teacher' || $this->hwblock->get_mode() == 'student') {
             // Edit notes button.
             $r .= '<span class="buttons noteButtons">';
-            $r .= '<a class="btn-mini btn btn-primary editNotes" href="#">
+            $r .= '<a class="btn-mini btn btn-info editNotes" href="#">
                 <i class="fa fa-comment"></i> Add Notes
                 </a>';
             $r .= '<a class="btn-mini btn btn-danger cancelNotes" href="#" style="display:none;">
