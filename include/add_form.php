@@ -90,13 +90,11 @@ $private = 0;
     <label for="groupid-select" class="col-md-3 control-label">Class:</label>
 
     <div class="col-md-9">
-        <select name="groupid" class="form-control" id="groupid-select">
+        <select name="groupid" id="groupid-select">
             <option value="">Please select...</option>
             <?php
             foreach ($groups as $groupid => $group) {
-                echo '<option
-                    value="' . $group->id . '"
-                    ' . ($group->id == $selectedgroupid ? 'selected' : '') . '>';
+                echo '<option value="' . $group->id . '"' . ($group->id == $selectedgroupid ? 'selected' : '') . '>';
                 echo $group->coursefullname . ' - ' . $group->name;
                 echo '</option>';
             }
@@ -112,7 +110,7 @@ $private = 0;
     <label for="title" class="col-md-3 control-label">Title:</label>
 
     <div class="col-md-9">
-        <input type="text" id="title" name="title" class="form-control" placeholder="Title of the assignment"
+        <input type="text" id="title" name="title" placeholder="Title of the assignment"
                value="<?php echo(FORMACTION == 'edit' ? $homeworkitem->title : ''); ?>"/>
     </div>
 </div>
@@ -121,7 +119,7 @@ $private = 0;
     <label for="description" class="col-md-3 control-label">Description:</label>
 
     <div class="col-md-9">
-        <textarea name="description" class="form-control" placeholder="What is the homework?"
+        <textarea name="description" placeholder="What is the homework?"
                   rows="10"><?php echo(FORMACTION == 'edit' ? $homeworkitem->description : ''); ?></textarea>
     </div>
 </div>
@@ -138,7 +136,7 @@ if ($mode == 'student') {
     <label for="startdate" class="col-md-3 control-label">Visible From:</label>
 
     <div class="col-md-9">
-        <input type="text" id="startdate" name="startdate" class="form-control"
+        <input type="text" id="startdate" name="startdate"
                value="<?php echo(FORMACTION == 'edit' ? $homeworkitem->startdate : date('Y-m-d')); ?>"/>
 
         <p class="help-block">(Students won't see this on their page until this date)</p>
@@ -166,7 +164,7 @@ if ($mode == 'student') {
     <label for="due" class="col-md-3 control-label">Due Date:</label>
 
     <div class="col-md-9">
-        <input type="text" id="duedate" name="duedate" class="form-control"
+        <input type="text" id="duedate" name="duedate"
                placeholder="Enter a date the assignment should be handed in by. (YYYY-MM-DD)"
                value="<?php echo(FORMACTION == 'edit' ? $homeworkitem->duedate : ''); ?>"/>
         <script>
@@ -205,7 +203,7 @@ if ($mode == 'student') {
     <label for="duration" class="col-md-3 control-label">Duration:</label>
 
     <div class="col-md-9">
-        <input type="hidden" name="duration" class="form-control" value=""/>
+        <input type="hidden" name="duration" value=""/>
 
         <div id="duration-slider"></div>
         <span class="help-block" id="duration-help"></span>
