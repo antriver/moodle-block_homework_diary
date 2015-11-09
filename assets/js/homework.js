@@ -518,30 +518,29 @@ function studentSearch() {
 	if (!q) {
 		return;
 	}
-	var div = $(this).closest('.userList');
+	var $userList = $(this).closest('.userList').find('.users');
 
-	div.find('.courses').html('<div class="nothing"><i class="fa fa-spinner fa-spin"></i> Searching for <strong>' + q + '</strong>...</div>');
+	$userList.html('<div class="nothing"><i class="fa fa-spinner fa-spin"></i> Searching for <strong>' + q + '</strong>...</div>');
 
-	$.get('ajax/studentsearch.php', {q:q}, function(res)
-	{
+	$.get('ajax/studentsearch.php', {q:q}, function(res) {
+        console.log('res', res);
 		var html = '';
 
 		if (res.users.length < 1) {
-
 			html += '<div class="nothing"><i class="fa fa-frown-o"></i> Nothing to show here.</div>';
-
 		} else {
-
-            for (var i = 0; i < res.users.length; i++) {
-				var user = res.users[i];
-				html += '<div class="col-sm-3"><a href="/blocks/homework/changeuser.php?userid=' + user.id + '" class="btn">';
-					html += user.firstname + ' ' + user.lastname;
-					//html += '<span>' + user.idnumber + '&nbsp;</span>';
-				html += '</a></div>';
+            for (var id in res.users) {
+                if (res.users.hasOwnProperty(id)) {
+                    var user = res.users[id];
+                    html += '<div class="col-sm-3"><a href="/blocks/homework/changeuser.php?userid=' + user.id + '" class="btn">';
+                    html += user.firstname + ' ' + user.lastname;
+                    html += '<span>' + user.idnumber + '</span>';
+                    html += '</a></div>';
+                    console.log(html);
+                }
 			}
-
 		}
-		div.find('.courses').html(html);
+		$userList.html(html);
 	});
 }
 $(document).ready(function(){

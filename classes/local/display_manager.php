@@ -369,7 +369,7 @@ class display_manager {
             type="text"
             class="filter"
             placeholder="Type part of a student\'s name or their whole PowerSchool ID to search..." />';
-        $r .= '<div class="row courses"></div>';
+        $r .= '<div class="row users"></div>';
         $r .= '<div class="clear"></div>';
         $r .= '</div>';
         return $r;

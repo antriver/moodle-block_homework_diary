@@ -138,17 +138,20 @@ h3 {
         border-bottom-width:1px;
     }
 
-.courseList {
+.courseList,
+.userList {
     margin-bottom:30px;
 }
-    .courses span {
+    .courseList .courses span,
+    .userList .users span{
         display:block;
         font-size:12px;
         white-space: normal;
         text-transform: none;
     }
 
-.courseList .filter {
+.courseList .filter,
+.userList .filter {
     display:block;
     box-sizing: border-box;
     padding:10px;
@@ -157,21 +160,25 @@ h3 {
     height:40px;
 }
 
-.courseList .courses div {
+.courseList .courses div,
+.userList .users div {
     box-sizing: border-box;
 }
-    .courseList .courses a {
+    .courseList .courses a,
+    .userList .users a {
         text-align:left;
         margin:5px 0;
         display:block;
         padding: 5px 10px;
     }
 
-    .courseList .courses div:nth-child(4n+1) {
+    .courseList .courses div:nth-child(4n+1),
+    .uerList .users div:nth-child(4n+1){
         clear: both;
     }
 
-    .courseList .icon-text.pull-right {
+    .courseList .icon-text.pull-right,
+    .userList .icon-text.pull-right{
         margin: 3px 0 0 0 !important;
         font-size: 11px;
         font-weight: bold;
