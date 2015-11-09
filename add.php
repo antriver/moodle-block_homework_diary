@@ -75,11 +75,17 @@ switch ($action) {
         }
 
         // Find the course.
-        $courseid = $DB->get_field('groups', 'courseid', array('id' => $groupid), MUST_EXIST);
+        if ($private && $groupid == 0) {
+            $courseid = 0;
+        } else {
+            $courseid = $DB->get_field('groups', 'courseid', array('id' => $groupid), MUST_EXIST);
+        }
 
-        // Check permissions.
-        $context = \context_course::instance($courseid);
-        require_capability('block/homework:addhomework', $context);
+        if ($courseid) {
+            // Check permissions.
+            $context = \context_course::instance($courseid);
+            require_capability('block/homework:addhomework', $context);
+        }
 
         if (!$hwblock->can_edit_homework_item($homeworkitem)) {
             throw new unauthorized_access_exception("You don't have permission to edit that piece of homework.");
@@ -99,9 +105,6 @@ switch ($action) {
         }
 
         if ($homeworkitem->save()) {
-
-            //$homeworkitem = \block_homework\local\homework_item::load($editid);
-
             // Remove all existing assigned dates.
             $homeworkitem->clear_assigned_dates();
 
@@ -134,11 +137,17 @@ switch ($action) {
         $title = required_param('title', PARAM_RAW);
 
         // Find the course.
-        $courseid = $DB->get_field('groups', 'courseid', array('id' => $groupid), MUST_EXIST);
+        if ($private && $groupid == 0) {
+            $courseid = 0;
+        } else {
+            $courseid = $DB->get_field('groups', 'courseid', array('id' => $groupid), MUST_EXIST);
+        }
 
-        // Check permissions.
-        $context = \context_course::instance($courseid);
-        require_capability('block/homework:addhomework', $context);
+        if ($courseid) {
+            // Check permissions.
+            $context = \context_course::instance($courseid);
+            require_capability('block/homework:addhomework', $context);
+        }
 
         // Create the item.
         $homeworkitem = new stdClass();
@@ -169,27 +178,28 @@ switch ($action) {
             if ($homeworkitem->private) {
                 // Student submitted private homework.
                 echo '<div class="alert alert-success">
-                <i class="fa fa-check"></i> The homework has been saved and is visible on <a href="index.php">your overview</a>.
+                    <i class="fa fa-check"></i>
+                    The homework has been saved and is visible to you on <a href="index.php">your overview</a>.
                 </div>';
 
             } else if ($homeworkitem->approved && $homeworkitem->startdate <= $hwblock->today) {
                 // Approved homework that is visible today or in the past.
                 echo '<div class="alert alert-success">
                 <i class="fa fa-check"></i> The homework has been submitted successfully
-                and is now visible to students in the class.
+                    and is now visible to students in the class.
                 </div>';
 
             } else if ($homeworkitem->approved && $homeworkitem->startdate > $hwblock->today) {
                 // Approved homework that becomes visible in the future.
-                echo '<div class="alert alert-success">
+                echo '<div class="alert">
                     <i class="fa fa-pause"></i>
-                    The homework has been submitted successfully and will become visible to students on '
+                    The homework has been submitted successfully and will become visible to students from '
                     . date('l M jS', strtotime($homeworkitem->startdate))
                     . '</div>';
 
             } else if (!$homeworkitem->approved) {
                 // Unapproved homework.
-                echo '<div class="alert alert-success">
+                echo '<div class="alert">
                 <i class="fa fa-check"></i> The homework has been submitted successfully and will
                 become visible to everybody in the class once a teacher approves it.</div>';
 

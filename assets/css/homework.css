@@ -1,3 +1,7 @@
+.path-blocks-homework #page-content {
+    margin:auto;
+    max-width: 1170px;
+}
 
 .tabs .btn-group {
     margin-bottom:10px;
@@ -108,19 +112,6 @@ h3 {
         min-height:120px;
     }
 
-    .homeworkList h5.dates {
-        float:right;
-    }
-        /* When you click on '2 more dates...' and the list of assigned dates is expanded */
-        .homework .assignedDates {
-            margin:0;
-            list-style:none;
-            text-align:right;
-        }
-            .homework .assignedDates li {
-                margin-bottom: 2px;
-            }
-
     #duration-slider {
         margin-left: 0;
         margin-right: 18px;
@@ -191,6 +182,7 @@ h3 {
     .addHomeworkPrivateToggle .btn i {
         font-size:25px;
     }
+
 
 .addHomeworkForm input[type=text],
 .addHomeworkForm textarea {
@@ -279,124 +271,175 @@ h3 {
     font-size:20px;
 }
 
-.assignedDatesJSON {
-    display:none;
-}
-
 .homeworkList {
     list-style:none;
-    margin:0 0 90px 0;
+    margin:0 auto 30px;
     padding:0;
 }
-    .homework {
-        display:block;
-        padding:15px;
-        margin-bottom:15px;
-        border-radius:3px;
-        background:rgba(22,98,163,.08);
-        border-color: #bce8f1;
+
+
+/**
+ * .homework is a single homework item
+ */
+.homework {
+    display:block;
+    padding:20px;
+    margin-bottom:15px;
+    border-radius:3px;
+    background:rgba(22,98,163,.08);
+    border-color: #bce8f1;
+}
+
+    .homework:last-child {
+        margin-bottom:0;
     }
 
-        .homework:last-child {
-            margin-bottom:0;
+    /* Background colours for different homework states */
+    .homework:nth-child(even) {
+        background:rgba(22,98,163,.1);
+    }
+
+    .homework.past:not(.private) {
+        opacity:.8;
+        -webkit-filter: grayscale(100%);
+        -moz-filter: grayscale(100%);
+        -ms-filter: grayscale(100%);
+        -o-filter: grayscale(100%);
+        filter: grayscale(100%);
+    }
+
+    .homework.unapproved {
+        background:#F2DEDE;
+        border-color: #EBCCD1;
+    }
+
+    .homework.private{
+        background:#D3BFF0;
+        border-color:#D3BFF0;
+    }
+
+    .homework.future {
+        background:#fcf8e3;
+        border-color: #faebcc;
+    }
+
+    .homework .dates {
+        float:right;
+        margin:0 0 15px;
+        color: #777;
+        font-size: 12px;
+    }
+
+        /* Hidden element with the full list of dates */
+        .homework .assignedDatesJSON {
+            display:none;
         }
 
-        .homework:nth-child(even) {
-            background:rgba(22,98,163,.1);
+        /* Full list of dates */
+        .homework .assignedDates {
+            list-style: none;
         }
 
-        .homework.past {
-            background:rgba(223, 240, 216, 1);
+        .homework .assignedDates li {
+            margin-bottom: 5px;
+            text-align:center;
         }
 
-        .homework.unapproved {
-            background:#F2DEDE;
-            border-color: #EBCCD1;
+        .homework .assignedDates .label {
+            display: block;
         }
 
-        .homework.private{
-            background:#D3BFF0;
-            border-color:#D3BFF0;
+    .homework .btn {
+        margin-left:5px;
+    }
+        .homework .btn:first-child {
+            margin-left:0;
+        }
+    .homework .course-name {
+        font-size:23px;
+        margin:0 0 15px;
+        text-align:left;
+        line-height: 29px;
+    }
+
+    .homework .group-name {
+        margin-left:5px;
+        font-size:19px;
+        color: #777;
+        line-height: 29px;
+        position: relative;
+        top: -1px;
+    }
+
+    .homework .description,
+    .homework .notes {
+        clear:both;
+        margin:15px 0;
+        background: rgba(255,255,255,.8);
+        padding: 12px;
+        border-radius:3px;
+        /*font-family: Georgia, serif;*/
+        font-size:14px;
+    }
+
+        .homework .title {
+            font-weight:bold;
+            margin: 0 0 5px;
+            font-size: 19px;
+            line-height: normal;
         }
 
-        .homework.future {
-            background:#fcf8e3;
-            border-color: #faebcc;
+        .homework .duration {
+            display:block;
+            /*font-style: italic;*/
+            font-size: 12px;
+            margin: 10px 0 0;
+            color: #777;
         }
 
-        .homework textarea {
+    .homework .notes {
+        margin-left:100px;
+    }
+
+        .homework .notes-input {
             display: block;
             width: 100%;
             box-sizing: border-box;
-            padding: 7px;
+            padding: 10px;
             height: 150px;
             border-radius:3px;
             transition: height 0.2s;
-        }
-
-        .homework .buttons {
-            display: block;
-            text-align: right;
-            margin-left: 10px;
-            position: relative;
-            top: -3px;
-            float:right;
-            margin-top:0;
-        }
-            .homework .approvalButtons {
-                float:none;
-                position:static;
-                margin-bottom:10px;
-            }
-
-            .homework .noteButtons {
-                float:none;
-                margin:15px 0 0 0;
-            }
-
-            .homework .buttons a {
-                margin-left:5px;
-                padding: 0 6px;
-                font-size: 11px;
-            }
-            .homework .buttons span {
-                font-size: 12px;
-                text-align: right;
-                margin-bottom:10px;
-            }
-
-        .homeworkList h5 {
-            margin:0 0 5px 0;
-            font-size: 12px;
-            font-weight: normal;
-        }
-
-        .homeworkList p {
-            clear:both;
-            margin-top:10px;
-            background: rgba(255,255,255,.4);
-            padding: 10px;
-            border-radius:3px;
-            font-family: Georgia, serif;
-            letter-spacing: 0.3px;
-            font-size:15px;
-        }
-
-        .homework .notes {
-            margin-left:100px;
             margin-bottom:0;
         }
 
-        .homeworkList p strong {
-            margin-bottom:7px;
-        }
-
-        .homeworkList .duration {
-            display:block;
-            margin-top: 7px;
-            /*font-style: italic;*/
+    .homework .buttons {
+        float:right;
+        text-align:right;
+    }
+        .homework .buttons .btn {
             font-size: 12px;
         }
+
+    .homework .labels {
+
+    }
+
+        .homework .label {
+            font-weight: normal;
+            padding: 4px 8px;
+            font-size: 12px;
+            line-height:22px;
+        }
+
+        .homework .label .btn {
+            line-height: normal;
+            padding: 3px 6px;
+            margin-left:4px;
+        }
+
+
+
+
 
 .section-navigation {
     margin-top:30px;
@@ -459,4 +502,37 @@ a.btn.privateHomeworkButton.active,
 .privateHomeworkButton[disabled] {
     color: #000;
     background-color: #D3BFF0;
+}
+
+@media (max-width: 767px) {
+
+    .homework .dates {
+        float:none;
+        text-align:center;
+    }
+
+    .homework .course-name {
+        text-align:center;
+    }
+
+    .homework .group-name {
+        display: block;
+    }
+
+    .homework .buttons {
+        float:none;
+        text-align:center;
+    }
+
+    .homework .labels {
+        margin-top:15px;
+        margin-bottom:-5px;
+        float:none;
+        text-align: center;
+    }
+
+    .homework .label {
+        margin-bottom: 5px;
+    }
+
 }

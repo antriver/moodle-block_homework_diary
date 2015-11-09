@@ -257,13 +257,33 @@ class homework_item {
             self::$assigneddaystable,
             array(
                 'homeworkid' => $this->row->id
-            ));
+            ),
+            'date ASC'
+            );
         foreach ($daterows as $row) {
             $assigneddates[$row->date] = $row->date;
         }
 
         $this->assigneddates = $assigneddates;
         return array_values($assigneddates);
+    }
+
+    /**
+     * Is this item set to appear in the future?
+     *
+     * @return bool
+     */
+    public function is_in_future() {
+        return $this->startdate > date('Y-m-d');
+    }
+
+    /**
+     * Is this item's due date in the past?
+     *
+     * @return bool
+     */
+    public function is_past_due() {
+        return $this->duedate < date('Y-m-d');
     }
 
     /**

@@ -39,27 +39,33 @@ if (!$hwblock->can_edit_homework_item($hw)) {
     die("You don't have permission to edit that piece of homework.");
 }
 
+$return = array();
+
 switch ($action) {
     case 'approve':
         $hw->approved = 1;
-        $success = $hw->save();
+        $return['success'] = $hw->save();
+        $return['html'] = $hwblock->display->homework_item($hw);
         break;
 
     case 'edit':
+        // This is no longer used because we return to the add.php page to edit instead
+        // of editing inline.
         $hw->description = required_param('description', PARAM_RAW);
-        $success = $hw->save();
+        $return['success'] = $hw->save();
+        $return['html'] = $hwblock->display->homework_item($hw);
         break;
 
     case 'delete':
-        $success = $DB->delete_records('block_homework', array('id' => $hw->id));
+        $return['success'] = $DB->delete_records('block_homework', array('id' => $hw->id));
         break;
 
     default:
-        $success = false;
+        $return['success'] = false;
         break;
 }
 
 header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 header('Content-type: application/json');
-echo json_encode(array('success' => $success));
+echo json_encode($return);

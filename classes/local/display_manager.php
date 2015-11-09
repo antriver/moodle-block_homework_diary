@@ -45,49 +45,37 @@ class display_manager {
      *
      * @var array
      */
-    private $possibletabs = array( // Array of which tabs are shown in different modes.
-                                   'student'          => array(
-                                       'index'    => array('index.php', '<i class="fa fa-calendar"></i> To Do'),
-                                       'history'  => array('history.php', '<i class="fa fa-th-list"></i> Full List / History'),
-                                       'classes'  => array('classes.php', '<i class="fa fa-group"></i> View by Class'),
-                                       'add'      => array('add.php', '<i class="fa fa-plus-circle"></i> Add Homework'),
-                                       'icalfeed' => array('icalfeed.php', '<i class="fa fa-rss"></i> iCal'),
-                                   ),
-                                   'pastoral-student' => array( // When a pastoral user clicks on a student (same as parent mode).
-                                                                'index'    => array(
-                                                                    'index.php',
-                                                                    '<i class="fa fa-calendar"></i> To Do'
-                                                                ),
-                                                                'history'  => array(
-                                                                    'history.php',
-                                                                    '<i class="fa fa-th-list"></i> Full List / History'
-                                                                ),
-                                                                'classes'  => array(
-                                                                    'classes.php',
-                                                                    '<i class="fa fa-group"></i> View by Class'
-                                                                ),
-                                                                'icalfeed' => array(
-                                                                    'icalfeed.php',
-                                                                    '<i class="fa fa-rss"></i> iCal'
-                                                                ),
-                                   ),
-                                   'teacher'          => array(
-                                       'index'   => array('index.php', '<i class="fa fa-check"></i> Manage Submissions'),
-                                       'history' => array('history.php', '<i class="fa fa-th-list"></i> Full List / History'),
-                                       'classes' => array('classes.php', '<i class="fa fa-group"></i> View by Class'),
-                                       'add'     => array('add.php', '<i class="fa fa-plus-circle"></i> Add Homework'),
-                                   ),
-                                   'parent'           => array(
-                                       'index'    => array('index.php', '<i class="fa fa-calendar"></i> To Do'),
-                                       'history'  => array('history.php', '<i class="fa fa-th-list"></i> Full List / History'),
-                                       'classes'  => array('classes.php', '<i class="fa fa-group"></i> View by Class'),
-                                       'icalfeed' => array('icalfeed.php', '<i class="fa fa-rss"></i> iCal'),
-                                   ),
-                                   'pastoral'         => array(
-                                       'index'    => array('index.php', '<i class="fa fa-home"></i> Overview'),
-                                       'classes'  => array('classes.php', '<i class="fa fa-group"></i> Classes'),
-                                       'students' => array('students.php', '<i class="fa fa-user"></i> Student Lookup'),
-                                   ),
+    private $possibletabs = array(
+        'student'          => array(
+            'overview' => array('overview.php', '<i class="fa fa-calendar"></i> To Do'),
+            'history'  => array('history.php', '<i class="fa fa-th-list"></i> Full List / History'),
+            'classes'  => array('classes.php', '<i class="fa fa-group"></i> View by Class'),
+            'add'      => array('add.php', '<i class="fa fa-plus-circle"></i> Add Homework'),
+            'icalfeed' => array('icalfeed.php', '<i class="fa fa-rss"></i> iCal'),
+        ),
+        'pastoral-student' => array(
+            'overview' => array('overview.php', '<i class="fa fa-calendar"></i> To Do'),
+            'history'  => array('history.php', '<i class="fa fa-th-list"></i> Full List / History'),
+            'classes'  => array('classes.php', '<i class="fa fa-group"></i> View by Class'),
+            'icalfeed' => array('icalfeed.php', '<i class="fa fa-rss"></i> iCal'),
+        ),
+        'teacher'          => array(
+            'pending' => array('pending.php', '<i class="fa fa-check"></i> Pending Submissions'),
+            'history' => array('history.php', '<i class="fa fa-th-list"></i> Full List / History'),
+            'classes' => array('classes.php', '<i class="fa fa-group"></i> View by Class'),
+            'add'     => array('add.php', '<i class="fa fa-plus-circle"></i> Add Homework'),
+        ),
+        'parent'           => array(
+            'overview' => array('overview.php', '<i class="fa fa-calendar"></i> To Do'),
+            'history'  => array('history.php', '<i class="fa fa-th-list"></i> Full List / History'),
+            'classes'  => array('classes.php', '<i class="fa fa-group"></i> View by Class'),
+            'icalfeed' => array('icalfeed.php', '<i class="fa fa-rss"></i> iCal'),
+        ),
+        'pastoral'         => array(
+            'overview' => array('overview.php', '<i class="fa fa-home"></i> Overview'),
+            'classes'  => array('classes.php', '<i class="fa fa-group"></i> Classes'),
+            'students' => array('students.php', '<i class="fa fa-user"></i> Student Lookup'),
+        ),
     );
 
     /**
@@ -234,58 +222,50 @@ class display_manager {
     /**
      * Index page for students.
      *
-     * @param homework_item[] $homework
-     * @param bool            $hashlinks
+     * @param homework_item[] $homework Organised by date from the get_homework_for_student_overview
+     *                                  or get_homework_for_school_overview methods.
+     * @param bool            $hashlinks Add links to #date?
      *
      * @return string
      */
     public function overview(array $homework, $hashlinks = false) {
         $today = $this->hwblock->today;
 
-        // Build an array of dates for the next fortnight.
+        // First build an array of dates for the next fortnight.
         $dates = array();
-
         $date = new DateTime('monday this week');
-
-        for ($i = 0; $i < 14; $i++) {
-
+        for ($day = 0; $day < 14; $day++) {
+            // Skip Sat and Sun in the calendar.
             if ($date->format('l') != 'Saturday' && $date->format('l') != 'Sunday') {
-                $dates[$date->format('Y-m-d')] = array();
+                $dates[$date->format('Y-m-d')] = $date->format('l M jS');
             }
-
             $date->modify('+1 day');
-        }
-
-        // Sort the homework into the days it's assigned for.
-        foreach ($homework as $hw) {
-            if (isset($dates[$hw->assigneddate])) {
-                $dates[$hw->assigneddate][] = $hw;
-            }
         }
 
         $r = '<ul class="weekOverview row">';
 
-        $i = 0;
-        foreach ($dates as $date => $hw) {
-            ++$i;
+        $col = 0;
+        foreach ($dates as $date => $displaydate) {
+            ++$col;
             $past = $date < $today;
             $r .= '<li class="col-md-2 ' . ($past ? 'past' : '') . '">
-			<a class="day" href="' . ($hashlinks ? '#' . $date : 'day.php?date=' . $date) . '">';
-            $r .= '<h4>' . date('l M jS', strtotime($date)) . '</h4>';
-            foreach ($hw as $item) {
-                if ($item->courseid) {
-                    $icon = '';
-                    $text = $item->coursename;
-                } else {
-                    $icon = 'thumb-tack';
-                    $text = $this->truncate($item->description, 30);
-                }
+            <a class="day" href="' . ($hashlinks ? '#' . $date : 'day.php?date=' . $date) . '">';
+            $r .= '<h4>' . $displaydate . '</h4>';
 
-                $r .= '<p>' . ($icon ? '<i class="fa fa-' . $icon . '"></i> ' : '') . $text . '</p>';
+            if (isset($homework[$date])) {
+                foreach ($homework[$date] as $item) {
+                    if ($item->courseid) {
+                        $text = $item->coursename;
+                    } else {
+                        $text = $this->truncate($item->description, 30);
+                    }
+
+                    $r .= '<p>' . $text . '</p>';
+                }
             }
             $r .= '</a>
-			</li>';
-            if ($i == 5) {
+            </li>';
+            if ($col == 5) {
                 $r .= '</ul><div class="clear"></div><ul class="weekOverview row">';
             }
         }
@@ -312,7 +292,7 @@ class display_manager {
         $r .= '<div class="row courses">';
 
         foreach ($classes as $groupid => $group) {
-            $r .= '<div class="col-sm-3"><a href="/blocks/homework/class.php?groupid=' . $group->id . '" class="btn">';
+            $r .= '<div class="col-sm-3"><a href="class.php?groupid=' . $group->id . '" class="btn">';
             $r .= $group->coursefullname;
             $r .= '<span>' . $group->name . '</span>';
             $r .= '</a></div>';
@@ -342,7 +322,7 @@ class display_manager {
         $r .= '<div class="row courses">';
 
         foreach ($courses as $courseid => $course) {
-            $r .= '<div class="col-sm-3"><a href="/blocks/homework/course.php?courseid=' . $courseid . '" class="btn">';
+            $r .= '<div class="col-sm-3"><a href="course.php?courseid=' . $courseid . '" class="btn">';
             $r .= $course->fullname;
             $r .= '</a></div>';
         }
@@ -386,77 +366,31 @@ class display_manager {
      */
     public function sign($icon, $bigtext, $littletext) {
         return '<div class="alert alert-info">
-	    		<i class="fa-3x fa fa-' . $icon . ' pull-left"></i>
-	    		<h4>' . $bigtext . '</h4>
-	    		<p>' . $littletext . '</p>
-	    	</div>';
+                <i class="fa-3x fa fa-' . $icon . ' pull-left"></i>
+                <h4>' . $bigtext . '</h4>
+                <p>' . $littletext . '</p>
+            </div>';
     }
 
     /**
-     * Output a list of homework to do ooptionally organised with headings for a certain field.
+     * Output a list of homework.
      *
      * @param homework_item[] $homework
-     * @param string|null     $headingsforfield                 Watch this field in each homework item, if the contents of this
-     *                                                          field is not the same as the last one, a new header will be shown.
-     *                                                          This should be a field containing a date that can be parsed by
-     *                                                          strtotime()
-     * @param string|null     $headingprefix                    Show this text before each heading
-     * @param string          $headingdateformat                The format to show the date from the headingsForField field
-     * @param bool            $showclassname                    true or false to show the class (group) name each item is assigned
-     *                                                          in
-     *
-     * @param bool            $showassigneddates
      *
      * @return string
      */
-    public function homework_list(
-        array $homework,
-        $headingsforfield = null,
-        $headingprefix = null,
-        $headingdateformat = 'l M jS Y',
-        $showclassname = false,
-        $showassigneddates = true
-    ) {
+    public function homework_list(array $homework) {
         if (count($homework) < 1) {
             return '<div class="nothing">
-				<i class="fa fa-smile-o"></i> Nothing to show here.
-			</div>';
+                <i class="fa fa-smile-o"></i> Nothing to show here.
+            </div>';
         }
 
         $r = '<div class="homeworkListContainer">';
-
-        $lastheadingfieldvalue = null;
-
-        if ($headingsforfield) {
-            $inlist = false;
-        } else {
-            // If the headingsForField headings are NOT used, start the list here.
-            $r .= '<ul class="homeworkList">';
-            $inlist = true;
-        }
-
+        $r .= '<ul class="homeworkList">';
         foreach ($homework as $hw) {
-
-            // If the $headingsforfield headers are used, check if it's time for a new heading and start a new list.
-            if ($headingsforfield && $hw->{$headingsforfield} != $lastheadingfieldvalue) {
-
-                if ($inlist) {
-                    $r .= '</ul>';
-                }
-
-                $r .= '<h3 id="' . $hw->{$headingsforfield} . '">';
-                $r .= $headingprefix;
-                $r .= date($headingdateformat, strtotime($hw->{$headingsforfield}));
-                $r .= '</h3>';
-
-                $r .= '<ul class="homeworkList">';
-                $inlist = true;
-                $lastheadingfieldvalue = $hw->{$headingsforfield};
-            }
-
-            $r .= $this->homework_item($hw, $showclassname, $showassigneddates);
+            $r .= $this->homework_item($hw);
         }
-
         $r .= '</ul>';
         $r .= '</div>';
 
@@ -467,127 +401,75 @@ class display_manager {
      * Output a single homework item.
      *
      * @param homework_item $hw
-     * @param bool          $showclassname
-     * @param bool          $showassigneddates
+     *
+     * @internal param bool $showclassname
+     * @internal param bool $showassigneddates
      *
      * @return string
      */
-    private function homework_item(homework_item $hw, $showclassname = false, $showassigneddates = false) {
-        // Is this item only visible to students in the future?
-        $future = $hw->startdate > $this->hwblock->today;
+    public function homework_item(homework_item $hw) {
+
+        $past = $hw->is_past_due();
 
         // Should we show the edit / delete buttons?
         // true if the item is a user's private item,
         // or it's not private and the user is a techer for the course.
         $canedit = $this->hwblock->can_edit_homework_item($hw);
 
-        // Is this due in the past?
-        $past = $hw->duedate < $this->hwblock->today;
-
+        // CSS classes to add to the output.
         $classes = array(
+            'clearfix',
             'homework',
             ($hw->approved ? 'approved' : 'unapproved'),
             ($canedit ? ' canedit' : ''),
-            ($past ? ' past' : ''),
-            ($future ? ' future' : ''),
+            ($hw->is_past_due() ? ' past' : ''),
+            ($hw->is_in_future() ? ' future' : ''),
             ($hw->private ? ' private' : '')
         );
 
         $r = '<li class="' . implode(' ', $classes) . '" data-id="' . $hw->id . '" data-duedate="' . $hw->duedate . '">';
 
-        if (!$hw->private && !$hw->approved) {
-            $r .= '<h5>
-                <i class="fa fa-pause"></i> This must be approved by a teacher before it is visible to the whole class.
-            </h5>';
-        }
+        // Dates.
+        $r .= '<div class="dates">';
 
-        if (!$hw->private && $hw->approved && $this->hwblock->get_mode() == 'teacher') {
-            $r .= '<h5><i class="fa fa-check"></i> Approved and visible to the whole class.</h5>';
-        }
-
-        if ($past) {
-            $r .= '<h5><i class="fa fa-clock-o"></i> The due date for this has passed.</h5>';
-        }
-
-        if ($hw->private) {
-            $r .= '<h5><i class="fa fa-eye-slash"></i> Only ' . $this->get_username($hw->userid) . ' can see this.</h5>';
-        }
-
-        // Button for teachers to approve pending homework.
-        if (!$hw->approved && !$hw->private) {
-            // Only teachers should be seeing this.
-            $r .= '<span class="buttons approvalButtons">';
-            $r .= '<span>
-                <i class="fa fa-user"></i> Submitted by ' . $hw->userfirstname . ' ' . $hw->userlastname . '
-                 &nbsp;&nbsp; <i class="fa fa-exclamation-triange"></i> Not visible to students until approved</span> &nbsp;';
-            if ($canedit) {
-                $r .= '<a class="approveHomeworkButton btn-mini btn btn-success" href="#"><i class="fa fa-check"></i> Approve</a>';
-            }
-            $r .= '</span>';
-        }
-
-        if ($future) {
-            $r .= '<span class="buttons approvalButtons">';
-            $r .= '<span><i class="fa fa-pause"></i> Will not appear to students until ' . date(
-                    'l M jS Y',
-                    strtotime($hw->startdate)) . '</span>';
-            $r .= '</span>';
-        }
-
-        // Edit buttons.
-        if ($canedit) {
-            $r .= '<span class="buttons editButtons">';
-            $r .= '<a
-                class="btn-mini btn btn-info"
-                href="add.php?action=edit&editid=' . $hw->id . '"
-                title="Edit">
-                <i class="fa fa-pencil"></i> Edit
-                </a>';
-            $r .= '<a class="deleteHomeworkButton btn-mini btn btn-danger" href="#" title="Delete">
-                <i class="fa fa-trash"></i> Delete
-            </a>';
-            $r .= '</span>';
-        }
-
-        $icon = '';
-        $r .= '<h5 class="dates">';
-
-        // List of assigned dates.
-        if ($showassigneddates && $assignedstr = $this->homework_assigned_dates($hw->get_assigned_dates())) {
+        // Full list of assigned dates.
+        if ($assignedstr = $this->homework_assigned_dates($hw)) {
             $r .= $assignedstr;
             $r .= ' &nbsp; <i class="fa fa-arrow-right"></i> &nbsp; ';
         }
 
         // Due date.
-        $r .= '<i class="fa fa-bell"></i> <strong>Due on</strong> ' . date('D M jS Y', strtotime($hw->duedate));
+        $r .= '<span class="label label-' . ($past ? 'important' : 'info') . '">
+                <i class="fa fa-bell"></i> <strong>' . ($past ? 'Was due' : 'Due') . ' on</strong> '
+            . date('D M jS Y', strtotime($hw->duedate))
+            . '</span>';
 
-        $r .= '</h5>';
+        $r .= '</div>';
 
-        // Course name with link.
-        $r .= '<h4><a href="/blocks/homework/class.php?groupid=' . $hw->groupid . '">'
-            . ($icon ? '<i class="fa fa-' . $icon . '"></i> ' : '')
-            . $hw->coursename
-            . '</a></h4>';
+        $r .= '<h3 class="course-name">';
+        // Course name.
+        $r .= '<a href="class.php?groupid=' . $hw->groupid . '">' . $hw->coursename . '</a>';
 
-        // Class (group) name.
-        if ($this->hwblock->get_mode() || $showclassname) {
-            $r .= '<h4>' . $hw->get_group_name() . '</h4>';
-        }
+        // Group name.
+        $r .= '<span class="group-name">' . $hw->get_group_name() . '</span>';
+        $r .= '</h3>';
 
         // Description.
-        $r .= '<p>';
+        $r .= '<div class="description">';
 
         if ($hw->title) {
-            $r .= '<strong>' . $hw->title . '</strong><br/>';
+            $r .= '<h4 class="title"><a href="hw.php?id=' . $hw->id . '">' . $hw->title . '</a></h4>';
         }
 
-        $r .= $this->filter_text($hw->description);
+        $r .= '<p>' . $this->filter_text($hw->description) . '</p>';
 
         // Duration.
-        $r .= '<span class="duration"><i class="fa fa-clock-o"></i> This should take ' . $this->homework_duration(
-                $hw->duration) . ' in total.</span>';
+        $r .= '<p class="duration">
+            <i class="fa fa-clock-o"></i>
+            This should take ' . $this->homework_duration($hw->duration) . ' in total.
+            </p>';
 
-        $r .= '</p>';
+        $r .= '</div>';
 
         // Notes.
         if ($notes = $hw->get_notes($this->hwblock->get_user_id())) {
@@ -595,38 +477,156 @@ class display_manager {
         } else {
             $notes = '';
         }
-
         $r .= '<p class="notes" ' . ($notes ? '' : 'style="display:none;"') . '>' . $notes . '</p>';
 
-        if ($this->hwblock->get_mode() == 'teacher' || $this->hwblock->get_mode() == 'student') {
-            // Edit notes button.
-            $r .= '<span class="buttons noteButtons">';
-            $r .= '<a class="btn-mini btn btn-info editNotes" href="#">
-                <i class="fa fa-comment"></i> Add Notes
-                </a>';
-            $r .= '<a class="btn-mini btn btn-danger cancelNotes" href="#" style="display:none;">
-                <i class="fa fa-times"></i> Cancel
-                </a>';
-            $r .= '<a class="btn-mini btn btn-success saveNotes" href="#" style="display:none;">
-                <i class="fa fa-save"></i> Save Notes
-                </a>';
-            $r .= '</span>';
+        // Buttons.
+        $buttons = $this->get_homework_item_buttons($hw);
+        if (!empty($buttons)) {
+            $r .= '<div class="buttons">' . implode(' ', $buttons) . '</div>';
         }
 
-        $r .= '<div class="clear"></div>';
+        // Labels.
+        $labels = $this->get_homework_item_labels($hw);
+        if (!empty($labels)) {
+            $r .= '<div class="labels">' . implode(' ', $labels) . '</div>';
+        }
 
         $r .= '</li>';
         return $r;
     }
 
     /**
-     * Output the dates a piece of homework is assigned for.
+     * Returns the buttons to display at the bottom of a piece of homework.
      *
-     * @param string[] $dates
+     * @param homework_item $homeworkitem
+     *
+     * @return string[]
+     */
+    private function get_homework_item_buttons(homework_item $homeworkitem) {
+        $canedit = $this->hwblock->can_edit_homework_item($homeworkitem);
+
+        $buttons = array();
+
+        if ($this->hwblock->get_mode() == 'teacher' || $this->hwblock->get_mode() == 'student') {
+
+            // Add notes button.
+            $buttons[] = '<a class="btn btn-inverse editNotes" href="#">
+                <i class="fa fa-comment"></i> Add Notes
+                </a>';
+
+            // Canel adding/editing notes button (hidden initially - show by JS).
+            $buttons[] = '<a class="btn btn-danger cancelNotes" href="#" style="display:none;">
+                <i class="fa fa-times"></i> Cancel Editing Notes
+                </a>';
+
+            // Save notes button  (hidden initially - show by JS).
+            $buttons[] = '<a class="btn btn-success saveNotes" href="#" style="display:none;">
+                <i class="fa fa-save"></i> Save Notes
+                </a>';
+        }
+
+        if ($canedit) {
+            // Edit button.
+            $buttons[] = '<a
+                class="btn btn-inverse"
+                href="add.php?action=edit&editid=' . $homeworkitem->id . '"
+                title="Edit">
+                <i class="fa fa-pencil"></i> Edit Homework
+            </a>';
+
+            // Delete button.
+            $buttons[] = '<a class="deleteHomeworkButton btn btn-danger" href="#" title="Delete">
+                <i class="fa fa-trash"></i> Delete Homework
+            </a>';
+        }
+
+        return $buttons;
+    }
+
+    /**
+     * Returns the bootstrap labels to display at the top of homework.
+     *
+     * @param homework_item $homeworkitem
+     *
+     * @return string[]
+     */
+    private function get_homework_item_labels(homework_item $homeworkitem) {
+        global $USER;
+
+        $labels = array();
+
+        $canedit = $this->hwblock->can_edit_homework_item($homeworkitem);
+
+        if ($homeworkitem->private) {
+            $labels[] = '<span class="label label-inverse">
+                <i class="fa fa-eye-slash"></i>
+                Only ' . $this->get_name($homeworkitem->userid) . ' can see this
+            </span>';
+        } else if ($this->hwblock->get_mode() == 'teacher') {
+
+            if ($homeworkitem->userid != $USER->id) {
+                $labels[] = '<span class="label label-info">
+                    <i class="fa fa-user"></i>
+                    Submitted by ' . $this->get_name($homeworkitem->userid) . '
+                </span>';
+            }
+
+            if ($homeworkitem->approved && $homeworkitem->is_in_future()) {
+
+                // Approved and pending.
+                $visibledate = date('M jS Y', strtotime($homeworkitem->startdate));
+                $labels[] = '<span class="label label-warning">
+                    <i class="fa fa-pause"></i>
+                    Visible to students from ' . $visibledate . '
+                </span>';
+            } else if ($homeworkitem->approved) {
+
+                // Approved and visible.
+                $labels[] = '<span class="label label-success">
+                    <i class="fa fa-check"></i>
+                    Visible to students
+                </span>';
+            } else {
+
+                // Not approved yet.
+                $unapprovedlabel = '<span class="label label-important">
+                    <i class="fa fa-exclamation-circle"></i>
+                    Not visible to students until approved';
+                if ($canedit) {
+                    $unapprovedlabel .= ' <a class="approveHomeworkButton btn-mini btn btn-success" href="#">
+                            <i class="fa fa-check"></i> Approve
+                        </a>';
+                }
+                $unapprovedlabel .= '</span>';
+                $labels[] = $unapprovedlabel;
+            }
+        } else if ($this->hwblock->get_mode() == 'pastoral') {
+
+            $labels[] = '<span class="label label-info">
+                <i class="fa fa-user"></i>
+                Submitted by ' . $this->get_name($homeworkitem->userid) . '
+            </span>';
+        }
+
+        return $labels;
+    }
+
+    /**
+     * Output the full list of dates a piece of homework is assigned for.
+     *
+     * @param homework_item $homeworkitem
      *
      * @return string
      */
-    private function homework_assigned_dates($dates) {
+    private function homework_assigned_dates(homework_item $homeworkitem) {
+
+        if ($homeworkitem->assigneddate) {
+            // If showing on the overview page, just show one assigned date.
+            $dates = array($homeworkitem->assigneddate);
+        } else {
+            $dates = $homeworkitem->get_assigned_dates();
+        }
+
         // Remove empty dates from array.
         foreach ($dates as $i => $date) {
             if (!$date) {
@@ -653,7 +653,7 @@ class display_manager {
                 $output .= $joiner;
             }
 
-            $output .= date('D M jS', strtotime($date));
+            $output .= '<sapn class="label label-info">' . date('D M jS', strtotime($date)) . '</sapn>';
 
             // If there are more than 3 dates and this is the 2nd one, stop.
             if ($count > 3 && $i >= 1) {
@@ -752,67 +752,54 @@ class display_manager {
     public function week_stats(homework_stats $stats) {
 
         // Build an array of dates for the next fortnight.
-        /** @var homework_item[][] $dates */
         $dates = array();
-
         $date = clone $stats->get_start_date();
-
         $dateinterval = $date->diff($stats->get_end_date());
-
         for ($i = 0; $i < $dateinterval->d; $i++) {
-
-            if ($date->format('l') != 'Saturday' && $date->format('l') != 'Sunday') {
-                $dates[$date->format('Y-m-d')] = array();
-            }
-
+            $dates[$date->format('Y-m-d')] = $date->format('l M jS');
             $date->modify('+1 day');
         }
 
+        /** @var homework_item[][] $homework */
         $homework = $stats->get_homework();
-
-        // Sort the homework into the days it's assigned for.
-        foreach ($homework as $hw) {
-            if (isset($dates[$hw->assigneddate])) {
-                $dates[$hw->assigneddate][] = $hw;
-            }
-        }
 
         $r = '<ul class="weekOverview pastoralWeekOverview row">';
 
-        foreach ($dates as $date => $hw) {
-            ++$i;
+        foreach ($dates as $date => $displaydate) {
+
             $past = $date < $this->hwblock->today;
             $r .= '<li class="col-md-2 ' . ($past ? 'past' : '') . '">
-				<span class="day row">
+                <span class="day row">
 
-				<h4>' . date('l M jS', strtotime($date)) . '</h4>';
+                <h4>' . $displaydate . '</h4>';
 
-            foreach ($hw as $item) {
-                if ($item->courseid) {
-                    $icon = '';
-                    $text = $item->coursename;
-                } else {
-                    $icon = 'thumb-tack';
-                    $text = $this->truncate($item->description, 30);
+            if (isset($homework[$date])) {
+                foreach ($homework[$date] as $item) {
+
+                    if ($item->courseid) {
+                        $text = $item->coursename;
+                    } else {
+                        $text = $this->truncate($item->description, 30);
+                    }
+
+                    $assigneddates = $item->get_assigned_dates();
+                    if ($assigneddates) {
+                        $averageduration = $item->duration / count($assigneddates);
+                    } else {
+                        $averageduration = $item->duration;
+                    }
+
+                    $r .= '<p class="col-md-4"><a href="class.php?groupid=' . $item->groupid . '">';
+                    $r .= $text;
+                    $r .= '<br/><strong>' . $this->minutes($item->duration, true) . ' total (' . $this->minutes(
+                            $averageduration,
+                            true) . ' today)</strong>';
+                    $r .= '</a></p>';
                 }
-
-                $assigneddates = $item->get_assigned_dates();
-                if ($assigneddates) {
-                    $averageduration = $item->duration / count($assigneddates);
-                } else {
-                    $averageduration = $item->duration;
-                }
-
-                $r .= '<p class="col-md-4"><a href="/blocks/homework/class.php?groupid=' . $item->groupid . '">';
-                $r .= ($icon ? '<i class="fa fa-' . $icon . '"></i> ' : '') . $text;
-                $r .= '<br/><strong>' . $this->minutes($item->duration, true) . ' total (' . $this->minutes(
-                        $averageduration,
-                        true) . ' today)</strong>';
-                $r .= '</a></p>';
             }
 
             $r .= '</span>
-			</li>';
+            </li>';
         }
 
         $r .= '</ul>';
@@ -831,7 +818,7 @@ class display_manager {
         $r = '<div class="feedLink">';
         $text = 'You can see due dates for your homework in iCal by adding this URL.';
         if ($button) {
-            $text .= ' <a class="btn btn-mini btn-primary" href="/blocks/homework/icalfeed.php">Click here to learn how</a>';
+            $text .= ' <a class="btn btn-mini btn-primary" href="icalfeed.php">Click here to learn how</a>';
         }
         $text .= '<input type="text" readonly="readonly" value="' . $this->hwblock->feeds->generate_feed_url() . '"/>';
         $r .= $this->sign('calendar', 'iCal Feed', $text);
@@ -958,12 +945,17 @@ class display_manager {
     /**
      * Returns the username for a user ID.
      *
-     * @param int $userid
+     * @param int  $userid
+     * @param bool $useyou Returns "you" if theis is the current logged in user (not necessarily the user we're acting as).
      *
      * @return string|bool
      */
-    private function get_username($userid) {
-        global $DB;
-        return $DB->get_field('user', 'username', array('id' => $userid));
+    private function get_name($userid, $useyou = true) {
+        global $DB, $USER;
+        if ($useyou && $userid === $USER->id) {
+            return 'you';
+        }
+        $user = $DB->get_record('user', array('id' => $userid));
+        return fullname($user);
     }
 }

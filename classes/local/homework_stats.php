@@ -68,7 +68,7 @@ class homework_stats {
     public function __construct(block $hwblock) {
         $this->hwblock = $hwblock;
         $this->startdate = new DateTime('monday this week');
-        $this->enddate = new DateTime('sunday this week');
+        $this->enddate = new DateTime('sunday next week');
     }
 
     /**
@@ -139,25 +139,9 @@ class homework_stats {
     /**
      * Fetch the homework items that apply to the given criteria (date ranges etc.)
      *
-     * @return homework_item[]
+     * @return homework_item[][]
      */
     public function get_homework() {
-        $assignedrangestart = $this->startdate->format('Y-m-d');
-        $assignedrangeend = $this->enddate->format('Y-m-d');
-        $distinct = false;
-        $homework = $this->hwblock->get_homework(
-            $this->groupids,
-            $this->courseids,
-            null,
-            true,
-            $distinct,
-            null,
-            null,
-            null,
-            $assignedrangestart,
-            $assignedrangeend,
-            false
-        );
-        return $homework;
+        return $this->hwblock->repository->get_homework_for_school_overview($this->startdate, $this->enddate);
     }
 }

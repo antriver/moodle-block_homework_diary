@@ -31,35 +31,44 @@ switch ($hwblock->get_mode()) {
     case 'pastoral-student':
     case 'student':
     case 'parent':
-    case 'teacher':
 
-        echo $hwblock->display->sign('th-list', 'View History', 'All Homework, Sorted By Due Date (Latest At The Top)');
-
-        // Get the user's group (class) IDs.
+        // Get all the user's group (class) IDs.
         $groupids = $hwblock->groups->get_all_users_group_ids($hwblock->get_user_id());
 
-        $approvedstatus = true; // Only show approved homework.
-        $past = null; // Include future and past.
-        $order = 'hw.duedate DESC'; // Latest due date at the top.
+        echo $hwblock->display->sign('th-list', 'Full List', 'Showing homework for all of your classes.');
 
-        $homework = $hwblock->get_homework(
-            $groupids,
-            false,
-            false,
-            $approvedstatus,
-            true,
-            $past,
-            false,
-            $order
-        );
+        echo '<h3><i class="fa fa-bell"></i> Current Homework</h3>';
+        $currenthomework = $hwblock->repository->get_current_homework($groupids);
+        echo $hwblock->display->homework_list($currenthomework);
 
-        echo $hwblock->display->homework_list($homework);
+        $privatehomework = $hwblock->repository->get_private_homework($hwblock->get_user_id());
+        echo '<h3><i class="fa fa-eye-slash"></i> Your Private Homework</h3>';
+        echo $hwblock->display->homework_list($privatehomework);
+
+        echo '<h3><i class="fa fa-calendar"></i> Previous Homework</h3>';
+        $previous = $hwblock->repository->get_previous_homework($groupids);
+        echo $hwblock->display->homework_list($previous);
 
         break;
 
-    case 'pastoral':
+    case 'teacher':
 
-        // What to show here?
+        // Get all the user's group (class) IDs.
+        $groupids = $hwblock->groups->get_all_users_group_ids($hwblock->get_user_id());
+
+        echo $hwblock->display->sign('th-list', 'Full List', 'Showing homework for all of your classes.');
+
+        echo '<h3><i class="fa fa-bell"></i> Current Homework</h3>';
+        $currenthomework = $hwblock->repository->get_current_homework($groupids);
+        echo $hwblock->display->homework_list($currenthomework);
+
+        $scheduled = $hwblock->repository->get_upcoming_homework($groupids);
+        echo '<h3><i class="fa fa-pause"></i> Upcoming Homework</h3>';
+        echo $hwblock->display->homework_list($scheduled);
+
+        echo '<h3><i class="fa fa-calendar"></i> Previous Homework</h3>';
+        $previous = $hwblock->repository->get_previous_homework($groupids);
+        echo $hwblock->display->homework_list($previous);
 
         break;
 }

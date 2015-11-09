@@ -52,6 +52,11 @@ class block {
     public $groups;
 
     /**
+     * @var homework_repository
+     */
+    public $repository;
+
+    /**
      * Today's date
      *
      * @var string
@@ -69,13 +74,12 @@ class block {
      * Constructor
      */
     public function __construct() {
-        $this->log();
-
         $this->today = date('Y-m-d');
 
         $this->display = new display_manager($this);
         $this->feeds = new feed_manager($this);
         $this->groups = new group_manager($this);
+        $this->repository = new homework_repository($this);
     }
 
     /**
@@ -527,4 +531,6 @@ class block {
 
         return $return;
     }
+
+
 }

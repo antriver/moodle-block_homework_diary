@@ -40,18 +40,40 @@ $mode = $hwblock->get_mode();
 echo '<h2 style="float:right; margin:17px 10px 0;"><i class="fa fa-group"></i> Showing All Classes In Course</h2>';
 echo '<h2>' . $course->fullname . '</h2>';
 
+// Get all groupids in the course.
+$groups = $DB->get_records('groups', array('courseid' => $course->id));
+$groupids = array_map(function ($group) {
+    return $group->id;
+}, $groups);
+
 if ($mode == 'teacher' || $mode == 'pastoral') {
-    $pendinghomework = $hwblock->get_homework(false, array($course->id), false, false);
-    echo '<h3><i class="fa fa-list"></i> Pending Homework For This Course</h3>';
-    echo $hwblock->display->homework_list($pendinghomework, false, false, false, true);
+    // Display homework submitted by students that's not yet approved.
+    $pendinghomework = $hwblock->repository->get_pending_homework($groupids);
+    echo '<h3><i class="fa fa-exclamation-circle"></i> Pending Homework Submissions For This Course</h3>';
+    echo $hwblock->display->homework_list($pendinghomework);
 }
 
-echo '<h3><i class="fa fa-bell"></i> Homework Due For This Course</h3>';
-$homework = $hwblock->get_homework(false, array($course->id), false, true);
-echo $hwblock->display->homework_list($homework, false, false, false, true);
+echo '<h3><i class="fa fa-bell"></i> Current Homework For This Course</h3>';
+$currenthomework = $hwblock->repository->get_current_homework($groupids);
+echo $hwblock->display->homework_list($currenthomework);
+
+if ($mode == 'teacher' || $mode == 'pastoral') {
+    // Display homework scheduled to appear in the future.
+    $scheduled = $hwblock->repository->get_upcoming_homework($groupids);
+    echo '<h3><i class="fa fa-pause"></i> Upcoming Homework For This Course</h3>';
+    echo $hwblock->display->homework_list($scheduled);
+}
+
+if ($mode == 'student' || $mode === 'pastoral-student') {
+    // Display private homework for this class to students.
+    $privatehomework = $hwblock->repository->get_private_homework($hwblock->get_user_id(), $groupids);
+    echo '<h3><i class="fa fa-eye-slash"></i> Your Private Homework For This Course</h3>';
+    echo $hwblock->display->homework_list($privatehomework);
+
+}
 
 echo '<h3><i class="fa fa-calendar"></i> Previous Homework For This Course</h3>';
-$homework = $hwblock->get_homework(false, array($course->id), false, true, true, true);
-echo $hwblock->display->homework_list($homework, false, false, false, true);
+$previous = $hwblock->repository->get_previous_homework($groupids);
+echo $hwblock->display->homework_list($previous);
 
 echo $OUTPUT->footer();

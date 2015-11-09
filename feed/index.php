@@ -51,19 +51,10 @@ if ($key != $hwblock->feeds->generate_feed_key($user)) {
 // Get the user's group (class) IDs.
 $groupids = $hwblock->groups->get_all_users_group_ids($user->id);
 
-$homework = $hwblock->get_homework(
-    $groupids,
-    false,
-    false,
-    true,
-    true,
-    false,
-    false,
-    null,
-    null,
-    null,
-    true
-);
+$currenthomework = $hwblock->repository->get_current_homework($groupids);
+$privatehomework = $hwblock->repository->get_private_homework($user->id);
+/** @var block_homework\local\homework_item[] $homework */
+$homework = array_merge($currenthomework, $privatehomework);
 
 /**
  * Output the feed...

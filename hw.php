@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Displays a single homework item
+ * Displays a single homework item.
  *
  * @package    block_homework
  * @copyright  Anthony Kuske <www.anthonykuske.com>
