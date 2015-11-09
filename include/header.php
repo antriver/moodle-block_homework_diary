@@ -37,7 +37,7 @@ if (!empty($_SERVER['SCRIPT_NAME'])) {
 $hwblock = new \block_homework\local\block();
 
 $PAGE->requires->css('/blocks/homework/assets/bootstrap/css/bootstrap.css');
-$PAGE->requires->css('/blocks/homework/assets/css/homework.css?v=2015110904');
+$PAGE->requires->css('/blocks/homework/assets/css/homework.css?v=2015110905');
 
 $PAGE->requires->jquery();
 $PAGE->requires->jquery_plugin('ui');
@@ -47,7 +47,7 @@ $PAGE->requires->js('/blocks/homework/assets/js/lib/jquery.scrollTo.min.js');
 $PAGE->requires->js('/blocks/homework/assets/js/lib/jquery.localScroll.min.js');
 $PAGE->requires->js('/blocks/homework/assets/js/lib/jquery.autosize.min.js');
 $PAGE->requires->js('/blocks/homework/assets/js/lib/date.js');
-$PAGE->requires->js('/blocks/homework/assets/js/homework.js?v=2015110904');
+$PAGE->requires->js('/blocks/homework/assets/js/homework.js?v=2015110905');
 if (get_config('block_homework', 'smooth_scroll')) {
     $PAGE->requires->js('/blocks/homework/assets/js/lib/localscroll.js');
 }

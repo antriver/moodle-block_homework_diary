@@ -205,12 +205,19 @@ class block {
      *
      * @return bool
      */
-    public function set_mode($mode) {
-        global $SESSION;
+    public function set_mode($mode, $userid = false) {
+        global $SESSION, $USER;
 
         $possiblemodes = $this->get_possible_modes();
         if (in_array($mode, $possiblemodes)) {
             $SESSION->homeworkblockmode = $mode;
+
+            if ($userid) {
+                $SESSION->homeworkblockuser = $userid;
+            } else {
+                $SESSION->homeworkblockuser = $USER->id;
+            }
+
             return true;
         }
         return false;

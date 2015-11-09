@@ -446,6 +446,10 @@ h3 {
     padding-top:30px;
 }
 
+.feedLink {
+    margin-top:30px;
+}
+
 .feedLink input {
     display: block;
     width: 100%;
