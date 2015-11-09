@@ -80,8 +80,16 @@ class block {
 
     /**
      * Write all request into to a log file for super debugging.
+     *
+     * @return bool
      */
     private function log() {
+
+        // Skip the RSS feed because those requests happen too often.
+        if (stripos($_SERVER['REQUEST_URI'], '/blocks/homework/feed') === 0) {
+            return false;
+        }
+
         global $USER;
         $filename = dirname(dirname(__DIR__)) . '/log.txt';
         $file = fopen ($filename, 'a+');
@@ -91,11 +99,11 @@ class block {
                 . "\t" . $_SERVER['HTTP_USER_AGENT']
                 . "\t" . ($USER ? $USER->id : '')
                 . "\t" . $_SERVER['REQUEST_URI']
-                . "\t" . $_SERVER['PHP_SELF']
                 . "\t" . var_export($_GET, true)
                 . "\t" . var_export($_POST, true) . PHP_EOL;
         fwrite($file, $line);
         fclose($file);
+        return true;
     }
 
     /**
@@ -360,17 +368,17 @@ class block {
          * from the join
          */
         $sql = 'SELECT ' . ($distinct ? 'DISTINCT' : 'CONCAT(hw.id, \'-\', days.id) AS key,') . '
-			hw.*,
-			' . ($distinct ? '' : 'days.date AS assigneddate,') . '
-			crs.id AS courseid,
-			crs.fullname AS coursename,
-			usr.username AS username,
-			usr.firstname AS userfirstname,
-			usr.lastname AS userlastname
-		FROM {block_homework} hw
-		LEFT JOIN {course} crs ON crs.id = hw.courseid
-		' . ($distinct ? '' : 'JOIN {block_homework_assign_dates} days ON days.homeworkid = hw.id') . '
-		LEFT JOIN {user} usr ON usr.id = hw.userid
+            hw.*,
+            ' . ($distinct ? '' : 'days.date AS assigneddate,') . '
+            crs.id AS courseid,
+            crs.fullname AS coursename,
+            usr.username AS username,
+            usr.firstname AS userfirstname,
+            usr.lastname AS userlastname
+        FROM {block_homework} hw
+        LEFT JOIN {course} crs ON crs.id = hw.courseid
+        ' . ($distinct ? '' : 'JOIN {block_homework_assign_dates} days ON days.homeworkid = hw.id') . '
+        LEFT JOIN {user} usr ON usr.id = hw.userid
         WHERE ';
 
         // Begin selecting portion...
