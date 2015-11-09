@@ -194,9 +194,11 @@ h3 {
 
 .addHomeworkForm input[type=text],
 .addHomeworkForm textarea {
-    padding: 20px 10px;
+    padding:10px;
     box-sizing: border-box;
     width:100%;
+    height: auto;
+    min-height:45px;
 }
 
 .addHomeworkForm select {
