@@ -540,3 +540,7 @@ a.btn.privateHomeworkButton.active,
     }
 
 }
+
+.ui-widget-content.ui-slider {
+    border: 1px solid #AAA !important;
+}
