@@ -131,7 +131,14 @@ class group_manager {
             $params[] = $categorycontextpath . '/%';
         }
 
-        $sql .= ' ORDER BY coursefullname';
+        //$sql .= ' ORDER BY coursefullname';
+        // Prefixing course names with [OLD] makes the list sink down to the bottom
+        // Works by adding a zzzzz prefix to sorting
+        // TODO: Either fork or make it a setting
+        $sql .= " ORDER BY (CASE strpos(g.name, '[OLD]')
+                    WHEN 1 THEN 'zzzzz' || c.fullname
+                    ELSE c.fullname
+                    END)";
 
         $rs = $DB->get_recordset_sql($sql, $params);
 
