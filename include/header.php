@@ -43,12 +43,12 @@ $PAGE->requires->jquery();
 $PAGE->requires->jquery_plugin('ui');
 $PAGE->requires->jquery_plugin('ui-css');
 
-$PAGE->requires->js('/blocks/homework/assets/js/lib/jquery.scrollTo.min.js');
-$PAGE->requires->js('/blocks/homework/assets/js/lib/jquery.localScroll.min.js');
 $PAGE->requires->js('/blocks/homework/assets/js/lib/jquery.autosize.min.js');
 $PAGE->requires->js('/blocks/homework/assets/js/lib/date.js');
 $PAGE->requires->js('/blocks/homework/assets/js/homework.js?v=2015110905');
 if (get_config('block_homework', 'smooth_scroll')) {
+    $PAGE->requires->js('/blocks/homework/assets/js/lib/jquery.scrollTo.min.js');
+    $PAGE->requires->js('/blocks/homework/assets/js/lib/jquery.localScroll.min.js');
     $PAGE->requires->js('/blocks/homework/assets/js/lib/localscroll.js');
 }
 
