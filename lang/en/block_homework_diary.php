@@ -59,3 +59,11 @@ $string['settings_additional_html_top_desc'] = 'Appears at the top of the first 
 
 $string['settings_additional_html_bottom_name'] = 'Page Bottom';
 $string['settings_additional_html_bottom_desc'] = 'Appears at the bottom of the first page of the homework diary.';
+
+/**
+ * Student Search
+ */
+$string['student_search_title'] = 'Find A Student';
+$string['student_search_desc'] = 'This section allows you to see what a student sees.
+Search for a student by name or ID below and click on one of the results.';
+$string['student_search_placeholder'] = 'Type part of a student\'s name or their whole ID to search...';

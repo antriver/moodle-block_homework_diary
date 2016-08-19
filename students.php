@@ -31,14 +31,13 @@ switch ($hwblock->get_mode()) {
 
     case 'pastoral':
 
-        echo '<h2><i class="fa fa-user"></i> Student Lookup</h2>';
+        echo '<h2><i class="fa fa-user"></i> ' . get_string('student_search_title', 'block_homework_diary') . '</h2>';
 
-        // FIXME: SSIS language.
         echo $hwblock->display->sign(
             'search',
-            'Find A Student',
-            'This section allows you to see what a student sees.
-                Search for a student by name or PowerSchool ID below and click on one of the results.');
+            get_string('student_search_title', 'block_homework_diary'),
+            get_string('student_search_desc', 'block_homework_diary')
+        );
 
         echo $hwblock->display->student_list();
 

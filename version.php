@@ -25,6 +25,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 /** @var stdClass $plugin */
-$plugin->version = 2016081901; // The current plugin version (Date: YYYYMMDDXX)
+$plugin->version = 2016081902; // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires = 2013111800; // MOODLE_26_STABLE
 $plugin->component = 'block_homework_diary'; // Full name of the plugin (used for diagnostics).

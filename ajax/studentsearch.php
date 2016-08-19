@@ -31,26 +31,29 @@ $hwblock = new \block_homework_diary\local\block();
 
 $q = required_param('q', PARAM_RAW);
 
-// FIXME: SSIS.
-$sql = "SELECT id, idnumber, firstname, lastname
-FROM {user}
+$studentcohortid = (int)get_config('block_homework_diary', 'student_cohort');
+$sql = "SELECT u.id, u.idnumber, u.firstname, u.lastname
+FROM {user} u
+JOIN {cohort_members} cm ON cm.userid = u.id
 WHERE
-	email LIKE '%@student.ssis-suzhou.net'
+	cm.cohortid = ?
 	AND (
-		id = ?
-		OR idnumber = ?
-		OR LOWER(department) = ?
-		OR REPLACE(CONCAT(LOWER(firstname), LOWER(lastname)),  ' ', '') LIKE ?
-		OR REPLACE(CONCAT(LOWER(lastname),  LOWER(firstname)), ' ', '') LIKE ?
-		OR LOWER(lastname) LIKE ?
+		u.id = ?
+		OR u.idnumber = ?
+		OR LOWER(u.department) = ?
+		OR REPLACE(CONCAT(LOWER(u.firstname), LOWER(u.lastname)),  ' ', '') LIKE ?
+		OR REPLACE(CONCAT(LOWER(u.lastname),  LOWER(u.firstname)), ' ', '') LIKE ?
+		OR LOWER(u.lastname) LIKE ?
 	)
-	AND deleted = 0
-ORDER BY firstname, lastname ASC";
+	AND u.deleted = 0
+GROUP BY u.id
+ORDER BY u.firstname, u.lastname ASC";
 
 $words = explode(' ', $q);
 $wildq = strtolower('%' . implode('%', $words) . '%');
 
 $values = array(
+    $studentcohortid, // Cohortid.
     intval($q), // UserID.
     intval($q), // Idnumber.
     strtolower($q), // Department.

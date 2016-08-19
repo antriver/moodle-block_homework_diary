@@ -348,7 +348,7 @@ class display_manager {
         $r .= '<input
             type="text"
             class="filter"
-            placeholder="Type part of a student\'s name or their whole PowerSchool ID to search..." />';
+            placeholder="'.get_string('student_search_placeholder', 'block_homework_diary').'" />';
         $r .= '<div class="row users"></div>';
         $r .= '<div class="clear"></div>';
         $r .= '</div>';
