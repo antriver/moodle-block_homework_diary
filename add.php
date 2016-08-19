@@ -232,7 +232,7 @@ if (defined('FORMACTION')) {
             'plus-sign',
             'Add Homework',
             'You may add homework for either just yourself, or everyone in your class.
-            If the latter, your class teacher will have to approve it before it appears on DragonNet.');
+            If the latter, your class teacher will have to approve it before it appears.');
     } else if (FORMACTION === 'add' && $mode == 'teacher') {
 
         echo $hwblock->display->sign(
