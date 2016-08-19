@@ -17,7 +17,7 @@
 /**
  * Displays a single homework item.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,7 +30,7 @@ $id = required_param('id', PARAM_INT);
 echo $OUTPUT->header();
 echo $hwblock->display->tabs();
 
-$hw = \block_homework\local\homework_item::load($id);
+$hw = \block_homework_diary\local\homework_item::load($id);
 
 echo $hwblock->display->homework_list(array($hw));
 

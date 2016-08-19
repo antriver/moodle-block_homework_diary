@@ -1,10 +1,10 @@
 .path-blocks-homework #page-content {
-    margin:auto;
+    margin: auto;
     max-width: 1170px;
 }
 
 .tabs .btn-group {
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
 
 .help-block {
@@ -17,99 +17,100 @@ h2 {
 }
 
 h3 {
-    margin:30px 10px 15px 10px;
+    margin: 30px 10px 15px 10px;
 }
 
 .nothing {
-    text-align:center;
-    padding:30px;
+    text-align: center;
+    padding: 30px;
 }
 
 .weekOverview {
     list-style: none;
-    margin:0;
+    margin: 0;
 }
 
-    .weekOverview li {
-        background:rgba(22,98,163,.2);
-        box-sizing: border-box;
-        border: 1px rgba(0,0,0,.2) solid;
-        border-bottom-width:0;
-    }
+.weekOverview li {
+    background: rgba(22, 98, 163, .2);
+    box-sizing: border-box;
+    border: 1px rgba(0, 0, 0, .2) solid;
+    border-bottom-width: 0;
+}
 
-    .weekOverview:nth-of-type(2) li:last-child {
-        border-bottom-width:1px;
-    }
+.weekOverview:nth-of-type(2) li:last-child {
+    border-bottom-width: 1px;
+}
 
-    .weekOverview .past {
-        display:none;
-    }
+.weekOverview .past {
+    display: none;
+}
 
-        .weekOverview li:hover {
-            opacity:.6;
-            border-right-width:1px;
-        }
+.weekOverview li:hover {
+    opacity: .6;
+    border-right-width: 1px;
+}
 
-        .weekOverview li.past:hover {
-            opacity:.4;
+.weekOverview li.past:hover {
+    opacity: .4;
 
-        }
+}
 
-        .weekOverview .day {
-            padding:10px;
-            display:block;
-            color:#000;
-        }
+.weekOverview .day {
+    padding: 10px;
+    display: block;
+    color: #000;
+}
 
-            .weekOverview li:nth-child(even) {
-                background:rgba(22,98,163,.1);
-            }
+.weekOverview li:nth-child(even) {
+    background: rgba(22, 98, 163, .1);
+}
 
-            .weekOverview:nth-of-type(2) li:nth-child(even) {
-                background:rgba(22,98,163,.2);
-            }
-            .weekOverview:nth-of-type(2) li:nth-child(odd) {
-                background:rgba(22,98,163,.1);
-            }
+.weekOverview:nth-of-type(2) li:nth-child(even) {
+    background: rgba(22, 98, 163, .2);
+}
 
-            .weekOverview .day h4 {
-                margin-bottom:0;
-                text-decoration: underline;
-            }
+.weekOverview:nth-of-type(2) li:nth-child(odd) {
+    background: rgba(22, 98, 163, .1);
+}
 
-            .weekOverview .day p {
-                margin-top:10px;
-                font-size:12px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow:ellipsis;
-                font-family: Georgia, serif;
-                letter-spacing: 0.3px;
-                box-sizing: border-box;
-            }
+.weekOverview .day h4 {
+    margin-bottom: 0;
+    text-decoration: underline;
+}
+
+.weekOverview .day p {
+    margin-top: 10px;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: Georgia, serif;
+    letter-spacing: 0.3px;
+    box-sizing: border-box;
+}
 
 @media (min-width: 992px) {
     .weekOverview li {
-        width:20%;
-        border-right-width:0;
+        width: 20%;
+        border-right-width: 0;
     }
 
     .weekOverview li:nth-child(5n) {
-        border-right-width:1px;
+        border-right-width: 1px;
     }
 
     ul.weekOverview:nth-of-type(2) li {
-        border-bottom-width:1px;
+        border-bottom-width: 1px;
     }
 
     .weekOverview .past {
-        display:block;
-        opacity:.2;
-        background:none;
+        display: block;
+        opacity: .2;
+        background: none;
     }
 
     .weekOverview .day {
-        min-height:120px;
+        min-height: 120px;
     }
 
     #duration-slider {
@@ -119,358 +120,367 @@ h3 {
 }
 
 .pastoralWeekOverview li {
-    width:100%;
-    border-bottom-width:0;
+    width: 100%;
+    border-bottom-width: 0;
 }
-    .pastoralWeekOverview li:hover {
-        opacity:1;
-    }
-    .pastoralWeekOverview li:last-child {
-        border-bottom-width:1px;
-    }
+
+.pastoralWeekOverview li:hover {
+    opacity: 1;
+}
+
+.pastoralWeekOverview li:last-child {
+    border-bottom-width: 1px;
+}
 
 .courseList,
 .userList {
-    margin-bottom:30px;
+    margin-bottom: 30px;
 }
-    .courseList .courses span,
-    .userList .users span{
-        display:block;
-        font-size:12px;
-        white-space: normal;
-        text-transform: none;
-    }
+
+.courseList .courses span,
+.userList .users span {
+    display: block;
+    font-size: 12px;
+    white-space: normal;
+    text-transform: none;
+}
 
 .courseList .filter,
 .userList .filter {
-    display:block;
+    display: block;
     box-sizing: border-box;
-    padding:10px;
-    width:100%;
-    margin-bottom:5px;
-    height:40px;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 5px;
+    height: 40px;
 }
 
 .courseList .courses div,
 .userList .users div {
     box-sizing: border-box;
 }
-    .courseList .courses a,
-    .userList .users a {
-        text-align:left;
-        margin:5px 0;
-        display:block;
-        padding: 5px 10px;
-    }
 
-    .courseList .courses div:nth-child(4n+1),
-    .uerList .users div:nth-child(4n+1){
-        clear: both;
-    }
+.courseList .courses a,
+.userList .users a {
+    text-align: left;
+    margin: 5px 0;
+    display: block;
+    padding: 5px 10px;
+}
 
-    .courseList .icon-text.pull-right,
-    .userList .icon-text.pull-right{
-        margin: 3px 0 0 0 !important;
-        font-size: 11px;
-        font-weight: bold;
-    }
+.courseList .courses div:nth-child(4n+1),
+.uerList .users div:nth-child(4n+1) {
+    clear: both;
+}
+
+.courseList .icon-text.pull-right,
+.userList .icon-text.pull-right {
+    margin: 3px 0 0 0 !important;
+    font-size: 11px;
+    font-weight: bold;
+}
 
 .addHomeworkPrivateToggle .btn {
-    font-size:13px;
-    padding:10px 0 7px;
+    font-size: 13px;
+    padding: 10px 0 7px;
 }
-    .addHomeworkPrivateToggle .btn i {
-        font-size:25px;
-    }
 
+.addHomeworkPrivateToggle .btn i {
+    font-size: 25px;
+}
 
 .addHomeworkForm input[type=text],
 .addHomeworkForm textarea {
-    padding:10px;
+    padding: 10px;
     box-sizing: border-box;
-    width:100%;
+    width: 100%;
     height: auto;
-    min-height:45px;
+    min-height: 45px;
 }
 
 .addHomeworkForm select {
-    width:100%;
-    height:45px;
+    width: 100%;
+    height: 45px;
 }
 
 .form-group {
-    clear:both;
+    clear: both;
     padding-top: 30px;
 }
 
-    #duration-help {
-        padding: 5px 10px 10px;
-        font-size:13px;
-        display:block;
-    }
+#duration-help {
+    padding: 5px 10px 10px;
+    font-size: 13px;
+    display: block;
+}
 
-    .ui-slider {
-        height:25px;
-    }
-        .ui-slider .ui-slider-range {
-            background: #1662A3;
-        }
-        .ui-slider .ui-slider-handle {
-            height:32px;
-            width:27px;
-            cursor:pointer;
-            opacity:.97;
-        }
-        .ui-slider .ui-slider-handle:after {
-            content: "\25C0";
-            font-size: 13px;
-            font-weight: bold;
-            position: relative;
-            top: 5px;
-            left: 5px;
-        }
-        .ui-slider .ui-slider-handle:last-child:after {
-            content: "\25b6";
-            font-size: 12px;
-            left: 7px;
-        }
+.ui-slider {
+    height: 25px;
+}
 
-    .ui-datepicker {
-        z-index:2 !important;
-    }
-        button.ui-datepicker-close {
-            display: none;
-        }
-        ​
+.ui-slider .ui-slider-range {
+    background: #1662A3;
+}
 
-    #assignedDatesGroup {
-        display:none;
-    }
+.ui-slider .ui-slider-handle {
+    height: 32px;
+    width: 27px;
+    cursor: pointer;
+    opacity: .97;
+}
 
-    #possibleDays {
-        list-style: none;
-        padding-left:1%;
-        text-align:center;
-    }
-        #possibleDays span {
-            font-weight:bold;
-        }
-        #possibleDays li {
-            width:14%;
-            padding:5px;
-            float:left;
-            box-sizing:border-box;
-        }
-        #possibleDays .btn {
-            font-size:12px;
-        }
+.ui-slider .ui-slider-handle:after {
+    content: "\25C0";
+    font-size: 13px;
+    font-weight: bold;
+    position: relative;
+    top: 5px;
+    left: 5px;
+}
+
+.ui-slider .ui-slider-handle:last-child:after {
+    content: "\25b6";
+    font-size: 12px;
+    left: 7px;
+}
+
+.ui-datepicker {
+    z-index: 2 !important;
+}
+
+button.ui-datepicker-close {
+    display: none;
+}
+
+#assignedDatesGroup {
+    display: none;
+}
+
+#possibleDays {
+    list-style: none;
+    padding-left: 1%;
+    text-align: center;
+}
+
+#possibleDays span {
+    font-weight: bold;
+}
+
+#possibleDays li {
+    width: 14%;
+    padding: 5px;
+    float: left;
+    box-sizing: border-box;
+}
+
+#possibleDays .btn {
+    font-size: 12px;
+}
 
 .homeworkListContainer h3 {
-    margin-top:90px;
-    text-align:center;
-    font-size:20px;
+    margin-top: 90px;
+    text-align: center;
+    font-size: 20px;
 }
 
 .homeworkList {
-    list-style:none;
-    margin:0 auto 30px;
-    padding:0;
+    list-style: none;
+    margin: 0 auto 30px;
+    padding: 0;
 }
-
 
 /**
  * .homework is a single homework item
  */
 .homework {
-    display:block;
-    padding:20px;
-    margin-bottom:15px;
-    border-radius:3px;
-    background:rgba(22,98,163,.08);
+    display: block;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    background: rgba(22, 98, 163, .08);
     border-color: #bce8f1;
 }
 
-    .homework:last-child {
-        margin-bottom:0;
-    }
+.homework:last-child {
+    margin-bottom: 0;
+}
 
-    /* Background colours for different homework states */
-    .homework:nth-child(even) {
-        background:rgba(22,98,163,.1);
-    }
+/* Background colours for different homework states */
+.homework:nth-child(even) {
+    background: rgba(22, 98, 163, .1);
+}
 
-    .homework.past:not(.private) {
-        opacity:.8;
-        -webkit-filter: grayscale(100%);
-        -moz-filter: grayscale(100%);
-        -ms-filter: grayscale(100%);
-        -o-filter: grayscale(100%);
-        filter: grayscale(100%);
-    }
+.homework.past:not(.private) {
+    opacity: .8;
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
 
-    .homework.unapproved {
-        background:#F2DEDE;
-        border-color: #EBCCD1;
-    }
+.homework.unapproved {
+    background: #F2DEDE;
+    border-color: #EBCCD1;
+}
 
-    .homework.private{
-        background:#D3BFF0;
-        border-color:#D3BFF0;
-    }
+.homework.private {
+    background: #D3BFF0;
+    border-color: #D3BFF0;
+}
 
-    .homework.future {
-        background:#fcf8e3;
-        border-color: #faebcc;
-    }
+.homework.future {
+    background: #fcf8e3;
+    border-color: #faebcc;
+}
 
-    .homework .dates {
-        float:right;
-        margin:0 0 15px;
-        color: #777;
-        font-size: 12px;
-    }
+.homework .dates {
+    float: right;
+    margin: 0 0 15px;
+    color: #777;
+    font-size: 12px;
+}
 
-        /* Hidden element with the full list of dates */
-        .homework .assignedDatesJSON {
-            display:none;
-        }
+/* Hidden element with the full list of dates */
+.homework .assignedDatesJSON {
+    display: none;
+}
 
-        /* Full list of dates */
-        .homework .assignedDates {
-            list-style: none;
-        }
+/* Full list of dates */
+.homework .assignedDates {
+    list-style: none;
+}
 
-        .homework .assignedDates li {
-            margin-bottom: 5px;
-            text-align:center;
-        }
+.homework .assignedDates li {
+    margin-bottom: 5px;
+    text-align: center;
+}
 
-        .homework .assignedDates .label {
-            display: block;
-        }
+.homework .assignedDates .label {
+    display: block;
+}
 
-    .homework .btn {
-        margin-left:5px;
-    }
-        .homework .btn:first-child {
-            margin-left:0;
-        }
-    .homework .course-name {
-        font-size:23px;
-        margin:0 0 15px;
-        text-align:left;
-        line-height: 29px;
-    }
+.homework .btn {
+    margin-left: 5px;
+}
 
-    .homework .group-name {
-        margin-left:5px;
-        font-size:19px;
-        color: #777;
-        line-height: 29px;
-        position: relative;
-        top: -1px;
-    }
+.homework .btn:first-child {
+    margin-left: 0;
+}
 
-    .homework .description,
-    .homework .notes {
-        clear:both;
-        margin:15px 0;
-        background: rgba(255,255,255,.8);
-        padding: 12px;
-        border-radius:3px;
-        /*font-family: Georgia, serif;*/
-        font-size:14px;
-    }
+.homework .course-name {
+    font-size: 23px;
+    margin: 0 0 15px;
+    text-align: left;
+    line-height: 29px;
+}
 
-        .homework .title {
-            font-weight:bold;
-            margin: 0 0 5px;
-            font-size: 19px;
-            line-height: normal;
-        }
+.homework .group-name {
+    margin-left: 5px;
+    font-size: 19px;
+    color: #777;
+    line-height: 29px;
+    position: relative;
+    top: -1px;
+}
 
-        .homework .duration {
-            display:block;
-            /*font-style: italic;*/
-            font-size: 12px;
-            margin: 10px 0 0;
-            color: #777;
-        }
+.homework .description,
+.homework .notes {
+    clear: both;
+    margin: 15px 0;
+    background: rgba(255, 255, 255, .8);
+    padding: 12px;
+    border-radius: 3px;
+    /*font-family: Georgia, serif;*/
+    font-size: 14px;
+}
 
-    .homework .notes {
-        margin-left:100px;
-    }
+.homework .title {
+    font-weight: bold;
+    margin: 0 0 5px;
+    font-size: 19px;
+    line-height: normal;
+}
 
-        .homework .notes-input {
-            display: block;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 10px;
-            height: 150px;
-            border-radius:3px;
-            transition: height 0.2s;
-            margin-bottom:0;
-        }
+.homework .duration {
+    display: block;
+    /*font-style: italic;*/
+    font-size: 12px;
+    margin: 10px 0 0;
+    color: #777;
+}
 
-    .homework .buttons {
-        float:right;
-        text-align:right;
-    }
-        .homework .buttons .btn {
-            font-size: 12px;
-        }
+.homework .notes {
+    margin-left: 100px;
+}
 
-    .homework .labels {
+.homework .notes-input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    height: 150px;
+    border-radius: 3px;
+    transition: height 0.2s;
+    margin-bottom: 0;
+}
 
-    }
+.homework .buttons {
+    float: right;
+    text-align: right;
+}
 
-        .homework .label {
-            font-weight: normal;
-            padding: 4px 8px;
-            font-size: 12px;
-            line-height:22px;
-        }
+.homework .buttons .btn {
+    font-size: 12px;
+}
 
-        .homework .label .btn {
-            line-height: normal;
-            padding: 3px 6px;
-            margin-left:4px;
-        }
+.homework .labels {
 
+}
 
+.homework .label {
+    font-weight: normal;
+    padding: 4px 8px;
+    font-size: 12px;
+    line-height: 22px;
+}
 
-
+.homework .label .btn {
+    line-height: normal;
+    padding: 3px 6px;
+    margin-left: 4px;
+}
 
 .section-navigation {
-    margin-top:30px;
-    padding-top:30px;
+    margin-top: 30px;
+    padding-top: 30px;
 }
 
 .feedLink {
-    margin-top:30px;
+    margin-top: 30px;
 }
 
 .feedLink input {
     display: block;
     width: 100%;
     box-sizing: border-box;
-    padding:3px;
-    margin-top:20px;
+    padding: 3px;
+    margin-top: 20px;
 }
 
 #feedhowto li {
-    margin-bottom:30px;
+    margin-bottom: 30px;
 }
+
 #feedhowto li:last-child {
-    margin-bottom:0;
+    margin-bottom: 0;
 }
 
 #feedhowto img {
-    display:block;
-    max-width:100%;
-    margin:auto;
+    display: block;
+    max-width: 100%;
+    margin: auto;
 }
-
 
 .publicHomeworkButton {
     color: #000000;
@@ -480,6 +490,7 @@ h3 {
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#E6EAEE', endColorstr='#D7DEE5', GradientType=0);
 }
+
 a.btn.publicHomeworkButton:hover,
 a.btn.publicHomeworkButton:focus,
 a.btn.publicHomeworkButton:active,
@@ -498,6 +509,7 @@ a.btn.publicHomeworkButton.active,
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#E4D8F5', endColorstr='#D3BFF0', GradientType=0);
 }
+
 a.btn.privateHomeworkButton:hover,
 a.btn.privateHomeworkButton:focus,
 a.btn.privateHomeworkButton:active,
@@ -511,12 +523,12 @@ a.btn.privateHomeworkButton.active,
 @media (max-width: 767px) {
 
     .homework .dates {
-        float:none;
-        text-align:center;
+        float: none;
+        text-align: center;
     }
 
     .homework .course-name {
-        text-align:center;
+        text-align: center;
     }
 
     .homework .group-name {
@@ -524,14 +536,14 @@ a.btn.privateHomeworkButton.active,
     }
 
     .homework .buttons {
-        float:none;
-        text-align:center;
+        float: none;
+        text-align: center;
     }
 
     .homework .labels {
-        margin-top:15px;
-        margin-bottom:-5px;
-        float:none;
+        margin-top: 15px;
+        margin-bottom: -5px;
+        float: none;
         text-align: center;
     }
 

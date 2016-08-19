@@ -17,17 +17,17 @@
 /**
  * A single homework assignment.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_homework\local;
+namespace block_homework_diary\local;
 
 /**
  * A single homework assignment.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -49,19 +49,19 @@ class homework_item {
      * Name of the table containing homework.
      * @var string
      */
-    private static $table = 'block_homework';
+    private static $table = 'block_homework_diary';
 
     /**
      * Name of the table containing which days a task is assigned for.
      * @var string
      */
-    private static $assigneddaystable = 'block_homework_assign_dates';
+    private static $assigneddaystable = 'block_homework_diary_assign_dates';
 
     /**
      * Name of the table containing student notes for homework.
      * @var string
      */
-    private static $notestable = 'block_homework_notes';
+    private static $notestable = 'block_homework_diary_notes';
 
     /**
      * Constructor
@@ -172,7 +172,7 @@ class homework_item {
      */
     public function save() {
         global $DB;
-        return $DB->update_record('block_homework', $this->row);
+        return $DB->update_record('block_homework_diary', $this->row);
     }
 
     /**
@@ -313,7 +313,7 @@ class homework_item {
 				usr.username AS username,
 				usr.firstname AS userfirstname,
 				usr.lastname AS userlastname
-			FROM {block_homework} hw
+			FROM {block_homework_diary} hw
 			LEFT JOIN {course} crs ON crs.id = hw.courseid
 			LEFT JOIN {user} usr ON usr.id = hw.userid
 			WHERE hw.id = ?';

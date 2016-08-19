@@ -17,7 +17,7 @@
 /**
  * Homework block admin settings
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,9 +29,9 @@ defined('MOODLE_INTERNAL') || die();
  */
 $settings->add(
     new admin_setting_configcheckbox(
-        'block_homework/smooth_scroll',
-        get_string('settings_smooth_scroll_name', 'block_homework'),
-        get_string('settings_smooth_scroll_desc', 'block_homework'),
+        'block_homework_diary/smooth_scroll',
+        get_string('settings_smooth_scroll_name', 'block_homework_diary'),
+        get_string('settings_smooth_scroll_desc', 'block_homework_diary'),
         1
     )
 );
@@ -54,9 +54,9 @@ asort($categorylist);
 
 $settings->add(
     new admin_setting_configselect(
-        'block_homework/course_category',
-        get_string('settings_course_category_name', 'block_homework'),
-        get_string('settings_course_category_desc', 'block_homework'),
+        'block_homework_diary/course_category',
+        get_string('settings_course_category_name', 'block_homework_diary'),
+        get_string('settings_course_category_desc', 'block_homework_diary'),
         0,
         $categorylist
     )
@@ -83,9 +83,9 @@ foreach ($cohorts['cohorts'] as $cohort) {
 // Student.
 $settings->add(
     new admin_setting_configselect(
-        'block_homework/student_cohort',
-        get_string('settings_student_cohort_name', 'block_homework'),
-        get_string('settings_student_cohort_desc', 'block_homework'),
+        'block_homework_diary/student_cohort',
+        get_string('settings_student_cohort_name', 'block_homework_diary'),
+        get_string('settings_student_cohort_desc', 'block_homework_diary'),
         0,
         $cohortlist
     )
@@ -94,9 +94,9 @@ $settings->add(
 // Teacher.
 $settings->add(
     new admin_setting_configselect(
-        'block_homework/teacher_cohort',
-        get_string('settings_teacher_cohort_name', 'block_homework'),
-        get_string('settings_teacher_cohort_desc', 'block_homework'),
+        'block_homework_diary/teacher_cohort',
+        get_string('settings_teacher_cohort_name', 'block_homework_diary'),
+        get_string('settings_teacher_cohort_desc', 'block_homework_diary'),
         0,
         $cohortlist
     )
@@ -105,9 +105,9 @@ $settings->add(
 // Parent.
 $settings->add(
     new admin_setting_configselect(
-        'block_homework/parent_cohort',
-        get_string('settings_parent_cohort_name', 'block_homework'),
-        get_string('settings_parent_cohort_desc', 'block_homework'),
+        'block_homework_diary/parent_cohort',
+        get_string('settings_parent_cohort_name', 'block_homework_diary'),
+        get_string('settings_parent_cohort_desc', 'block_homework_diary'),
         0,
         $cohortlist
     )
@@ -116,9 +116,9 @@ $settings->add(
 // Secretary.
 $settings->add(
     new admin_setting_configselect(
-        'block_homework/secretary_cohort',
-        get_string('settings_secretary_cohort_name', 'block_homework'),
-        get_string('settings_secretary_cohort_desc', 'block_homework'),
+        'block_homework_diary/secretary_cohort',
+        get_string('settings_secretary_cohort_name', 'block_homework_diary'),
+        get_string('settings_secretary_cohort_desc', 'block_homework_diary'),
         0,
         $cohortlist
     )
@@ -129,16 +129,16 @@ $settings->add(
  */
 $settings->add(
     new admin_setting_heading(
-        'block_homework_additional_html_heading',
-        get_string('settings_additional_html_heading_name', 'block_homework'),
-        get_string('settings_additional_html_heading_desc', 'block_homework')
+        'block_homework_diary/additional_html_heading',
+        get_string('settings_additional_html_heading_name', 'block_homework_diary'),
+        get_string('settings_additional_html_heading_desc', 'block_homework_diary')
     ));
 
 $settings->add(
     new admin_setting_confightmleditor(
-        'block_homework/additional_html_top',
-        get_string('settings_additional_html_top_name', 'block_homework'),
-        get_string('settings_additional_html_top_desc', 'block_homework'),
+        'block_homework_diary/additional_html_top',
+        get_string('settings_additional_html_top_name', 'block_homework_diary'),
+        get_string('settings_additional_html_top_desc', 'block_homework_diary'),
         '',
         PARAM_RAW
     )
@@ -146,9 +146,9 @@ $settings->add(
 
 $settings->add(
     new admin_setting_confightmleditor(
-        'block_homework/additional_html_bottom',
-        get_string('settings_additional_html_bottom_name', 'block_homework'),
-        get_string('settings_additional_html_bottom_desc', 'block_homework'),
+        'block_homework_diary/additional_html_bottom',
+        get_string('settings_additional_html_bottom_name', 'block_homework_diary'),
+        get_string('settings_additional_html_bottom_desc', 'block_homework_diary'),
         '',
         PARAM_RAW
     )

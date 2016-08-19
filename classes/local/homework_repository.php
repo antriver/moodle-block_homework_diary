@@ -17,19 +17,19 @@
 /**
  * Methods for retrieving homework items.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_homework\local;
+namespace block_homework_diary\local;
 
 use DateTime;
 
 /**
  * Methods for retrieving homework items.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -204,7 +204,7 @@ class homework_repository {
         SELECT
             DISTINCT hw.*,
             crs.fullname AS coursename
-        FROM {block_homework} hw
+        FROM {block_homework_diary} hw
         LEFT JOIN {course} crs ON crs.id = hw.courseid";
 
         if ($where) {
@@ -251,9 +251,9 @@ class homework_repository {
             hwdays.date AS assigneddate,
             (CASE WHEN hwdays.date = '' OR hwdays.date IS NULL THEN duedate ELSE hwdays.date END) AS sortdate,
             crs.fullname AS coursename
-        FROM {block_homework} hw
+        FROM {block_homework_diary} hw
         LEFT JOIN {course} crs ON crs.id = hw.courseid
-        LEFT JOIN {block_homework_assign_dates} hwdays ON hwdays.homeworkid = hw.id
+        LEFT JOIN {block_homework_diary_assign_dates} hwdays ON hwdays.homeworkid = hw.id
         WHERE (
                 (hw.private = 1 AND hw.userid = ?)
                 OR
@@ -310,9 +310,9 @@ class homework_repository {
             hw.*,
             hwdays.date AS assigneddate,
             crs.fullname AS coursename
-        FROM {block_homework} hw
+        FROM {block_homework_diary} hw
         LEFT JOIN {course} crs ON crs.id = hw.courseid
-        LEFT JOIN {block_homework_assign_dates} hwdays ON hwdays.homeworkid = hw.id
+        LEFT JOIN {block_homework_diary_assign_dates} hwdays ON hwdays.homeworkid = hw.id
         WHERE
             hw.approved = 1
             AND hw.private = 0";

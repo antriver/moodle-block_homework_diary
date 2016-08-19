@@ -17,7 +17,7 @@
 /**
  * Homework block plugin.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,11 +27,11 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Homework block plugin.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class block_homework extends block_base {
+class block_homework_diary extends block_base {
 
     /**
      * Initialize
@@ -39,7 +39,7 @@ class block_homework extends block_base {
      * @throws coding_exception
      */
     public function init() {
-        $this->title = get_string('pluginname', 'block_homework');
+        $this->title = get_string('pluginname', 'block_homework_diary');
     }
 
     /**

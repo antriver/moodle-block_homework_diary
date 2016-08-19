@@ -17,7 +17,7 @@
 /**
  * Generate an XML iCal compatible feed of a student's homework.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -39,7 +39,7 @@ if (!$user) {
 }
 
 // Include the homework stuff.
-$hwblock = new \block_homework\local\block();
+$hwblock = new \block_homework_diary\local\block();
 
 $hwblock->userid = $user->id;
 
@@ -53,7 +53,7 @@ $groupids = $hwblock->groups->get_all_users_group_ids($user->id);
 
 $currenthomework = $hwblock->repository->get_current_homework($groupids);
 $privatehomework = $hwblock->repository->get_private_homework($user->id);
-/** @var block_homework\local\homework_item[] $homework */
+/** @var block_homework_diary\local\homework_item[] $homework */
 $homework = array_merge($currenthomework, $privatehomework);
 
 /**

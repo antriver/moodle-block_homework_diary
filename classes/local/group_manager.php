@@ -17,17 +17,17 @@
 /**
  * Handles interacting with Moodle groups.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_homework\local;
+namespace block_homework_diary\local;
 
 /**
  * Handles interacting with Moodle groups.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -131,14 +131,8 @@ class group_manager {
             $params[] = $categorycontextpath . '/%';
         }
 
-        //$sql .= ' ORDER BY coursefullname';
-        // Prefixing course names with [OLD] makes the list sink down to the bottom
-        // Works by adding a zzzzz prefix to sorting
-        // TODO: Either fork or make it a setting
-        $sql .= " ORDER BY (CASE strpos(g.name, '[OLD]')
-                    WHEN 1 THEN 'zzzzz' || c.fullname
-                    ELSE c.fullname
-                    END)";
+        // Group names beginning with [OLD] get moved to the bottom of the list.
+        $sql .= " ORDER BY (CASE WHEN strpos(g.name, '[OLD]') = 0 THEN 0 ELSE 1 END), coursefullname";
 
         $rs = $DB->get_recordset_sql($sql, $params);
 

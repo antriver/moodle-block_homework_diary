@@ -17,7 +17,7 @@
 /**
  * Interface for editing a homework item.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,12 +27,12 @@ require_once(dirname(dirname(dirname(__DIR__))) . '/config.php');
 require_login();
 
 // Include the goodies for this block.
-$hwblock = new \block_homework\local\block();
+$hwblock = new \block_homework_diary\local\block();
 
 $action = required_param('action', PARAM_RAW);
 $homeworkid = required_param('homeworkid', PARAM_RAW);
 
-$hw = \block_homework\local\homework_item::load($homeworkid);
+$hw = \block_homework_diary\local\homework_item::load($homeworkid);
 
 // Check permissions.
 if (!$hwblock->can_edit_homework_item($hw)) {
@@ -57,7 +57,7 @@ switch ($action) {
         break;
 
     case 'delete':
-        $return['success'] = $DB->delete_records('block_homework', array('id' => $hw->id));
+        $return['success'] = $DB->delete_records('block_homework_diary', array('id' => $hw->id));
         break;
 
     default:

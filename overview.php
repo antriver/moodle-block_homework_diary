@@ -20,7 +20,7 @@
  * For students: shows 'to do' view.
  * For admin staff: shows all homework across the school.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,7 +29,7 @@ require('include/header.php');
 echo $OUTPUT->header();
 echo $hwblock->display->tabs('overview');
 
-if ($tophtml = get_config('block_homework', 'additional_html_top')) {
+if ($tophtml = get_config('block_homework_diary', 'additional_html_top')) {
     echo $tophtml;
 }
 
@@ -46,7 +46,7 @@ switch ($hwblock->get_mode()) {
         echo $hwblock->display->sign('calendar', 'To Do', 'This page presents a two-week overview of your homework.');
 
         // Get the user's group (class) IDs.
-        $groupids = $hwblock->groups->get_all_users_group_ids($hwblock->get_user_id(), true);
+        $groupids = $hwblock->groups->get_all_users_group_ids($hwblock->get_user_id());
 
         $dateshomework = $hwblock->repository->get_homework_for_student_overview(
             $hwblock->get_user_id(),
@@ -97,13 +97,13 @@ switch ($hwblock->get_mode()) {
 
         echo $hwblock->display->sign('calendar', 'Overview', 'This page shows all homework assigned this week.');
 
-        $stats = new \block_homework\local\homework_stats($hwblock);
+        $stats = new \block_homework_diary\local\homework_stats($hwblock);
         echo $hwblock->display->week_stats($stats);
 
         break;
 }
 
-if ($bottomhtml = get_config('block_homework', 'additional_html_bottom')) {
+if ($bottomhtml = get_config('block_homework_diary', 'additional_html_bottom')) {
     echo $bottomhtml;
 }
 

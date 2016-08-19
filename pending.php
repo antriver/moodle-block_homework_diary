@@ -18,7 +18,7 @@
  * List of pending homework for all classes.
  *
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,7 +27,7 @@ require('include/header.php');
 echo $OUTPUT->header();
 echo $hwblock->display->tabs('pending');
 
-if ($tophtml = get_config('block_homework', 'additional_html_top')) {
+if ($tophtml = get_config('block_homework_diary', 'additional_html_top')) {
     echo $tophtml;
 }
 
@@ -55,7 +55,7 @@ switch ($hwblock->get_mode()) {
         break;
 }
 
-if ($bottomhtml = get_config('block_homework', 'additional_html_bottom')) {
+if ($bottomhtml = get_config('block_homework_diary', 'additional_html_bottom')) {
     echo $bottomhtml;
 }
 

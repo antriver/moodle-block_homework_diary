@@ -17,19 +17,19 @@
 /**
  * Methods for generating HTML to display.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_homework\local;
+namespace block_homework_diary\local;
 
 use DateTime;
 
 /**
  * Methods for generating HTML to display.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -401,9 +401,6 @@ class display_manager {
      * Output a single homework item.
      *
      * @param homework_item $hw
-     *
-     * @internal param bool $showclassname
-     * @internal param bool $showassigneddates
      *
      * @return string
      */

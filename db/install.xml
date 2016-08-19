@@ -4,7 +4,7 @@
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="block_homework" COMMENT="Homework entries">
+    <TABLE NAME="block_homework_diary" COMMENT="Homework entries">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="approved" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
@@ -30,7 +30,7 @@
         <INDEX NAME="private" UNIQUE="false" FIELDS="private"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="block_homework_assign_dates" COMMENT="Which days students should work on a homework assignment">
+    <TABLE NAME="block_homework_diary_assign_dates" COMMENT="Which days students should work on a homework assignment">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="homeworkid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
@@ -38,10 +38,10 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="homeworkid" TYPE="foreign" FIELDS="homeworkid" REFTABLE="block_homework" REFFIELDS="id"/>
+        <KEY NAME="homeworkid" TYPE="foreign" FIELDS="homeworkid" REFTABLE="block_homework_diary" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="block_homework_notes" COMMENT="User comments on homework items">
+    <TABLE NAME="block_homework_diary_notes" COMMENT="User comments on homework items">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="homeworkid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
@@ -50,7 +50,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="homeworkid" TYPE="foreign" FIELDS="homeworkid" REFTABLE="block_homework" REFFIELDS="id"/>
+        <KEY NAME="homeworkid" TYPE="foreign" FIELDS="homeworkid" REFTABLE="block_homework_diary" REFFIELDS="id"/>
         <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>

@@ -17,7 +17,7 @@
 /**
  * Form for adding/editing homework.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -42,7 +42,7 @@ switch ($action) {
         define('FORMACTION', 'edit');
         $editid = required_param('editid', PARAM_INT);
         // Load the existing item.
-        $homeworkitem = \block_homework\local\homework_item::load($editid);
+        $homeworkitem = \block_homework_diary\local\homework_item::load($editid);
         if (!$homeworkitem) {
             die("Unable to find that homework item.");
         }
@@ -69,7 +69,7 @@ switch ($action) {
         $title = required_param('title', PARAM_RAW);
 
         // Load the existing item.
-        $homeworkitem = \block_homework\local\homework_item::load($editid);
+        $homeworkitem = \block_homework_diary\local\homework_item::load($editid);
         if (!$homeworkitem) {
             die("Unable to find that homework item.");
         }
@@ -88,7 +88,7 @@ switch ($action) {
         }
 
         if (!$hwblock->can_edit_homework_item($homeworkitem)) {
-            throw new unauthorized_access_exception("You don't have permission to edit that piece of homework.");
+            throw new \Exception("You don't have permission to edit that piece of homework.");
         }
 
         $homeworkitem->courseid = $courseid;
@@ -124,7 +124,7 @@ switch ($action) {
     case 'save':
 
         if ($mode != 'student' && $mode != 'teacher') {
-            throw new unauthorized_access_exception("You need to be in student or teacher mode to add homework.");
+            throw new \Exception("You need to be in student or teacher mode to add homework.");
         }
 
         $assigneddates = required_param('assigneddates', PARAM_RAW);
@@ -164,10 +164,10 @@ switch ($action) {
         $homeworkitem->userid = $USER->id;
 
         // Save in the database.
-        if ($id = $DB->insert_record('block_homework', $homeworkitem)) {
+        if ($id = $DB->insert_record('block_homework_diary', $homeworkitem)) {
 
             // Fetch it from the database so we know the real saved data.
-            $homeworkitem = \block_homework\local\homework_item::load($id);
+            $homeworkitem = \block_homework_diary\local\homework_item::load($id);
 
             // Add the assigned dates.
             $assigneddates = explode(',', $assigneddates);

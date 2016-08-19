@@ -17,12 +17,12 @@
 /**
  * The beef of the homework block.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_homework\local;
+namespace block_homework_diary\local;
 
 use context_course;
 use context_coursecat;
@@ -30,7 +30,7 @@ use context_coursecat;
 /**
  * The beef of the homework block.
  *
- * @package    block_homework
+ * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -88,7 +88,6 @@ class block {
      * @return bool
      */
     private function log() {
-
         // Skip the RSS feed because those requests happen too often.
         if (stripos($_SERVER['REQUEST_URI'], '/blocks/homework/feed') === 0) {
             return false;
@@ -169,10 +168,10 @@ class block {
 
         require_once($CFG->dirroot . '/cohort/lib.php');
 
-        $studentcohortid = (int)get_config('block_homework', 'student_cohort');
-        $teachercohortid = (int)get_config('block_homework', 'teacher_cohort');
-        $parentcohortid = (int)get_config('block_homework', 'parent_cohort');
-        $secretarycohortid = (int)get_config('block_homework', 'secretary_cohort');
+        $studentcohortid = (int)get_config('block_homework_diary', 'student_cohort');
+        $teachercohortid = (int)get_config('block_homework_diary', 'teacher_cohort');
+        $parentcohortid = (int)get_config('block_homework_diary', 'parent_cohort');
+        $secretarycohortid = (int)get_config('block_homework_diary', 'secretary_cohort');
 
         if ($teachercohortid && cohort_is_member($teachercohortid, $USER->id)) {
             return array('teacher', 'pastoral');
@@ -202,6 +201,7 @@ class block {
      * Set the current mode.
      *
      * @param string $mode
+     * @param bool   $userid
      *
      * @return bool
      */
@@ -249,7 +249,7 @@ class block {
      * @return int
      */
     public function get_category_id() {
-        return (int)get_config('block_homework', 'course_category');
+        return (int)get_config('block_homework_diary', 'course_category');
     }
 
     /**
