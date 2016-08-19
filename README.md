@@ -2,6 +2,8 @@
 
 Allows teachers (and optionally students) to add homework for courses.
 
+**Note:** This was previously called *block_homework* but renamed to *block_homework_diary* to not clash with a different plugin that was added to the Moodle plugin directory since the creation of this plugin.
+
 ## Screenshots
 ![Student's overview](https://www.classroomtechtools.com/assets/img/moodle-plugin-screenshots/block_homework_diary/1.png)
 ![Student's overview](https://www.classroomtechtools.com/assets/img/moodle-plugin-screenshots/block_homework_diary/2.png)
