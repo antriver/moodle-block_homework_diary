@@ -24,6 +24,7 @@
 
 /**
  * Settings for adding an instance of a homework block.
+ *
  * (The homework diary in block form isn't currently implemented though. This is just a placeholder.)
  *
  * @package    block_homework_diary

@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 $capabilities = array(
 
     // Ability to add a homework block to a page.
-    'block/homework:addinstance'     => array(
+    'block/homework_diary:addinstance'     => array(
         'captype'              => 'write',
         'contextlevel'         => CONTEXT_BLOCK,
         'archetypes'           => array(
@@ -36,7 +36,7 @@ $capabilities = array(
         ),
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
-    'block/homework:myaddinstance'   => array(
+    'block/homework_diary:myaddinstance'   => array(
         'captype'              => 'write',
         'contextlevel'         => CONTEXT_BLOCK,
         'archetypes'           => array(
@@ -46,7 +46,7 @@ $capabilities = array(
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
     // Ability to approve homework.
-    'block/homework:approvehomework' => array(
+    'block/homework_diary:approvehomework' => array(
         'captype'              => 'write',
         'contextlevel'         => CONTEXT_COURSE,
         'archetypes'           => array(
@@ -57,7 +57,7 @@ $capabilities = array(
         'clonepermissionsfrom' => 'moodle/course:manageactivities'
     ),
     // Ability to add homework.
-    'block/homework:addhomework'     => array(
+    'block/homework_diary:addhomework'     => array(
         'captype'      => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes'   => array(

@@ -89,7 +89,7 @@ class block {
      */
     private function log() {
         // Skip the RSS feed because those requests happen too often.
-        if (stripos($_SERVER['REQUEST_URI'], '/blocks/homework/feed') === 0) {
+        if (stripos($_SERVER['REQUEST_URI'], '/blocks/homework_diary/feed') === 0) {
             return false;
         }
 
@@ -305,7 +305,7 @@ class block {
         if ($mode == 'teacher' || $mode == 'student') {
 
             $context = context_course::instance($courseid);
-            return has_capability('block/homework:addhomework', $context);
+            return has_capability('block/homework_diary:addhomework', $context);
         }
         return false;
     }
@@ -321,7 +321,7 @@ class block {
         $mode = $this->get_mode();
         if ($mode == 'teacher') {
             $context = context_course::instance($courseid);
-            return has_capability('block/homework:approvehomework', $context);
+            return has_capability('block/homework_diary:approvehomework', $context);
         }
         return false;
     }

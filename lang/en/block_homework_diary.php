@@ -24,10 +24,10 @@
 
 $string['blockstring'] = 'Homework';
 $string['pluginname'] = 'Homework Diary';
-$string['pagetitle'] = 'Homework';
+$string['pagetitle'] = 'Homework Diary';
 
-$string['homework:addinstance'] = 'Add a homework block';
-$string['homework:myaddinstance'] = 'Add a homework block to my moodle';
+$string['homework_diary:addinstance'] = 'Add a homework block';
+$string['homework_diary:myaddinstance'] = 'Add a homework block to my moodle';
 
 $string['settings_smooth_scroll_name'] = 'Smooth Scrolling';
 $string['settings_smooth_scroll_desc'] = 'Scroll smoothly instead of jumping when clicking on a date on the timetable page.';

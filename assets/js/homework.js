@@ -60,7 +60,7 @@ $(document).on('click', '.approveHomeworkButton', function (e) {
     btn.addClass('loading');
     btn.children('i').removeClass().addClass('fa fa-spinner fa-spin');
 
-    $.post('/blocks/homework/ajax/manage.php', {homeworkid: id, action: 'approve'}, function (res) {
+    $.post('/blocks/homework_diary/ajax/manage.php', {homeworkid: id, action: 'approve'}, function (res) {
 
         btn.removeClass('loading');
         btn.children('i').removeClass().addClass('fa fa-check');
@@ -157,7 +157,7 @@ $(document).on('click', '.saveNotes', function (e) {
 
     var text = hw.find('.notes-input').val();
 
-    $.post('/blocks/homework/ajax/notes.php', {homeworkid: id, action: 'save', notes: text}, function (res) {
+    $.post('/blocks/homework_diary/ajax/notes.php', {homeworkid: id, action: 'save', notes: text}, function (res) {
 
         btn.removeClass('loading');
         btn.children('i').removeClass().addClass('fa fa-save');
@@ -189,7 +189,7 @@ $(document).on('click', '.deleteHomeworkButton', function (e) {
     btn.addClass('loading');
     btn.children('i').removeClass().addClass('fa fa-spinner fa-spin');
 
-    $.post('/blocks/homework/ajax/manage.php', {homeworkid: id, action: 'delete'}, function (res) {
+    $.post('/blocks/homework_diary/ajax/manage.php', {homeworkid: id, action: 'delete'}, function (res) {
 
         btn.removeClass('loading');
         btn.children('i').removeClass().addClass('fa fa-trash');

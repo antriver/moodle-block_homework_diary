@@ -36,20 +36,20 @@ if (!empty($_SERVER['SCRIPT_NAME'])) {
 // Include the goodies for this block.
 $hwblock = new \block_homework_diary\local\block();
 
-$PAGE->requires->css('/blocks/homework/assets/bootstrap/css/bootstrap.css');
-$PAGE->requires->css('/blocks/homework/assets/css/homework.css?v=2015110905');
+$PAGE->requires->css('/blocks/homework_diary/assets/bootstrap/css/bootstrap.css');
+$PAGE->requires->css('/blocks/homework_diary/assets/css/homework.css?v=2015110905');
 
 $PAGE->requires->jquery();
 $PAGE->requires->jquery_plugin('ui');
 $PAGE->requires->jquery_plugin('ui-css');
 
-$PAGE->requires->js('/blocks/homework/assets/js/lib/jquery.autosize.min.js');
-$PAGE->requires->js('/blocks/homework/assets/js/lib/date.js');
-$PAGE->requires->js('/blocks/homework/assets/js/homework.js?v=2015110905');
+$PAGE->requires->js('/blocks/homework_diary/assets/js/lib/jquery.autosize.min.js');
+$PAGE->requires->js('/blocks/homework_diary/assets/js/lib/date.js');
+$PAGE->requires->js('/blocks/homework_diary/assets/js/homework.js?v=2015110905');
 if (get_config('block_homework_diary', 'smooth_scroll')) {
-    $PAGE->requires->js('/blocks/homework/assets/js/lib/jquery.scrollTo.min.js');
-    $PAGE->requires->js('/blocks/homework/assets/js/lib/jquery.localScroll.min.js');
-    $PAGE->requires->js('/blocks/homework/assets/js/lib/localscroll.js');
+    $PAGE->requires->js('/blocks/homework_diary/assets/js/lib/jquery.scrollTo.min.js');
+    $PAGE->requires->js('/blocks/homework_diary/assets/js/lib/jquery.localScroll.min.js');
+    $PAGE->requires->js('/blocks/homework_diary/assets/js/lib/localscroll.js');
 }
 
 $PAGE->set_title(get_string('pagetitle', 'block_homework_diary'));

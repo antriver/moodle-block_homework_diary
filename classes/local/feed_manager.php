@@ -76,7 +76,7 @@ class feed_manager {
 
         $key = $this->generate_feed_key($user);
 
-        $url = $CFG->wwwroot . '/blocks/homework/feed/?';
+        $url = $CFG->wwwroot . '/blocks/homework_diary/feed/?';
         $url .= http_build_query(
             array(
                 'u' => $user->username,

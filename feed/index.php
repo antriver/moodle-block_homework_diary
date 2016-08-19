@@ -72,7 +72,7 @@ $output = "BEGIN:VCALENDAR" . $eol .
 
 foreach ($homework as $hw) {
 
-    $url = $CFG->wwwroot . '/blocks/homework/hw.php?id=' . $hw->id;
+    $url = $CFG->wwwroot . '/blocks/homework_diary/hw.php?id=' . $hw->id;
 
     $timestamp = strtotime($hw->duedate);
 

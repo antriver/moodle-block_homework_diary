@@ -15,8 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Front page for homework block.
- * Redirects to the approriate first page.
+ * Front page for homework block. Redirects to the approriate first page.
  *
  * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
@@ -31,10 +30,10 @@ switch ($hwblock->get_mode()) {
     case 'pastoral-student':
     case 'student':
     case 'parent':
-        redirect(new moodle_url('/blocks/homework/overview.php'));
+        redirect(new moodle_url('/blocks/homework_diary/overview.php'));
         break;
 
     case 'teacher':
-        redirect(new moodle_url('/blocks/homework/pending.php'));
+        redirect(new moodle_url('/blocks/homework_diary/pending.php'));
         break;
 }

@@ -167,7 +167,7 @@ class homework_repository {
      * Return homework a user has entered for their self.
      *
      * @param int        $userid
-     * @param int[]|null $groupids Limit to just these group IDs. Use group ID 0 to get homework not specific to any group.
+     * @param int[] $groupids Limit to just these group IDs. Use group ID 0 to get homework not specific to any group.
      *                             null to not do any groupid filtering.
      *
      * @return homework_item[]
@@ -253,7 +253,7 @@ class homework_repository {
             crs.fullname AS coursename
         FROM {block_homework_diary} hw
         LEFT JOIN {course} crs ON crs.id = hw.courseid
-        LEFT JOIN {block_homework_diary_assign_dates} hwdays ON hwdays.homeworkid = hw.id
+        LEFT JOIN {block_homework_diary_dates} hwdays ON hwdays.homeworkid = hw.id
         WHERE (
                 (hw.private = 1 AND hw.userid = ?)
                 OR
@@ -312,7 +312,7 @@ class homework_repository {
             crs.fullname AS coursename
         FROM {block_homework_diary} hw
         LEFT JOIN {course} crs ON crs.id = hw.courseid
-        LEFT JOIN {block_homework_diary_assign_dates} hwdays ON hwdays.homeworkid = hw.id
+        LEFT JOIN {block_homework_diary_dates} hwdays ON hwdays.homeworkid = hw.id
         WHERE
             hw.approved = 1
             AND hw.private = 0";

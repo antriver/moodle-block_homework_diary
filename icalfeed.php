@@ -47,7 +47,7 @@ switch ($hwblock->get_mode()) {
             </li>
 
             <li>Change the <strong>Name</strong> to &quot;Homework&quot; and the <strong>Auto-Refresh</strong> option to Every 15
-                minutes. Then click <strong>OK</strong> and your homework from DragonNet will automatically appear in iCal.
+                minutes. Then click <strong>OK</strong> and your homework will automatically appear in iCal.
                 <img src="assets/img/feed-3.png"/>
             </li>
 

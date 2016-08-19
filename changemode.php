@@ -26,7 +26,7 @@ require('include/header.php');
 
 $mode = required_param('mode', PARAM_RAW);
 if ($hwblock->set_mode($mode)) {
-    redirect('/blocks/homework');
+    redirect('/blocks/homework_diary');
 } else {
     die('Invalid mode.');
 }

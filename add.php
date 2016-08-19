@@ -84,7 +84,7 @@ switch ($action) {
         if ($courseid) {
             // Check permissions.
             $context = \context_course::instance($courseid);
-            require_capability('block/homework:addhomework', $context);
+            require_capability('block/homework_diary:addhomework', $context);
         }
 
         if (!$hwblock->can_edit_homework_item($homeworkitem)) {
@@ -146,7 +146,7 @@ switch ($action) {
         if ($courseid) {
             // Check permissions.
             $context = \context_course::instance($courseid);
-            require_capability('block/homework:addhomework', $context);
+            require_capability('block/homework_diary:addhomework', $context);
         }
 
         // Create the item.

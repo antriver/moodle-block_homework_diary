@@ -55,7 +55,7 @@ class homework_item {
      * Name of the table containing which days a task is assigned for.
      * @var string
      */
-    private static $assigneddaystable = 'block_homework_diary_assign_dates';
+    private static $assigneddaystable = 'block_homework_diary_dates';
 
     /**
      * Name of the table containing student notes for homework.

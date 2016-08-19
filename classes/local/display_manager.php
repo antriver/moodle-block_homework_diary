@@ -284,8 +284,8 @@ class display_manager {
      */
     public function class_list($classes) {
         global $PAGE;
-        $PAGE->requires->js('/blocks/homework/assets/js/lib/bindWithDelay.js');
-        $PAGE->requires->js('/blocks/homework/assets/js/filter.js');
+        $PAGE->requires->js('/blocks/homework_diary/assets/js/lib/bindWithDelay.js');
+        $PAGE->requires->js('/blocks/homework_diary/assets/js/filter.js');
 
         $r = '<div class="courseList">';
         $r .= '<input type="text" class="filter" placeholder="Type here to filter by name or teacher..." />';
@@ -313,8 +313,8 @@ class display_manager {
      */
     public function course_list($courses) {
         global $PAGE;
-        $PAGE->requires->js('/blocks/homework/assets/js/lib/bindWithDelay.js');
-        $PAGE->requires->js('/blocks/homework/assets/js/filter.js');
+        $PAGE->requires->js('/blocks/homework_diary/assets/js/lib/bindWithDelay.js');
+        $PAGE->requires->js('/blocks/homework_diary/assets/js/filter.js');
 
         $r = '<div class="courseList">';
         $r .= '<input type="text" class="filter" placeholder="Type here to filter by name..." />';
@@ -341,8 +341,8 @@ class display_manager {
      */
     public function student_list() {
         global $PAGE;
-        $PAGE->requires->js('/blocks/homework/assets/js/lib/bindWithDelay.js');
-        $PAGE->requires->js('/blocks/homework/assets/js/filter.js');
+        $PAGE->requires->js('/blocks/homework_diary/assets/js/lib/bindWithDelay.js');
+        $PAGE->requires->js('/blocks/homework_diary/assets/js/filter.js');
 
         $r = '<div class="courseList userList">';
         $r .= '<input
