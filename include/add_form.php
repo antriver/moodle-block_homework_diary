@@ -41,16 +41,18 @@ $private = 0;
 
 <form class="form form-horizontal addHomeworkForm" role="form" method="post">
 
-    <?php if (FORMACTION == 'edit') {
+    <?php
+    if (FORMACTION == 'edit') {
         ?>
         <input type="hidden" name="editid" value="<?php echo $homeworkitem->id; ?>"/>
         <?php
-    } ?>
+    }
+    ?>
 
     <input type="hidden" name="action" value="<?php echo(FORMACTION == 'edit' ? 'saveedit' : 'save'); ?>"/>
 
-    <?php if ($mode == 'student') {
-
+    <?php
+    if ($mode == 'student') {
         if (FORMACTION == 'edit' && $homeworkitem->private) {
             $private = 1;
         }
@@ -84,7 +86,8 @@ $private = 0;
             </div>
         </div>
         <?php
-    } ?>
+    }
+    ?>
     <input type="hidden" name="private" value="<?php echo $private; ?>"/>
 
     <div class="form-group">
@@ -100,7 +103,8 @@ $private = 0;
                     echo '</option>';
                 }
                 if ($private) {
-                    echo '<option value="0" ' . ($private && !$selectedgroupid ? 'selected' : '') . '>Other / Not Applicable</option>';
+                    echo '<option value="0" ' . ($private && !$selectedgroupid ? 'selected' : '') . '>' .
+                        'Other / Not Applicable</option>';
                 }
                 ?>
             </select>
@@ -195,10 +199,12 @@ $private = 0;
         </div>
     </div>
 
-    <?php if (FORMACTION == 'edit') {
+    <?php
+    if (FORMACTION == 'edit') {
         // Show the assigned day toggle buttons on pageload if editing and existing item.
         echo '<script> var homeworkFormAssignedDates = ' . json_encode($homeworkitem->get_assigned_dates()) . '; </script>';
-    } ?>
+    }
+    ?>
 
     <div class="form-group">
         <label for="duration" class="col-md-3 control-label">Duration:</label>

@@ -29,4 +29,4 @@ $plugin->component = 'block_homework_diary'; // Full name of the plugin (used fo
 $plugin->maturity = MATURITY_STABLE;
 $plugin->release = '1.0';
 $plugin->requires = 2013111800; // MOODLE_26_STABLE
-$plugin->version = 2016081902; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version = 2016082400; // The current plugin version (Date: YYYYMMDDXX).
