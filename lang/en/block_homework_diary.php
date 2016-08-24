@@ -32,9 +32,7 @@ $string['homework_diary:myaddinstance'] = 'Add a homework block to my moodle';
 $string['settings_smooth_scroll_name'] = 'Smooth Scrolling';
 $string['settings_smooth_scroll_desc'] = 'Scroll smoothly instead of jumping when clicking on a date on the timetable page.';
 
-/**
- * Admin settings
- */
+// Admin Settings.
 $string['settings_course_category_name'] = 'Course Category';
 $string['settings_course_category_desc'] = 'Only show courses from this category in the homework diary.';
 
@@ -60,9 +58,7 @@ $string['settings_additional_html_top_desc'] = 'Appears at the top of the first 
 $string['settings_additional_html_bottom_name'] = 'Page Bottom';
 $string['settings_additional_html_bottom_desc'] = 'Appears at the bottom of the first page of the homework diary.';
 
-/**
- * Student Search
- */
+// Student Search.
 $string['student_search_title'] = 'Find A Student';
 $string['student_search_desc'] = 'This section allows you to see what a student sees.
 Search for a student by name or ID below and click on one of the results.';

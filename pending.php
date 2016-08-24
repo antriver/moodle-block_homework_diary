@@ -33,11 +33,8 @@ if ($tophtml = get_config('block_homework_diary', 'additional_html_top')) {
 
 switch ($hwblock->get_mode()) {
 
+    // Pending homework approval page.
     case 'teacher':
-        /**
-         * Pending homework approval page
-         */
-
         echo $hwblock->display->sign(
             'check',
             'Manage Submissions',

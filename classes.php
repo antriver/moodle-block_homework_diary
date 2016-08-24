@@ -34,9 +34,7 @@ switch ($hwblock->get_mode()) {
     case 'parent':
     case 'teacher':
 
-        /**
-         * Show the timetable view of the student's homework due in the next 2 weeks
-         */
+        // Show the timetable view of the student's homework due in the next 2 weeks.
         echo $hwblock->display->sign(
             'group',
             'View by Class',
@@ -48,9 +46,7 @@ switch ($hwblock->get_mode()) {
 
     case 'pastoral':
 
-        /**
-         * Show all classes in the school
-         */
+        // Show all classes in the school.
         echo '<h2><i class="fa fa-group"></i> All Classes</h2>';
         $groups = $hwblock->groups->get_all_groups();
         echo $hwblock->display->class_list($groups);

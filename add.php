@@ -34,9 +34,7 @@ $mode = $hwblock->get_mode();
 
 switch ($action) {
 
-    /**
-     * Display an existing item in the form to make changes
-     */
+    // Display an existing item in the form to make changes.
     case 'edit':
 
         define('FORMACTION', 'edit');
@@ -53,9 +51,7 @@ switch ($action) {
 
         break;
 
-    /**
-     * Save changes made from edit action
-     */
+    // Save changes made from edit action.
     case 'saveedit':
 
         $assigneddates = required_param('assigneddates', PARAM_RAW);

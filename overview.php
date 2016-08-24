@@ -35,14 +35,10 @@ if ($tophtml = get_config('block_homework_diary', 'additional_html_top')) {
 
 switch ($hwblock->get_mode()) {
 
+    // Students get a timetable of homework in their classes.
     case 'pastoral-student':
     case 'student':
     case 'parent':
-
-        /**
-         * Students get a timetable of homework in their classes.
-         */
-
         echo $hwblock->display->sign('calendar', 'To Do', 'This page presents a two-week overview of your homework.');
 
         // Get the user's group (class) IDs.
@@ -68,11 +64,8 @@ switch ($hwblock->get_mode()) {
 
         break;
 
+    // Pending homework approval page.
     case 'teacher':
-        /**
-         * Pending homework approval page
-         */
-
         echo $hwblock->display->sign(
             'check',
             'Manage Submissions',
@@ -89,12 +82,8 @@ switch ($hwblock->get_mode()) {
 
         break;
 
+    // Whole school week overview.
     case 'pastoral':
-
-        /**
-         * Whole school week overview
-         */
-
         echo $hwblock->display->sign('calendar', 'Overview', 'This page shows all homework assigned this week.');
 
         $stats = new \block_homework_diary\local\homework_stats($hwblock);

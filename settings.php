@@ -17,6 +17,8 @@
 /**
  * Homework block admin settings
  *
+ * @var object $CFG
+ *
  * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -36,12 +38,8 @@ $settings->add(
     )
 );
 
-/**
- * Category to show courses from
- */
-
+// Category to show courses from.
 // Load all categories to show in the list.
-/** @var object $CFG */
 require_once($CFG->dirroot . '/course/externallib.php');
 $categories = core_course_external::get_categories(array(), false);
 $categorylist = array(
@@ -61,10 +59,6 @@ $settings->add(
         $categorylist
     )
 );
-
-/**
- * User levels
- */
 
 // Get all system-level cohorts.
 require_once($CFG->dirroot . '/cohort/lib.php');
@@ -124,9 +118,7 @@ $settings->add(
     )
 );
 
-/**
- * Additonal HTML
- */
+// Additonal HTML.
 $settings->add(
     new admin_setting_heading(
         'block_homework_diary/additional_html_heading',
