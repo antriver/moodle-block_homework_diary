@@ -18,6 +18,7 @@
  * Homework block admin settings
  *
  * @var object $CFG
+ * @var moodle_database $DB
  *
  * @package    block_homework_diary
  * @copyright  Anthony Kuske <www.anthonykuske.com>
@@ -40,15 +41,13 @@ $settings->add(
 
 // Category to show courses from.
 // Load all categories to show in the list.
-require_once($CFG->dirroot . '/course/externallib.php');
-$categories = core_course_external::get_categories(array(), false);
+$categories = $DB->get_records('course_categories', null, 'name', 'id, name');
 $categorylist = array(
-    0 => '[All Cateogries]'
+    0 => '[All Categories]'
 );
 foreach ($categories as $category) {
-    $categorylist[$category['id']] = $category['name'];
+    $categorylist[$category->id] = $category->name;
 }
-asort($categorylist);
 
 $settings->add(
     new admin_setting_configselect(
@@ -61,16 +60,14 @@ $settings->add(
 );
 
 // Get all system-level cohorts.
-require_once($CFG->dirroot . '/cohort/lib.php');
-$systemcontext = context_system::instance();
-$cohorts = cohort_get_cohorts($systemcontext->id, 0, 1000000);
+$cohorts = $DB->get_records('cohort', ['contextid' => context_system::instance()->id], 'name', 'id, name, idnumber');
 $cohortlist = array(
     0 => '[Not Set]'
 );
-foreach ($cohorts['cohorts'] as $cohort) {
+foreach ($cohorts as $cohort) {
     $cohortlist[$cohort->id] = $cohort->name;
     if ($cohort->idnumber) {
-        $cohortlist[$cohort->id] .= ' [' . s($cohort->idnumber) . ']';
+        $cohortlist[$cohort->id] .= ' (' . s($cohort->idnumber) . ')';
     }
 }
 
