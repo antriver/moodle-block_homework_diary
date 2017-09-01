@@ -217,20 +217,43 @@ $private = 0;
 
             <script>
                 $(function () {
-
                     var durationLabels = {
                         0: '0 minutes',
+                        5: '5 minutes',
+                        10: '10 minutes',
                         15: '15 minutes',
+                        20: '20 minutes',
+                        25: '25 minutes',
                         30: '30 minutes',
+                        35: '35 minutes',
+                        40: '40 minutes',
                         45: '45 minutes',
+                        50: '50 minutes',
+                        55: '55 minutes',
                         60: '1 hour',
+                        65: '1 hour 5 minutes',
+                        70: '1 hour 10 minutes',
                         75: '1 hour 15 minutes',
+                        80: '1 hour 20 minutes',
+                        85: '1 hour 25 minutes',
                         90: '1 hour 30 minutes',
+                        95: '1 hour 35 minutes',
+                        100: '1 hour 40 minutes',
                         105: '1 hour 45 minutes',
+                        110: '1 hour 50 minutes',
+                        115: '1 hour 55 minutes',
                         120: '2 hours',
+                        125: '2 hours 5 minutes',
+                        130: '2 hours 10 minutes',
                         135: '2 hours 15 minutes',
+                        140: '2 hours 20 minutes',
+                        145: '2 hours 25 minutes',
                         150: '2 hours 30 minutes',
+                        155: '2 hours 35 minutes',
+                        160: '2 hours 40 minutes',
                         165: '2 hours 45 minutes',
+                        170: '2 hours 50 minutes',
+                        175: '2 hours 55 minutes',
                         180: '3 or more hours'
                     };
 
@@ -254,7 +277,7 @@ $private = 0;
 
                     $('#duration-slider').slider({
                         min: 0,
-                        step: 15,
+                        step: 5,
                         max: 180,
                         values: [<?php echo $initialminduration; ?>],
                         slide: function (event, ui) {
