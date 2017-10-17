@@ -28,14 +28,21 @@ session_cache_limiter('public');
 
 require_once(dirname(dirname(dirname(__DIR__))) . '/config.php');
 
-$username = required_param('u', PARAM_RAW);
-$key = required_param('k', PARAM_RAW);
+// These are using optional_param even though they are required so the error log does not get filled with
+// messages about these.
+$username = optional_param('u', null, PARAM_RAW);
+$key = optional_param('k', null, PARAM_RAW);
+
+if (empty($username) || empty($key)) {
+    http_response_code(400);
+    exit('u (username) and k (key) must be present in the URL.');
+}
 
 // Get the user from their username.
 $user = $DB->get_record('user', array('username' => $username), '*', IGNORE_MISSING);
 if (!$user) {
-    header('User not found', true, 404);
-    exit();
+    http_response_code(404);
+    exit('User not found.');
 }
 
 // Include the homework stuff.
@@ -45,7 +52,8 @@ $hwblock->userid = $user->id;
 
 // Check the key.
 if ($key != $hwblock->feeds->generate_feed_key($user)) {
-    die("Invalid key");
+    http_response_code(401);
+    die('Invalid key.');
 }
 
 // Get the user's group (class) IDs.
